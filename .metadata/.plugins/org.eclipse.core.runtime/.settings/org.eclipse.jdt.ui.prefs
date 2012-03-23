@@ -1,4 +1,4 @@
-#Fri Mar 23 20:07:04 GMT 2012
+#Fri Mar 23 20:34:14 GMT 2012
 content_assist_proposals_foreground=60,60,60
 spelling_locale=en_GB
 spelling_locale_initialized=true
@@ -13,6 +13,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
 org.eclipse.jdt.ui.javadoclocations.migrated=true
 proposalOrderMigrated=true
 org.eclipse.jdt.ui.formatterprofiles.version=12
+org.eclipse.jdt.internal.ui.navigator.layout=2
 content_assist_proposals_background=255,255,255
 content_assist_number_of_computers=13
 useQuickDiffPrefPage=true

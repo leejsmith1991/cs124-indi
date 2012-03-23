@@ -4,7 +4,6 @@ INDEX VERSION 1.126+/home/lee/Documents/java/cs124-indi/.metadata/.plugins/org.e
 2040264796.index
 1796948596.index
 516116778.index
-1822747380.index
 1189062746.index
 406065318.index
 925624498.index

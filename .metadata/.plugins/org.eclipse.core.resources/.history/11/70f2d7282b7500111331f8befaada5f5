@@ -1,0 +1,7 @@
+package uk.ac.aber.dcs.cs124indi.gui;
+
+import javax.swing.JFrame;
+
+public class mainFrame extends JFrame {
+	
+}
