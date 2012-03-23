@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs124indi.model;
 
+import uk.ac.aber.dcs.cs124indi.gui.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,7 +13,6 @@ public class Till implements Serializable {
 	 * Creates SerialUID to enable saving and loading of files
 	 */
 	private static final long serialVersionUID = 811543431919259128L;
-	
 	private ArrayList<Order> orders;
 	
 	public Till(){
