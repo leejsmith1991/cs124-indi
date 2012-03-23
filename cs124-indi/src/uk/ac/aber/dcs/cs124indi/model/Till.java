@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs124indi.model;
 
+import uk.ac.aber.dcs.cs124indi.controller.Manager;
 import uk.ac.aber.dcs.cs124indi.gui.*;
 import java.io.IOException;
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 public class Till implements Serializable {
 
+	private Manager manager;
 
 	/**
 	 * Creates SerialUID to enable saving and loading of files
@@ -15,7 +17,9 @@ public class Till implements Serializable {
 	private static final long serialVersionUID = 811543431919259128L;
 	private ArrayList<Order> orders;
 	
-	public Till(){
+	public Till(Manager manager){
+		this.manager = manager;
+		
 		
 	}
 	
