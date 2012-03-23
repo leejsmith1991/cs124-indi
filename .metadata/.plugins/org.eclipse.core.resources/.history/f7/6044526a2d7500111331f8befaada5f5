@@ -1,0 +1,5 @@
+package uk.ac.aber.dcs.cs124indi.controller;
+
+public class Manager implements ActionListener, MouseListener{
+
+}
