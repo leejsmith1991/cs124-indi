@@ -12,6 +12,7 @@ public class MainFrame extends JFrame implements WindowListener{
 	private Manager manager;
 	
 	private MenuBar menuBar;
+	private
 	private static final long serialVersionUID = 4978171281055317618L;
 	
 	public MainFrame(uk.ac.aber.dcs.cs12420.aberpizza.gui.Manager manager){
