@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
 import javax.swing.JMenu;
@@ -25,7 +26,9 @@ public class MenuBar extends JMenuBar {
 		this.add(file);
 		this.add(admin);
 		this.add(help);
-
+		
+		this.setBackground(Color.WHITE);
+		
 		this.addFileItems();
 		this.addAdminItems();
 		this.addHelpItems();

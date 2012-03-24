@@ -1,6 +1,8 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -8,9 +10,7 @@ import javax.swing.SpringLayout;
 
 public class SelectionBar extends JPanel {
 	
-	private final int PADDING_TOP = 10;
-	private final int PADDING_SIDES = 5;
-	
+	private final int PADDING = 10;
 	private Manager manager;
 	
 	private JButton pizzas, sides, drinks;
@@ -36,20 +36,22 @@ public class SelectionBar extends JPanel {
 		sides.setPreferredSize(new Dimension(100, 25));
 		drinks.setPreferredSize(new Dimension(100, 25));
 		
-		layout.putConstraint(SpringLayout.NORTH, pizzas, PADDING_TOP, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, pizzas, PADDING_SIDES, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.NORTH, pizzas, PADDING, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, pizzas, PADDING, SpringLayout.WEST, this);
 		
-		layout.putConstraint(SpringLayout.NORTH, sides, PADDING_TOP, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, sides, PADDING_SIDES, SpringLayout.EAST, pizzas);
+		layout.putConstraint(SpringLayout.NORTH, sides, PADDING, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, sides, PADDING, SpringLayout.EAST, pizzas);
 		
-		layout.putConstraint(SpringLayout.NORTH, drinks, PADDING_TOP, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, drinks, PADDING_SIDES, SpringLayout.EAST, sides);
+		layout.putConstraint(SpringLayout.NORTH, drinks, PADDING, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.WEST, drinks, PADDING, SpringLayout.EAST, sides);
 		
 		this.add(pizzas);
 		this.add(sides);
 		this.add(drinks);
 		
-		this.setPreferredSize(new Dimension(1024,35));
+		this.setBackground(Color.WHITE);
 		
+		this.setPreferredSize(new Dimension(1024,45));
+		this.setVisible(true);
 	}
 }

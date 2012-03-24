@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+
 
 
 public class Manager implements ActionListener, MouseListener{
@@ -46,10 +48,19 @@ public class Manager implements ActionListener, MouseListener{
 		
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e) {
+		String action = e.getActionCommand();
+		
+		if (action.equals("Add new Pizza")){
+			createNewItem(ItemType.PIZZA);
+		} else if (action.equals("Add new Side")){
+			createNewItem(ItemType.SIDE);
+		} else if (action.equals("Add new Drink")){
+			createNewItem(ItemType.DRINK);
+		}
 		
 	}
-
+	private void createNewItem(ItemType type){
+		AddNewItemWindow addNew = new AddNewItemWindow(type);
+	}
 }

@@ -4,28 +4,49 @@ import java.math.BigDecimal;
 
 public class Drinks implements Item{
 
+	private ItemType type;
+	private String name;
+	private String description;
+	private BigDecimal price;
+	
 	@Override
 	public BigDecimal getPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return price;
 	}
 
 	@Override
 	public void setPrice(BigDecimal price) {
-		// TODO Auto-generated method stub
-		
+		this.price = price;
 	}
 
 	@Override
 	public String getDecription() {
-		// TODO Auto-generated method stub
-		return null;
+		return description;
 	}
 
 	@Override
-	public void setDescription() {
-		// TODO Auto-generated method stub
-		
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public ItemType getItemType() {
+		return type;
+	}
+
+	@Override
+	public void setItemType(ItemType type) {
+		this.type = type;
 	}
 
 }
