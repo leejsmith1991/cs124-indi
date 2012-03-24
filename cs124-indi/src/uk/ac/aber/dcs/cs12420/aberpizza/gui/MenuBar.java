@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs124indi.gui;
+package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.util.LinkedList;
 
@@ -6,7 +6,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import uk.ac.aber.dcs.cs124indi.controller.*;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Manager;
 
 public class MenuBar extends JMenuBar {
 

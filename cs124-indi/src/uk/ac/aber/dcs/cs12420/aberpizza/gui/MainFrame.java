@@ -1,11 +1,11 @@
-package uk.ac.aber.dcs.cs124indi.gui;
+package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
-import uk.ac.aber.dcs.cs124indi.controller.Manager;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Manager;
 
 public class MainFrame extends JFrame implements WindowListener{
 
@@ -14,7 +14,7 @@ public class MainFrame extends JFrame implements WindowListener{
 	private MenuBar menuBar;
 	private static final long serialVersionUID = 4978171281055317618L;
 	
-	public MainFrame(Manager manager){
+	public MainFrame(uk.ac.aber.dcs.cs12420.aberpizza.data.Manager manager){
 		this.manager = manager;
 		
 		addWindowListener(this);
