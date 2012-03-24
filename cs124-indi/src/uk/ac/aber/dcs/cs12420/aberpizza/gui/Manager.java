@@ -1,11 +1,11 @@
-package uk.ac.aber.dcs.cs12420.aberpizza.data;
+package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.gui.MainFrame;
+
 
 public class Manager implements ActionListener, MouseListener{
 
