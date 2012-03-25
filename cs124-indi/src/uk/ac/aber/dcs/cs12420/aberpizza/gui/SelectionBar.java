@@ -16,6 +16,8 @@ public class SelectionBar extends JPanel {
 	private JButton pizzas, sides, drinks;
 	private SpringLayout layout;
 	
+	Font f = new Font("Calibri", Font.PLAIN, 12);
+	
 	private static final long serialVersionUID = 5892174426336388551L;
 
 	public SelectionBar(Manager manager) {

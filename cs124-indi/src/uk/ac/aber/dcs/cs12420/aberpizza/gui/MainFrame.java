@@ -33,6 +33,7 @@ public class MainFrame extends JFrame implements WindowListener{
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setPreferredSize(this.getPreferredSize());
+		
 		selectionBar = new SelectionBar(manager);
 		mainPanel.add(selectionBar, BorderLayout.NORTH);
 		mainPanel.setVisible(true);

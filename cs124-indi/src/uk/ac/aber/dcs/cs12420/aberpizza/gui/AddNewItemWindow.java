@@ -1,44 +1,157 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
 public class AddNewItemWindow extends JFrame {
-
 	private static final long serialVersionUID = -4708376627751121406L;
-	
+
 	private ItemType type;
 	private Item item;
-	
-	public AddNewItemWindow(ItemType type){
+	private JPanel namePane, pricePane, descriptionPane, toppingsPaneMain, toppingsPane;
+	private JTextField nameText, priceText, descriptionText;
+	private JLabel nameLabel, priceLabel, descriptionLabel;
+
+	private SpringLayout layout;
+
+	Font f = new Font("Arial", Font.PLAIN, 12);
+
+	public AddNewItemWindow(ItemType type) {
 		this.type = type;
-		
+
 		this.setTitle("Create new " + type.toString().toLowerCase());
-		this.setSize(new Dimension(300, 500));
-		this.setResizable(false);
+		this.setSize(new Dimension(400, 300));
+		this.setResizable(true);
 		this.setVisible(true);
-			
-		JPanel main = new JPanel();
-		
-		main.setPreferredSize(new Dimension(1024, 768));
-		main.setBackground(Color.BLUE);
-		add(main);
-		
-		if (type == ItemType.PIZZA){
+
+		namePane = new JPanel(new GridLayout(1, 2, 2, 2));
+		pricePane = new JPanel(new GridLayout(1, 2, 2, 2));
+		descriptionPane = new JPanel(new GridLayout(1, 2, 2, 2));
+
+		layout = new SpringLayout();
+
+		addNameFields();
+		add(namePane);	
+		addPriceFields();
+		add(pricePane);		
+		addDescriptionFields();
+		add(descriptionPane);
+/*
+		if (type == ItemType.PIZZA) {
+			addPizzaToppings();
+			toppingsPaneMain.setVisible(true);
+			layout.putConstraint(SpringLayout.NORTH, toppingsPaneMain, 0,
+					SpringLayout.SOUTH, pricePane);
+			add(toppingsPaneMain);
+
+		}
+*/
+		if (type == ItemType.PIZZA) {
 			item = new Pizzas();
-		} else if (type == ItemType.SIDE){
+		} else if (type == ItemType.SIDE) {
 			item = new Sides();
-		} else if (type == ItemType.DRINK){
+		} else if (type == ItemType.DRINK) {
 			item = new Drinks();
 		}
-		
-		
+
+	}
+
+	private void addNameFields() {
+		nameLabel = new JLabel("Enter the name of the "
+				+ type.toString().toLowerCase());
+		nameLabel.setFont(f);
+		nameLabel.setVisible(true);
+
+		nameText = new JTextField("Enter Name Here");
+		nameText.setFont(f);
+		nameText.setSize(190, nameText.getHeight() + 10);
+		nameText.setVisible(true);
+
+		namePane.setSize(400, nameText.getHeight() + 10);
+		namePane.add(nameLabel);
+		namePane.add(nameText);
+	}
+
+	private void addPriceFields() {
+		priceLabel = new JLabel("Enter the price of the "
+				+ type.toString().toLowerCase());
+		priceLabel.setFont(f);
+		priceLabel.setVisible(true);
+
+		priceText = new JTextField("Enter price Here");
+		priceText.setFont(f);
+		priceText.setSize(190, priceText.getHeight() + 10);
+		priceText.setVisible(true);
+
+		pricePane.setSize(400, priceText.getHeight() + 10);
+		pricePane.add(priceLabel);
+		pricePane.add(priceText);
 	}
 	
+	private void addDescriptionFields(){
+		descriptionLabel = new JLabel("Enter the description of the "
+				+ type.toString().toLowerCase());
+		descriptionLabel.setFont(f);
+		descriptionLabel.setVisible(true);
+
+		descriptionText = new JTextField("Enter description Here");
+		descriptionText.setFont(f);
+		descriptionText.setSize(190, descriptionText.getHeight() + 10);
+		descriptionText.setVisible(true);
+
+		descriptionPane.setSize(400, descriptionText.getHeight() + 10);
+		descriptionPane.add(descriptionLabel);
+		descriptionPane.add(descriptionText);
+	}
 	
+	private void addPizzaToppings() {
+		toppingsPane = new JPanel(new GridLayout(3, 2, 0, 0));
+		toppingsPane.setSize(400, 200);
+		toppingsPaneMain = new JPanel(new GridLayout(3, 2, 2, 2));
+
+		AbstractButton stuffedCrust, thinBase, deepPan;
+
+		ButtonGroup base = new ButtonGroup();
+
+		stuffedCrust = new JRadioButton();
+		stuffedCrust.setName("Stuffed Crust");
+		stuffedCrust.setVisible(true);
+		base.add(stuffedCrust);
+		toppingsPane.add(stuffedCrust);
+
+		thinBase = new JRadioButton();
+		thinBase.setName("Thin Base");
+		thinBase.setVisible(true);
+		base.add(thinBase);
+		toppingsPane.add(thinBase);
+
+		deepPan = new JRadioButton();
+		deepPan.setName("Deep Pan");
+		thinBase.setVisible(true);
+		base.add(deepPan);
+		toppingsPane.add(deepPan);
+		toppingsPane.setVisible(true);
+
+		JLabel baseSelect = new JLabel("Select the Base Type");
+		toppingsPaneMain.add(baseSelect);
+		toppingsPaneMain.add(toppingsPane);
+
+	}
 }
