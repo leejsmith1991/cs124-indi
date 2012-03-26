@@ -41,17 +41,19 @@ public class AddNewItemWindow extends JFrame {
 		this.setResizable(true);
 		this.setVisible(true);
 
-		namePane = new JPanel(new GridLayout(1, 2,0,0));
-		pricePane = new JPanel(new GridLayout(1, 2,0,0));
-		descriptionPane = new JPanel(new GridLayout(1, 2,0,0));
-		
-		layout = new SpringLayout();
-		
+		namePane = new JPanel(new GridLayout(1, 2, 2, 2));
+		pricePane = new JPanel(new GridLayout(1, 2, 2, 2));
+		descriptionPane = new JPanel(new GridLayout(1, 2, 2, 2));
 		
 		addNameFields();
 		addPriceFields();			
 		addDescriptionFields();	
 		
+		add(namePane);	
+		add(pricePane);
+		add(descriptionPane);
+		
+/*
 		if (type == ItemType.PIZZA) {
 			addPizzaToppings();
 			toppingsPaneMain.setVisible(true);
@@ -60,19 +62,7 @@ public class AddNewItemWindow extends JFrame {
 			add(toppingsPaneMain);
 
 		}
-		
-		layout.putConstraint(SpringLayout.NORTH, namePane, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, pricePane, 0, SpringLayout.SOUTH, namePane);
-		layout.putConstraint(SpringLayout.NORTH, descriptionPane, 0, SpringLayout.SOUTH, toppingsPaneMain);
-		layout.putConstraint(SpringLayout.NORTH, toppingsPaneMain, 0, SpringLayout.SOUTH, pricePane);
-		setLayout(layout);
-		add(namePane);	
-		add(pricePane);
-		add(descriptionPane);
-		
-
-		
-
+*/
 		if (type == ItemType.PIZZA) {
 			item = new Pizzas();
 		} else if (type == ItemType.SIDE) {
@@ -96,7 +86,7 @@ public class AddNewItemWindow extends JFrame {
 
 		namePane.setSize(400, nameText.getHeight() + 10);
 		namePane.add(nameLabel);
-		namePane.add(nameText, BorderLayout.EAST);
+		namePane.add(nameText);
 	}
 
 	private void addPriceFields() {
@@ -112,7 +102,7 @@ public class AddNewItemWindow extends JFrame {
 
 		pricePane.setSize(400, priceText.getHeight() + 10);
 		pricePane.add(priceLabel);
-		pricePane.add(priceText, BorderLayout.EAST);
+		pricePane.add(priceText);
 	}
 	
 	private void addDescriptionFields(){
