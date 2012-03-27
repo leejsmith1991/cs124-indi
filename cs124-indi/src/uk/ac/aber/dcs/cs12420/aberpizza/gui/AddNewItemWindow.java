@@ -32,7 +32,8 @@ public class AddNewItemWindow extends JFrame {
 	//private JPanel namePane, pricePane, descriptionPane, toppingsPaneMain, toppingsPane;
 	private JTextField nameText, priceText, descriptionText;
 	private JLabel nameLabel, priceLabel, descriptionLabel, panTypeLabel, toppingsLabel;
-	private JPanel namePane, pricePane, toppingsPane, 
+	private JPanel namePane, pricePane, toppingsPane;
+	private SpringLayout mainLayout;
 
 	Font f = new Font("Arial", Font.PLAIN, 12);
 
@@ -43,15 +44,16 @@ public class AddNewItemWindow extends JFrame {
 		//this.setSize(new Dimension(400, 300));
 		
 		Container mainPane = this.getContentPane();
-		mainPane.setLayout(new GridLayout(0,2,5,5));
+		mainLayout = new SpringLayout();
+		mainPane.setLayout(mainLayout);
 		
 		namePane.setLayout(new GridLayout(1,2));
-		namePane.add(getNameLabel());
+		namePane.add(getNameLabel(), SwingConstants.RIGHT);
 		namePane.add(getNameText());
 		
 		mainPane.add(namePane);
 		
-		mainPane.add(getPriceLabel());
+		mainPane.add(getPriceLabel(), SwingConstants.RIGHT);
 		mainPane.add(getPriceText());
 		
 		if (type == ItemType.PIZZA){
