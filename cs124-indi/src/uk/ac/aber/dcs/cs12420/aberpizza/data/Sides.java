@@ -38,8 +38,8 @@ public class Sides implements Item {
 		return type;
 	}
 	@Override
-	public void setItemType(ItemType type) {
-		this.type = type;
+	public void setItemType() {
+		this.type = ItemType.DRINK;
 	}
 	
 

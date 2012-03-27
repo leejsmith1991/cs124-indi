@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class Pizzas implements Item {
 	
@@ -8,6 +9,8 @@ public class Pizzas implements Item {
 	private String name;
 	private String description;
 	private BigDecimal price;
+	
+	private ArrayList<String> toppings;
 	
 	@Override
 	public BigDecimal getPrice() {
@@ -45,8 +48,8 @@ public class Pizzas implements Item {
 	}
 
 	@Override
-	public void setItemType(ItemType type) {
-		this.type = type;
+	public void setItemType() {
+		this.type = ItemType.PIZZA;
 	}
 
 }

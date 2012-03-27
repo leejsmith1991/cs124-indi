@@ -14,5 +14,5 @@ public interface Item {
 	public void setName(String name);
 	
 	public ItemType getItemType();
-	public void setItemType(ItemType type);
+	public void setItemType();
 }

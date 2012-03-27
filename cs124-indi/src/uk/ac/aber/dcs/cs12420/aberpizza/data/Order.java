@@ -2,18 +2,18 @@ package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Order{
 
 	private ArrayList<OrderItem> items;
 	
-	private Date date;
-	
 	private String customerName;
 	
 	public Order(){
-		
+		Date today = new Date();
+		today.getTime();
 	}
 
 	public String getCustomerName() {

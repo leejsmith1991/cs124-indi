@@ -45,8 +45,8 @@ public class Drinks implements Item{
 	}
 
 	@Override
-	public void setItemType(ItemType type) {
-		this.type = type;
+	public void setItemType() {
+		this.type = ItemType.SIDE;
 	}
 
 }
