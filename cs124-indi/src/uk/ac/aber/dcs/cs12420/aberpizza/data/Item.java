@@ -15,4 +15,5 @@ public interface Item {
 	
 	public ItemType getItemType();
 	public void setItemType();
+	
 }

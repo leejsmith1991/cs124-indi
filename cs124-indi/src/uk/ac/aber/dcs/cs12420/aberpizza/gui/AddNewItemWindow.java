@@ -3,40 +3,55 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 import java.awt.Container;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class AddNewItemWindow extends JFrame implements ActionListener{
+public class AddNewItemWindow extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -4708376627751121406L;
 
 	private ItemType type;
 	private Item item;
 	// private JPanel namePane, pricePane, descriptionPane, toppingsPaneMain,
 	// toppingsPane;
-	private JTextField nameText, priceText, descriptionText;
+	private JTextField nameText, priceText;
+	private JTextArea descriptionText;
 	private JLabel nameLabel, priceLabel, descriptionLabel, panTypeLabel,
 			toppingsLabel;
-	private JPanel namePane, pricePane, toppingsPane, panTypePane, submitPane;
+	private JPanel namePane, pricePane, toppingsPane, panTypePane, submitPane,
+			descriptionPane;
 	private SpringLayout mainLayout;
+	private ButtonGroup base;
 
 	Font f = new Font("Arial", Font.PLAIN, 12);
 
@@ -44,68 +59,67 @@ public class AddNewItemWindow extends JFrame implements ActionListener{
 		this.type = type;
 
 		this.setTitle("Create new " + type.toString().toLowerCase());
-		//this.setSize(400, 400);
 		
 		Container mainPane = this.getContentPane();
 		mainLayout = new SpringLayout();
-		
-		
-		namePane = new JPanel(new GridLayout(1,2,5,5));
+
+		namePane = new JPanel(new GridLayout(1, 2, 5, 5));
 		namePane.add(getNameLabel());
 		namePane.add(getNameText());
-		
-		pricePane = new JPanel(new GridLayout(1,2,5,5));
+
+		pricePane = new JPanel(new GridLayout(1, 2, 5, 5));
 		pricePane.add(getPriceLabel());
 		pricePane.add(getPriceText());
-		
-		
-		
+
 		mainPane.add(namePane);
 		mainPane.add(pricePane);
-		mainLayout.putConstraint(SpringLayout.NORTH, namePane,10, SpringLayout.NORTH, this);
-		mainLayout.putConstraint(SpringLayout.NORTH, pricePane, 10, SpringLayout.SOUTH, namePane);
-		
-		JButton submit =  new JButton("Submit");
-		submit.addActionListener(this);
-		submit.setSize(new Dimension(100, 20));
-		
-		submitPane = new JPanel();
-		submit.setSize(150, 50);
-		submitPane.add(submit);
-			
-		if (type == ItemType.PIZZA){
-			panTypePane = new JPanel(new GridLayout(1,2));
+		mainLayout.putConstraint(SpringLayout.NORTH, namePane, 10,
+				SpringLayout.NORTH, this);
+		mainLayout.putConstraint(SpringLayout.NORTH, pricePane, 10,
+				SpringLayout.SOUTH, namePane);
+
+		descriptionPane = new JPanel(new BorderLayout());
+		descriptionPane.add(getDescriptionLabel(), BorderLayout.NORTH);
+		descriptionPane.add(getDescriptionText(), BorderLayout.SOUTH);
+
+		if (type == ItemType.PIZZA) {
+			panTypePane = new JPanel(new GridLayout(1, 2));
 			panTypePane.add(getPanTypeLabel());
 			panTypePane.add(getPizzaPanType());
-			mainPane.add(panTypePane);	
-			mainLayout.putConstraint(SpringLayout.NORTH, panTypePane, 10, SpringLayout.SOUTH, pricePane);
-			
-			toppingsPane = new JPanel(new GridLayout(1,2));
+			mainPane.add(panTypePane);
+			mainLayout.putConstraint(SpringLayout.NORTH, panTypePane, 10,
+					SpringLayout.SOUTH, pricePane);
+
+			toppingsPane = new JPanel(new GridLayout(1, 2));
 			toppingsPane.add(getPizzaToppingsLabel());
 			toppingsPane.add(getPizzaToppings());
 			mainPane.add(toppingsPane);
-			mainLayout.putConstraint(SpringLayout.NORTH, toppingsPane, 10, SpringLayout.SOUTH, panTypePane);
-			mainLayout.putConstraint(SpringLayout.NORTH, submitPane, 10, SpringLayout.SOUTH, toppingsPane);	
+			mainLayout.putConstraint(SpringLayout.NORTH, toppingsPane, 10,
+					SpringLayout.SOUTH, panTypePane);
+			mainLayout.putConstraint(SpringLayout.NORTH, descriptionPane, 10,
+					SpringLayout.SOUTH, toppingsPane);
 		} else {
-			mainLayout.putConstraint(SpringLayout.NORTH, submitPane, 10, SpringLayout.SOUTH, pricePane);	
-		}
-						
-		mainPane.add(submitPane);
-		mainPane.setLayout(mainLayout);
-		
-		//this.pack();
-		//this.setResizable(false);
-		this.setVisible(true);
-		this.setSize(namePane.getWidth()+ 18, 500);
-		
-		if (type == ItemType.PIZZA) {
-			item = new Pizzas();
-		} else if (type == ItemType.SIDE) {
-			item = new Sides();
-		} else if (type == ItemType.DRINK) {
-			item = new Drinks();
+			mainLayout.putConstraint(SpringLayout.NORTH, descriptionPane, 10,
+					SpringLayout.SOUTH, pricePane);
 		}
 
+		mainPane.add(descriptionPane);
+
+		JButton submit = new JButton("Submit");
+		submit.addActionListener(this);
+		submit.setSize(new Dimension(200, 20));
+
+		submitPane = new JPanel(new FlowLayout());
+		submit.setSize(150, 50);
+		submitPane.add(submit);
+		mainLayout.putConstraint(SpringLayout.NORTH, submitPane, 10,
+				SpringLayout.SOUTH, descriptionPane);
+		mainPane.add(submitPane);
+		mainPane.setLayout(mainLayout);
+
+		this.setResizable(false);
+		this.setVisible(true);
+		this.setSize(namePane.getWidth() + 18, 550);
 	}
 
 	private JLabel getNameLabel() {
@@ -117,6 +131,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener{
 
 	private JTextField getNameText() {
 		nameText = new JTextField("", 15);
+		nameText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		nameText.setFont(f);
 		return nameText;
 	}
@@ -130,6 +145,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener{
 
 	private JTextField getPriceText() {
 		priceText = new JTextField("", 15);
+		priceText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		priceText.setFont(f);
 		return priceText;
 	}
@@ -145,7 +161,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener{
 		JPanel panPane = new JPanel(new GridLayout(3, 1));
 		AbstractButton stuffedCrust, thinBase, deepPan;
 
-		ButtonGroup base = new ButtonGroup();
+		base = new ButtonGroup();
 
 		stuffedCrust = new JRadioButton("Stuffed Crust");
 		stuffedCrust.setFont(f);
@@ -209,24 +225,84 @@ public class AddNewItemWindow extends JFrame implements ActionListener{
 
 		return toppingsPane;
 	}
-	private void createNew(){
-		System.out.println("Created");
-		
-		if (type == ItemType.PIZZA) {
-			item = new Pizzas();
-		} else if (type == ItemType.SIDE) {
-			item = new Sides();
-		} else if (type == ItemType.DRINK) {
-			item = new Drinks();
-		}
+
+	private JLabel getDescriptionLabel() {
+		descriptionLabel = new JLabel("Enter Description for "
+				+ type.toString().toLowerCase() + " : ");
+		descriptionLabel.setFont(f);
+		descriptionLabel.setVerticalAlignment(SwingConstants.NORTH);
+		return descriptionLabel;
 	}
 
+	private JScrollPane getDescriptionText() {
+		descriptionText = new JTextArea("");
+		descriptionText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		descriptionText.setLineWrap(true);
+		descriptionText.setWrapStyleWord(true);
+
+		JScrollPane descScroll = new JScrollPane(descriptionText);
+		descScroll
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		descScroll
+				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		descScroll.setPreferredSize(new Dimension(340, 100));
+		descScroll.setLocation(0, 0);
+
+		descriptionText.setFont(f);
+		return descScroll;
+	}
+
+	private void createNew() throws NumberFormatException{
+		System.out.println("Created");
+		ArrayList<String> selectedToppings = null;
+
+		if (type == ItemType.PIZZA) {
+			Pizzas newPizza = new Pizzas();
+			newPizza.setName(nameText.getText());
+			newPizza.setPrice(getPrice());
+			newPizza.setBaseType(getBase());
+		}
+		System.out.println("Finished");
+		/*
+		 * } else if (type == ItemType.SIDE) { item = new Sides(); } else if
+		 * (type == ItemType.DRINK) { item = new Drinks(); }
+		 */
+	}
+
+	private BigDecimal getPrice() throws NumberFormatException {
+		BigDecimal priceNum;
+		try {
+			priceNum = new BigDecimal(priceText.getText());
+			return priceNum;
+		} catch (Exception e) {
+			throw new BigDecimalException();
+		}
+		
+	}
+
+	private String getBase(){
+		JRadioButton selectedBase;
+		for (Enumeration e=base.getElements(); e.hasMoreElements();){
+			selectedBase = (JRadioButton) e.nextElement();
+			if (selectedBase.getModel() == base.getSelection()){
+				System.out.println(selectedBase.getText());
+				return selectedBase.getText();
+			}
+		}
+		return "No Base Selected";
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if (command.equals("Submit")){
-			createNew();
+		if (command.equals("Submit")) {
+			try {
+				createNew();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-		
+
 	}
 }

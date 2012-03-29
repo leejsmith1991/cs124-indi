@@ -11,6 +11,7 @@ public class Pizzas implements Item {
 	private BigDecimal price;
 	
 	private ArrayList<String> toppings;
+	private String baseType;
 	
 	@Override
 	public BigDecimal getPrice() {
@@ -52,4 +53,18 @@ public class Pizzas implements Item {
 		this.type = ItemType.PIZZA;
 	}
 
+	public void setToppings(ArrayList<String> toppings){
+		this.toppings = toppings;
+	}
+	
+	public ArrayList<String> getToppings(){
+		return toppings;
+	}
+	
+	public void setBaseType(String base){
+		this.baseType = base;
+	}
+	public String getBaseType(){
+		return baseType;
+	}
 }
