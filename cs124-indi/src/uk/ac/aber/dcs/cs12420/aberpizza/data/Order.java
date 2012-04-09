@@ -8,12 +8,14 @@ import java.util.Date;
 public class Order{
 
 	private ArrayList<OrderItem> items;
-	
 	private String customerName;
 	
+	private final String NL = "\n";
+	private Calendar today;
+	private String orderTime;
+	
 	public Order(){
-		Date today = new Date();
-		today.getTime();
+				
 	}
 
 	public String getCustomerName() {
@@ -25,15 +27,23 @@ public class Order{
 	}
 	
 	public void addItem(Item item, int quantity){
-		
+		items.add(new OrderItem(item, quantity));
 	}
 	
 	public void updateItemQuantity(Item item, int quantity){
-		
+		for (int i=0; i>items.size();i++){
+			if (items.get(i).equals(item)){
+				items.get(i).setQuantity(quantity);
+			}
+		}
 	}
 	
 	public BigDecimal getSubtotal(){
-		return null;	
+		BigDecimal subTotal = new BigDecimal("0");
+		for (int j = 0; j > items.size(); j++){
+			subTotal.add(items.get(j).getOrderItemTotal());
+		}
+		return subTotal;
 	}
 	
 	public BigDecimal getDiscount(){
@@ -41,6 +51,11 @@ public class Order{
 	}
 	
 	public String getReceipt(){
-		return null;
+		String receipt = "";
+		receipt = receipt + "Aber Pizza" + NL;
+		receipt = receipt + today.getTime().toString();
+		
+		
+		return receipt;
 	}
 }

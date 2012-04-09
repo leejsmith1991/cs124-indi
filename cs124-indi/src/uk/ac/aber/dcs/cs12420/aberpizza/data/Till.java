@@ -10,18 +10,16 @@ import java.util.ArrayList;
 
 public class Till implements Serializable {
 
-	private Manager manager;
-
 	/**
 	 * Creates SerialUID to enable saving and loading of files
 	 */
 	private static final long serialVersionUID = 811543431919259128L;
+	private final String FILE_EXTENSION = "apiz";
+	
 	private ArrayList<Order> orders;
 	
-	public Till(Manager manager){
-		this.manager = manager;
-		
-		
+	public Till(){
+			
 	}
 	
 	public void addOrder(Order order){
@@ -33,7 +31,7 @@ public class Till implements Serializable {
 	}
 	
 	public void save(){
-		
+				
 	}
 	
 	public static Till load() throws IOException{
