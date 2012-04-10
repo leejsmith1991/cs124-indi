@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import uk.ac.aber.dcs.cs12420.aberpizza.gui.Manager;
+
 public class Till implements Serializable {
 
 	/**
@@ -22,8 +24,8 @@ public class Till implements Serializable {
 
 	private ArrayList<Order> orders;
 
-	public Till() {
-
+	public Till() throws IOException {
+			Manager m = new Manager();
 	}
 
 	public void addOrder(Order order) {
@@ -31,7 +33,11 @@ public class Till implements Serializable {
 	}
 
 	public BigDecimal getTotalForDay() {
-		return null;
+		BigDecimal total = new BigDecimal("0");
+		for (int i = 0; i> orders.size(); i++){
+			total.add(orders.get(i).getSubtotal());
+		}
+		return total;
 	}
 
 	public void save() throws IOException {

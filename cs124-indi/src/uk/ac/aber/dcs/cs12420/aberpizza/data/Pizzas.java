@@ -12,6 +12,12 @@ public class Pizzas implements Item {
 	private ArrayList<String> toppings;
 	private String baseType;
 	
+	public Pizzas(String name, BigDecimal price, String desc){
+		this.name = name;
+		this.price = price;
+		this.description = desc;
+	}
+	
 	@Override
 	public BigDecimal getPrice() {
 		return price;

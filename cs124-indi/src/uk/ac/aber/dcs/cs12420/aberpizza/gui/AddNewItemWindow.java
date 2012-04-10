@@ -257,10 +257,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		ArrayList<String> selectedToppings = null;
 
 		if (type == ItemType.PIZZA) {
-			Pizzas newPizza = new Pizzas();
-			newPizza.setName(nameText.getText());
 
-			newPizza.setBaseType(getBase());
 		}
 		System.out.println("Finished");
 		/*

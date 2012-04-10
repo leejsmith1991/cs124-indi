@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
@@ -15,6 +16,7 @@ public class SelectionBar extends JPanel {
 	
 	private JButton pizzas, sides, drinks;
 	private SpringLayout layout;
+	private JList list;
 	
 	Font f = new Font("Calibri", Font.PLAIN, 12);
 	
@@ -22,7 +24,7 @@ public class SelectionBar extends JPanel {
 
 	public SelectionBar(Manager manager) {
 		this.manager = manager;
-		
+		/*
 		layout = new SpringLayout();
 		this.setLayout(layout);
 		
@@ -50,10 +52,13 @@ public class SelectionBar extends JPanel {
 		this.add(pizzas);
 		this.add(sides);
 		this.add(drinks);
+		*/
+		
+		
 		
 		this.setBackground(Color.WHITE);
 		
-		this.setPreferredSize(new Dimension(1024,45));
-		this.setVisible(true);
+		this.setPreferredSize(new Dimension(512,45));
+		this.setVisible(true);		
 	}
 }
