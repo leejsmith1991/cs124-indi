@@ -259,7 +259,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		if (type == ItemType.PIZZA) {
 			Pizzas newPizza = new Pizzas();
 			newPizza.setName(nameText.getText());
-			newPizza.setPrice(getPrice());
+
 			newPizza.setBaseType(getBase());
 		}
 		System.out.println("Finished");
@@ -267,17 +267,6 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		 * } else if (type == ItemType.SIDE) { item = new Sides(); } else if
 		 * (type == ItemType.DRINK) { item = new Drinks(); }
 		 */
-	}
-
-	private BigDecimal getPrice() throws NumberFormatException {
-		BigDecimal priceNum;
-		try {
-			priceNum = new BigDecimal(priceText.getText());
-			return priceNum;
-		} catch (Exception e) {
-			throw new BigDecimalException();
-		}
-		
 	}
 
 	private String getBase(){

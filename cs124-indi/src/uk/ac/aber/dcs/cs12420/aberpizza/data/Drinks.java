@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 public class Drinks implements Item{
 
-	private ItemType type;
 	private String name;
 	private String description;
 	private BigDecimal price;
@@ -37,16 +36,6 @@ public class Drinks implements Item{
 	@Override
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public ItemType getItemType() {
-		return type;
-	}
-
-	@Override
-	public void setItemType() {
-		this.type = ItemType.SIDE;
 	}
 
 }

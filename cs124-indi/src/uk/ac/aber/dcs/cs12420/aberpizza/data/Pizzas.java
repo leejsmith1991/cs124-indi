@@ -4,8 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Pizzas implements Item {
-	
-	private ItemType type;
+
 	private String name;
 	private String description;
 	private BigDecimal price;
@@ -41,16 +40,6 @@ public class Pizzas implements Item {
 	@Override
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public ItemType getItemType() {
-		return type;
-	}
-
-	@Override
-	public void setItemType() {
-		this.type = ItemType.PIZZA;
 	}
 
 	public void setToppings(ArrayList<String> toppings){

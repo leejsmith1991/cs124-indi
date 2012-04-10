@@ -12,8 +12,5 @@ public interface Item {
 	
 	public String getName();
 	public void setName(String name);
-	
-	public ItemType getItemType();
-	public void setItemType();
-	
+
 }
