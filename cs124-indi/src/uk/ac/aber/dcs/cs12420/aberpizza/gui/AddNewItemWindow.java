@@ -1,57 +1,28 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
-import java.awt.Container;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import javax.swing.*;
 
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
-
-public class AddNewItemWindow extends JFrame implements ActionListener {
+public class AddNewItemWindow extends JFrame implements ActionListener, MouseListener{
 	private static final long serialVersionUID = -4708376627751121406L;
 
 	private ItemType type;
-	private Item item;
-	// private JPanel namePane, pricePane, descriptionPane, toppingsPaneMain,
-	// toppingsPane;
 	private JTextField nameText, priceText;
 	private JTextArea descriptionText;
-	private JLabel nameLabel, priceLabel, descriptionLabel, panTypeLabel,
-			toppingsLabel;
-	private JPanel namePane, pricePane, toppingsPane, panTypePane, submitPane,
+	private JLabel nameLabel, priceLabel, descriptionLabel, warningMessage;
+	private JButton submit;
+	private JPanel namePane, pricePane, submitPane,
 			descriptionPane;
 	private SpringLayout mainLayout;
-	private ButtonGroup base;
+
+	
+	private ArrayList<String> existing;
 
 	Font f = new Font("Arial", Font.PLAIN, 12);
 
@@ -59,7 +30,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		this.type = type;
 
 		this.setTitle("Create new " + type.toString().toLowerCase());
-		
+
 		Container mainPane = this.getContentPane();
 		mainLayout = new SpringLayout();
 
@@ -82,36 +53,21 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		descriptionPane.add(getDescriptionLabel(), BorderLayout.NORTH);
 		descriptionPane.add(getDescriptionText(), BorderLayout.SOUTH);
 
-		if (type == ItemType.PIZZA) {
-			panTypePane = new JPanel(new GridLayout(1, 2));
-			panTypePane.add(getPanTypeLabel());
-			panTypePane.add(getPizzaPanType());
-			mainPane.add(panTypePane);
-			mainLayout.putConstraint(SpringLayout.NORTH, panTypePane, 10,
-					SpringLayout.SOUTH, pricePane);
-
-			toppingsPane = new JPanel(new GridLayout(1, 2));
-			toppingsPane.add(getPizzaToppingsLabel());
-			toppingsPane.add(getPizzaToppings());
-			mainPane.add(toppingsPane);
-			mainLayout.putConstraint(SpringLayout.NORTH, toppingsPane, 10,
-					SpringLayout.SOUTH, panTypePane);
-			mainLayout.putConstraint(SpringLayout.NORTH, descriptionPane, 10,
-					SpringLayout.SOUTH, toppingsPane);
-		} else {
-			mainLayout.putConstraint(SpringLayout.NORTH, descriptionPane, 10,
-					SpringLayout.SOUTH, pricePane);
-		}
+		mainLayout.putConstraint(SpringLayout.NORTH, descriptionPane, 10,
+				SpringLayout.SOUTH, pricePane);
 
 		mainPane.add(descriptionPane);
 
-		JButton submit = new JButton("Submit");
+		submit = new JButton("Submit");
 		submit.addActionListener(this);
+		submit.addMouseListener(this);
 		submit.setSize(new Dimension(200, 20));
-
-		submitPane = new JPanel(new FlowLayout());
+		submitPane = new JPanel(new GridLayout(2, 1));
 		submit.setSize(150, 50);
 		submitPane.add(submit);
+		warningMessage = new JLabel();
+		submitPane.add(warningMessage);
+				
 		mainLayout.putConstraint(SpringLayout.NORTH, submitPane, 10,
 				SpringLayout.SOUTH, descriptionPane);
 		mainPane.add(submitPane);
@@ -150,82 +106,6 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		return priceText;
 	}
 
-	private JLabel getPanTypeLabel() {
-		panTypeLabel = new JLabel("Enter the Pan Type of the Pizza :");
-		panTypeLabel.setVerticalAlignment(SwingConstants.NORTH);
-		panTypeLabel.setFont(f);
-		return panTypeLabel;
-	}
-
-	private JPanel getPizzaPanType() {
-		JPanel panPane = new JPanel(new GridLayout(3, 1));
-		AbstractButton stuffedCrust, thinBase, deepPan;
-
-		base = new ButtonGroup();
-
-		stuffedCrust = new JRadioButton("Stuffed Crust");
-		stuffedCrust.setFont(f);
-		base.add(stuffedCrust);
-		panPane.add(stuffedCrust);
-
-		thinBase = new JRadioButton("Thin Base");
-		thinBase.setFont(f);
-		base.add(thinBase);
-		panPane.add(thinBase);
-
-		deepPan = new JRadioButton("Deep Pan");
-		deepPan.setFont(f);
-		base.add(deepPan);
-		panPane.add(deepPan);
-
-		return panPane;
-	}
-
-	private JLabel getPizzaToppingsLabel() {
-		toppingsLabel = new JLabel("Enter the toppings for the Pizza :");
-		toppingsLabel.setVerticalAlignment(SwingConstants.NORTH);
-		toppingsLabel.setFont(f);
-		return toppingsLabel;
-	}
-
-	private JPanel getPizzaToppings() {
-		JPanel toppingsPane = new JPanel(new GridLayout(0, 1));
-
-		JCheckBox mushrooms = new JCheckBox("Mushrooms");
-		mushrooms.setFont(f);
-		toppingsPane.add(mushrooms);
-
-		JCheckBox sweetcorn = new JCheckBox("SweetCorn");
-		sweetcorn.setFont(f);
-		toppingsPane.add(sweetcorn);
-
-		JCheckBox beef = new JCheckBox("Beef");
-		beef.setFont(f);
-		toppingsPane.add(beef);
-
-		JCheckBox onions = new JCheckBox("Onions");
-		onions.setFont(f);
-		toppingsPane.add(onions);
-
-		JCheckBox peppers = new JCheckBox("Peppers");
-		peppers.setFont(f);
-		toppingsPane.add(peppers);
-
-		JCheckBox jalapenos = new JCheckBox("Jalapenos");
-		jalapenos.setFont(f);
-		toppingsPane.add(jalapenos);
-
-		JCheckBox ham = new JCheckBox("Ham");
-		ham.setFont(f);
-		toppingsPane.add(ham);
-
-		JCheckBox pepperoni = new JCheckBox("Pepperoni");
-		pepperoni.setFont(f);
-		toppingsPane.add(pepperoni);
-
-		return toppingsPane;
-	}
-
 	private JLabel getDescriptionLabel() {
 		descriptionLabel = new JLabel("Enter Description for "
 				+ type.toString().toLowerCase() + " : ");
@@ -239,7 +119,9 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		descriptionText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		descriptionText.setLineWrap(true);
 		descriptionText.setWrapStyleWord(true);
-
+		descriptionText.setRows(1);
+		
+		
 		JScrollPane descScroll = new JScrollPane(descriptionText);
 		descScroll
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -252,30 +134,54 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 		return descScroll;
 	}
 
-	private void createNew() throws NumberFormatException{
-		System.out.println("Created");
-		ArrayList<String> selectedToppings = null;
-
+	private void createNew() throws NumberFormatException, IOException {
+		existing = new ArrayList<String>();
+		Scanner sc;
+		String fileName = "";
 		if (type == ItemType.PIZZA) {
-
-		}
-		System.out.println("Finished");
-		/*
-		 * } else if (type == ItemType.SIDE) { item = new Sides(); } else if
-		 * (type == ItemType.DRINK) { item = new Drinks(); }
-		 */
-	}
-
-	private String getBase(){
-		JRadioButton selectedBase;
-		for (Enumeration e=base.getElements(); e.hasMoreElements();){
-			selectedBase = (JRadioButton) e.nextElement();
-			if (selectedBase.getModel() == base.getSelection()){
-				System.out.println(selectedBase.getText());
-				return selectedBase.getText();
+			sc = new Scanner(new BufferedInputStream(new FileInputStream("pizzas.txt")));
+			fileName = "pizzas";
+			while (sc.hasNextLine()){
+				existing.add(sc.nextLine());
+			}
+		} else if (type == ItemType.SIDE){
+			sc = new Scanner(new BufferedInputStream(new FileInputStream("sides.txt")));
+			fileName = "sides";
+			while (sc.hasNextLine()){
+				existing.add(sc.nextLine());
+			}
+		} else {
+			sc = new Scanner(new BufferedInputStream(new FileInputStream("drinks.txt")));
+			fileName = "drinks";
+			while (sc.hasNextLine()){
+				existing.add(sc.nextLine());
 			}
 		}
-		return "No Base Selected";
+		
+		
+		if (nameText.getText().equals("") || priceText.getText().equals("") || descriptionText.getText().equals("")){
+			//throw new InvalidArgumentException("Fields not Complete");
+			System.out.println("Failed, Ensure Fields are Complete");
+		} else {
+			existing.add(nameText.getText());
+			existing.add(priceText.getText());
+			if (descriptionText.getText().contains("\n")){
+				descriptionText.setText(descriptionText.getText().replaceAll("\n", ". "));
+			}
+			existing.add(descriptionText.getText());
+
+			saveFile(fileName);
+		}
+	}
+	
+	public void saveFile(String fileName) throws IOException{
+		BufferedWriter bw = new BufferedWriter(new FileWriter(fileName + ".txt"));
+		for (int i = 0; i < existing.size(); i++){
+			bw.write(existing.get(i));
+			bw.newLine();
+		}
+		bw.close();
+		this.dispose();
 	}
 	
 	@Override
@@ -290,5 +196,39 @@ public class AddNewItemWindow extends JFrame implements ActionListener {
 			}
 		}
 
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent me) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent me) {
+		if (me.getComponent() == submit){
+			warningMessage.setText("Warning, Changes will only be \n appiled upon restarting program");
+		}
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent me) {
+		if (me.getComponent() == submit){
+			warningMessage.setText("");
+		}
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent me) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent me) {
+		// TODO Auto-generated method stub
+		
 	}
 }

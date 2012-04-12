@@ -1,3 +1,6 @@
 Coke
 1.99
 Coka-Cola
+Pepsi
+1.99
+New Soft Drink

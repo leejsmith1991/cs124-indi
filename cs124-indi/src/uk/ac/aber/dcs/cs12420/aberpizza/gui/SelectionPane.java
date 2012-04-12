@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -13,11 +14,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+public class SelectionPane extends JPanel {
+	private JList list;
+	private DefaultListModel listModel;
 
-public class SidesPane extends JPanel {
-	public SidesPane(String filename) throws FileNotFoundException {
-		DefaultListModel listModel = new DefaultListModel();
+	public SelectionPane(String filename) throws FileNotFoundException {
+		listModel = new DefaultListModel();
 
 		Scanner sc = new Scanner(new BufferedInputStream(new FileInputStream(
 				filename + ".txt")));
@@ -28,7 +30,7 @@ public class SidesPane extends JPanel {
 			sc.nextLine();
 		}
 
-		JList list = new JList(listModel);
+		list = new JList(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		list.setVisible(true);
@@ -36,5 +38,11 @@ public class SidesPane extends JPanel {
 
 		this.setSize(new Dimension(512, 550));
 		this.setBackground(Color.WHITE);
+	}
+
+	public String getSelected() {
+		String selected = "";
+		selected = (String) list.getSelectedValue();
+		return selected;
 	}
 }

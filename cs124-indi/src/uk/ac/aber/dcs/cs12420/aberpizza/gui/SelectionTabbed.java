@@ -7,9 +7,7 @@ public class SelectionTabbed extends JTabbedPane {
 	public SelectionTabbed(Manager m){
 		super(JTabbedPane.TOP);
 		this.manager = m;
-		
-		
-		
+				
 		this.addTab("Pizzas", null);
 		this.addTab("Sides", null);
 		this.addTab("Drinks", null);

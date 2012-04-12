@@ -13,12 +13,15 @@ import java.util.Scanner;
 
 import javax.swing.JComboBox;
 
-public class Manager implements ActionListener, MouseListener {
+import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
 
-	public Manager() throws IOException{
-		MainFrame mf = new MainFrame(this);
-	}
+public class Manager implements ActionListener, MouseListener {
+	private MainFrame mf;
 	
+	public Manager() throws IOException {
+		mf = new MainFrame(this);
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -51,8 +54,15 @@ public class Manager implements ActionListener, MouseListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		String action = e.getActionCommand();
+		AddNewItemWindow aniw = null;
+		if (action.equals("Add new Pizza")) {
+			aniw = new AddNewItemWindow(ItemType.PIZZA);
+		} else if (action.equals("Add new Side")) {
+			aniw = new AddNewItemWindow(ItemType.SIDE);
+		} else if (action.equals("Add new Drink")) {
+			aniw = new AddNewItemWindow(ItemType.DRINK);
+		}
 	}
 
 }
