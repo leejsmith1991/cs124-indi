@@ -17,8 +17,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 	private JTextArea descriptionText;
 	private JLabel nameLabel, priceLabel, descriptionLabel, warningMessage;
 	private JButton submit;
-	private JPanel namePane, pricePane, submitPane,
-			descriptionPane;
+	private JPanel namePane, pricePane, submitPane, descriptionPane, warningPane;
 	private SpringLayout mainLayout;
 
 	
@@ -62,15 +61,21 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 		submit.addActionListener(this);
 		submit.addMouseListener(this);
 		submit.setSize(new Dimension(200, 20));
-		submitPane = new JPanel(new GridLayout(2, 1));
+		submitPane = new JPanel();
 		submit.setSize(150, 50);
 		submitPane.add(submit);
+		warningPane = new JPanel();
 		warningMessage = new JLabel();
-		submitPane.add(warningMessage);
+
+		warningPane.setSize(new Dimension(512, 200));
+		warningPane.add(warningMessage);
 				
 		mainLayout.putConstraint(SpringLayout.NORTH, submitPane, 10,
 				SpringLayout.SOUTH, descriptionPane);
+		mainLayout.putConstraint(SpringLayout.NORTH, warningPane, 10,
+				SpringLayout.SOUTH, submitPane);
 		mainPane.add(submitPane);
+		mainPane.add(warningPane);
 		mainPane.setLayout(mainLayout);
 
 		this.setResizable(false);
@@ -195,7 +200,6 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 				e1.printStackTrace();
 			}
 		}
-
 	}
 
 	@Override
@@ -207,7 +211,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		if (me.getComponent() == submit){
-			warningMessage.setText("Warning, Changes will only be \n appiled upon restarting program");
+			warningMessage.setText("Warning, Changes will be appiled upon restart");
 		}
 		
 	}

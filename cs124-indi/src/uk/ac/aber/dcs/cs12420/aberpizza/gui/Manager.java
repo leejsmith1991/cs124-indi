@@ -15,41 +15,11 @@ import javax.swing.JComboBox;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
 
-public class Manager implements ActionListener, MouseListener {
+public class Manager implements ActionListener{
 	private MainFrame mf;
 	
 	public Manager() throws IOException {
-		mf = new MainFrame(this);
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		//mf = new MainFrame(this);
 	}
 
 	@Override
@@ -62,7 +32,8 @@ public class Manager implements ActionListener, MouseListener {
 			aniw = new AddNewItemWindow(ItemType.SIDE);
 		} else if (action.equals("Add new Drink")) {
 			aniw = new AddNewItemWindow(ItemType.DRINK);
+		} else if (action.equals("Add to Order")){
+			
 		}
 	}
-
 }

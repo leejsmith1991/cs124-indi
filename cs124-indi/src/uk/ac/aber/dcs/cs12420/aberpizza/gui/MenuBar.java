@@ -15,13 +15,13 @@ public class MenuBar extends JMenuBar {
 	 * 
 	 */
 	private static final long serialVersionUID = -7276006453724246248L;
-	private Manager manager;
+	private MainFrame manager;
 	private JMenu file = new JMenu("File"), admin = new JMenu("Admin"),
 			help = new JMenu("Help");
 	private LinkedList<JMenuItem> fileItems, adminItems, helpItems;
 
-	public MenuBar(Manager manager) {
-		this.manager = manager;
+	public MenuBar(MainFrame mainFrame) {
+		this.manager = mainFrame;
 		
 		this.add(file);
 		this.add(admin);

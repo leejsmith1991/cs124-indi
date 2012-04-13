@@ -1,12 +1,20 @@
 New Yorker
+3.99
+6.99
 10.99	
 Meaty Pizza with Sweetcorn and Mushrooms
 MeatFeast
+4.99
+8.49
 12.99
 Meat Feast for all the family
 New Pizza
+4.99
+9.49
 13.99
 NEwPizza. NewPizza
 Vegetarian Option
+4.49
+7.99
 11.99
 Vegetarian Pizza
