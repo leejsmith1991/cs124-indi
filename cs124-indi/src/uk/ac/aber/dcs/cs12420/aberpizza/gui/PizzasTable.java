@@ -1,49 +1,58 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
-import javax.swing.JPanel;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+import java.util.Scanner;
+import java.util.Vector;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+
 public class PizzasTable extends ItemTables {
-	String[][] pizza;
-	private DefaultTableModel itemData;
+	private Vector<String[]> list = new Vector<String[]>();
 	private JTable table;
+	private DefaultTableModel itemData;
+	
 	
 	
 	public PizzasTable() throws FileNotFoundException{
 		
-		String [] headers = {"Pizza Name", "Small", "Medium", "Large", "Desc"};
+		
+		itemData = new DefaultTableModel();
 		populateArrayList();
 		
-		itemData = new DefaultTableModel(pizza, headers);
 		table = new JTable(itemData);
 		this.add(table);
-		
+		for (int i = 0; i < itemData.getRowCount();i++){
+			System.out.println(itemData.getValueAt(i, 0));
+			System.out.println(itemData.getValueAt(i, 1));
+			System.out.println(itemData.getValueAt(i, 2));
+			System.out.println(itemData.getValueAt(i, 3));
+			System.out.println(itemData.getValueAt(i, 4));
+		}
 	}
-	
+	@Override
 	public void populateArrayList() throws FileNotFoundException{
-		Scanner sc = new Scanner(new BufferedInputStream(new FileInputStream("pizzas.txt")));
-		
-		int j = 0;
+		Scanner sc = new Scanner(new BufferedReader(new FileReader("pizzas.txt")));
+		String[] line = new String[5];
 		while (sc.hasNextLine()){
-			pizza = new String[5][];
 			
 			for (int i = 0; i < 5; i++){
-				pizza[j][i] = sc.nextLine();
+				line[i] = sc.nextLine();
 			}
-			j++;
+			//list.addElement(line);
+			itemData.addRow(line);			
 		}
 	}
 	
 	public String getSelectedItem(){
 		int selectedRow = table.getSelectedRow();
-		String selectedItem = pizza[selectedRow][0];
+		String selectedItem = "";
 		return selectedItem;
 	}
+	
 }
