@@ -9,7 +9,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.sql.Date;
+
+import javax.swing.text.DateFormatter;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.gui.Manager;
 
@@ -19,14 +25,17 @@ public class Till implements Serializable {
 	 * Creates SerialUID to enable saving and loading of files
 	 */
 	private static final long serialVersionUID = 811543431919259128L;
-	private final String FILE_EXTENSION = "apiz";
-	private final String pathname = "./";
+	
+	private Date today;
+	private DateFormatter dateFormat;
+	private String pathname;
 
 	private ArrayList<Order> orders;
 
-	public Till() throws IOException {
-			Manager m = new Manager();
+	public Till(){
+		
 	}
+	
 
 	public void addOrder(Order order) {
 		

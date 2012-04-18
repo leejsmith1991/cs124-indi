@@ -1,23 +1,21 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.io.*;
 
 import javax.swing.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
 
 
 
 public class MainFrame extends JFrame implements WindowListener, ActionListener{
 
 	private MenuBar menuBar;
-	private ItemTables tablePanel;
-
+	private AddItemToOrderPanel leftPanel;
+	private Till till;
 	private static final long serialVersionUID = 4978171281055317618L;
 	
 	public MainFrame() throws IOException{
@@ -29,73 +27,16 @@ public class MainFrame extends JFrame implements WindowListener, ActionListener{
 			
 		}
 		
-		JPanel mainPane = new JPanel(new GridLayout(1,2));
-		mainPane.add(leftPanel());
-		
-		add(mainPane);
+		add(new AddItemToOrderPanel());
 		menuBar = new MenuBar(this);
 		setJMenuBar(menuBar);
+		
+		till = new Till();
 		
 		this.setResizable(false);
 		setSize(1024, 768);
 		setVisible(true);
 		
-	}
-	
-	private JPanel leftPanel() throws FileNotFoundException{
-		SpringLayout sl;
-		sl = new SpringLayout();
-		
-		JPanel mainPanel = new JPanel(sl);
-		mainPanel.setBackground(Color.WHITE);
-		JPanel buttons = getButtonsPanel();
-		sl.putConstraint(SpringLayout.NORTH, buttons, 10, SpringLayout.NORTH, mainPanel);
-		
-		JPanel list = getItems("default");
-		sl.putConstraint(SpringLayout.NORTH, list, 10, SpringLayout.SOUTH, buttons);
-		
-		mainPanel.add(buttons);
-		mainPanel.add(list);
-		
-		
-		
-		return mainPanel;
-	}
-	
-	private JPanel getButtonsPanel(){
-		SpringLayout bpsl = new SpringLayout();
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBackground(Color.WHITE);
-		JButton pizzas, sides, drinks;
-		pizzas = new JButton("Pizzas");
-		pizzas.addActionListener(this);
-		sides = new JButton("Sides");
-		sides.addActionListener(this);
-		drinks = new JButton("Drinks");
-		drinks.addActionListener(this);
-		
-		bpsl.putConstraint(SpringLayout.EAST, buttonPanel, 10, SpringLayout.EAST, pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, sides, 10, SpringLayout.WEST, pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, drinks, 10, SpringLayout.WEST, sides);
-		
-		buttonPanel.add(pizzas);
-		buttonPanel.add(sides);
-		buttonPanel.add(drinks);
-		return buttonPanel;
-	}
-	
-	public JPanel getItems(String type) throws FileNotFoundException{
-		JPanel lists = new JPanel();
-		if (type.equals("pizza") || type.equals("default")){
-			tablePanel = new PizzasTable();
-		} else if (type.equals("sides")){
-			//tablePanel = new SidesTable();
-		} else if (type.equals("drinks")){
-			//tablePanel = new DrinksTable();
-		}
-		lists.add(tablePanel);
-		this.validate();
-		return lists;
 	}
 	
 	@Override
@@ -109,13 +50,22 @@ public class MainFrame extends JFrame implements WindowListener, ActionListener{
 		} else if (action.equals("Add new Drink")) {
 			aniw = new AddNewItemWindow(ItemType.DRINK);
 		} else if (action.equals("Pizzas")){
+			
+		} else if (action.equals("Save State")){
 			try {
-				getItems("pizza");
-			} catch (FileNotFoundException e1) {
+				till.save();
+			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} 
+		} else if (action.equals("Load State")){
+			try {
+				Till.load("./");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		
 	}
 	

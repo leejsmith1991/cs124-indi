@@ -6,13 +6,9 @@ import javax.swing.JPanel;
 
 
 public abstract class ItemTables extends JPanel {
-	
-	
+		
 	public ItemTables(){
 		this.setEnabled(false);
 	}
 	
-	public abstract void populateArrayList() throws FileNotFoundException;
-	
-	public abstract String getSelectedItem();
 }
