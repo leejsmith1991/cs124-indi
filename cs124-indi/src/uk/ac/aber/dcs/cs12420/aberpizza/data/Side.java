@@ -2,7 +2,7 @@ package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
 import java.math.BigDecimal;
 
-public class Sides implements Item {
+public class Side implements Item {
 
 	private String name;
 	private String description;
