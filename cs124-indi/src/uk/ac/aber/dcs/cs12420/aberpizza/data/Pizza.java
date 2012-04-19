@@ -8,14 +8,21 @@ public class Pizza implements Item {
 	private String name;
 	private String description;
 	private BigDecimal price;
+	private String size;
 	
-	private ArrayList<String> toppings;
-	private String baseType;
-	
-	public Pizza(String name, BigDecimal price, String desc){
+	public Pizza(String name, BigDecimal price, String size,  String desc){
 		this.name = name;
 		this.price = price;
 		this.description = desc;
+		this.size = size;
+	}
+	
+	public String getSize(){
+		return size;
+	}
+	
+	public void setSize(String size){
+		this.size = size;
 	}
 	
 	@Override
@@ -46,20 +53,5 @@ public class Pizza implements Item {
 	@Override
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setToppings(ArrayList<String> toppings){
-		this.toppings = toppings;
-	}
-	
-	public ArrayList<String> getToppings(){
-		return toppings;
-	}
-	
-	public void setBaseType(String base){
-		this.baseType = base;
-	}
-	public String getBaseType(){
-		return baseType;
 	}
 }

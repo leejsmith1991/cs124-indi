@@ -6,8 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Pizzas;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
 public class OrderTesting {
 

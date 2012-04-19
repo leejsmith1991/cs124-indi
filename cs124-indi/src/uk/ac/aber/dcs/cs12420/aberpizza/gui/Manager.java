@@ -2,38 +2,71 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import javax.swing.JComboBox;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
 
-public class Manager implements ActionListener{
-	private MainFrame mf;
+public class Manager implements ActionListener {
+	Till till;
+
+	private AddNewItemWindow addNewItem;
+	private NewOrder no;
+	private AddItemToOrder addItem;
 	
-	public Manager() throws IOException {
-		//mf = new MainFrame(this);
+	private Order newOrder;
+
+	public Manager() {
+		MainFrame mf = new MainFrame(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		AddNewItemWindow aniw = null;
-		if (action.equals("Add new Pizza")) {
-			aniw = new AddNewItemWindow(ItemType.PIZZA);
+		
+		// Manages the MainFrame Buttons
+		if (action.equals("Create New Order")) {
+			createNewOrder();
+		
+		// Manages Menu Button for creating a new Item
+		} else if (action.equals("Add new Pizza")) {
+			createNewItem(ItemType.PIZZA);
 		} else if (action.equals("Add new Side")) {
-			aniw = new AddNewItemWindow(ItemType.SIDE);
+			createNewItem(ItemType.SIDE);
 		} else if (action.equals("Add new Drink")) {
-			aniw = new AddNewItemWindow(ItemType.DRINK);
+			createNewItem(ItemType.DRINK);
+		
+		// Manages creating a new OrderItem
 		} else if (action.equals("Add to Order")){
-			
+			try {
+				addItemToOrder();
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} 
+	}
+
+	public void createNewOrder(){
+		newOrder = new Order();
+	}
+
+	public void addItemToOrder() throws FileNotFoundException{
+		addItem = new AddItemToOrder(this);
+	}
+	
+	
+	public void createNewItem(ItemType type) {
+		if (type == ItemType.PIZZA) {
+			addNewItem = new AddNewItemWindow(ItemType.PIZZA);
+		} else if (type == ItemType.SIDE) {
+			addNewItem = new AddNewItemWindow(ItemType.SIDE);
+		} else {
+			addNewItem = new AddNewItemWindow(ItemType.DRINK);
 		}
 	}
+
 }

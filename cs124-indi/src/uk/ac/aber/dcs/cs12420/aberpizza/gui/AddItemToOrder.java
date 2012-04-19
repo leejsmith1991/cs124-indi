@@ -11,21 +11,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-public class AddItemToOrderPanel extends JPanel implements ActionListener {
-	
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Item;
 
+public class AddItemToOrder extends JPanel implements ActionListener {
+	private Manager manager;
+	
 	private JPanel textHead, itemButtons;
 	private JLabel headLabel;
-	
-	public AddItemToOrderPanel() throws FileNotFoundException{
+
+	private Item item;
+	private int quantity;
+
+	private ItemFrame itemFrame;
+
+	public AddItemToOrder(Manager manager) throws FileNotFoundException {
+		this.manager = manager;
 		this.setSize(512, 700);
 		this.setBackground(Color.WHITE);
 		this.setLayout(new BorderLayout());
-		itemButtons = getButtonsPanel();		
+		itemButtons = getButtonsPanel();
 		this.add(itemButtons, BorderLayout.WEST);
 	}
-	
-	private JPanel getButtonsPanel(){
+
+	private JPanel getButtonsPanel() {
 		SpringLayout bpsl = new SpringLayout();
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.WHITE);
@@ -37,27 +45,39 @@ public class AddItemToOrderPanel extends JPanel implements ActionListener {
 		sides.addActionListener(this);
 		drinks = new JButton("Drinks");
 		drinks.addActionListener(this);
-		
-		bpsl.putConstraint(SpringLayout.EAST, buttonPanel, 10, SpringLayout.EAST, pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, sides, 10, SpringLayout.WEST, pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, drinks, 10, SpringLayout.WEST, sides);
-		
+
+		bpsl.putConstraint(SpringLayout.EAST, buttonPanel, 10,
+				SpringLayout.EAST, pizzas);
+		bpsl.putConstraint(SpringLayout.EAST, sides, 10, SpringLayout.WEST,
+				pizzas);
+		bpsl.putConstraint(SpringLayout.EAST, drinks, 10, SpringLayout.WEST,
+				sides);
+
 		buttonPanel.add(pizzas);
 		buttonPanel.add(sides);
 		buttonPanel.add(drinks);
 		return buttonPanel;
 	}
 
+	public Item getItem() {
+			
+	}
+	
+	public int getQuantity(){
+		return quantity;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		if (action.equals("Pizzas")){
+		if (action.equals("Pizzas")) {
 			try {
-				PizzasTable pt = new PizzasTable();
+				itemFrame = new ItemPizza();
+				
 			} catch (FileNotFoundException e1) {
-				e1.getMessage();
+
 			}
 		}
-	
+
 	}
 }

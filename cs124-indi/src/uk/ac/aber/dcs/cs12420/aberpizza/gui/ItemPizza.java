@@ -3,13 +3,16 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.math.BigDecimal;
 //import java.math.BigDecimal;
 import java.util.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class PizzasTable extends JFrame implements ActionListener{
+import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
+
+public class ItemPizza extends ItemFrame implements ActionListener {
 
 	private JList pizzasList, priceList;
 	private ArrayList<String> pName, pSmall, pMed, pLarge, pDesc;
@@ -17,12 +20,15 @@ public class PizzasTable extends JFrame implements ActionListener{
 	String[] prices = new String[3];
 
 	private JPanel pizzaPane, pricePane;
-	
+	private JTextField quantText;
+
 	private String selectedPizza;
+	private String pizzaSize;
 	private String pizzaPrice;
+	private String pizzaDesc;
 	private int quantity;
 
-	public PizzasTable() throws FileNotFoundException {
+	public ItemPizza() throws FileNotFoundException {
 		this.setSize(new Dimension(500, 500));
 		this.setVisible(true);
 
@@ -35,14 +41,14 @@ public class PizzasTable extends JFrame implements ActionListener{
 
 		pizzaPane = new JPanel();
 		pizzaPane.add(getPizzaList());
-		this.setLayout(new GridLayout(4,1));
+		this.setLayout(new GridLayout(4, 1));
 		this.add(pizzaPane);
-		
+
 		pricePane = new JPanel();
-		
+
 		pricePane.add(getPricePane());
 		this.add(pricePane);
-		setPizzaPrices(0);
+
 		this.add(getQuantityPane());
 		this.add(getSubmitPane());
 	}
@@ -52,10 +58,11 @@ public class PizzasTable extends JFrame implements ActionListener{
 		for (int i = 0; i < pName.size(); i++) {
 			ml.addElement(pName.get(i));
 		}
-		
+
 		pizzasList = new JList(ml);
 		PizzaSelector pizzaSelect = new PizzaSelector();
 		pizzasList.addListSelectionListener(pizzaSelect);
+
 		return pizzasList;
 	}
 
@@ -63,37 +70,38 @@ public class PizzasTable extends JFrame implements ActionListener{
 		priceList = new JList();
 		PriceSelector priceSelect = new PriceSelector();
 		priceList.addListSelectionListener(priceSelect);
+		setPizzaPrices(0);
 		return priceList;
 	}
 
-	private void setPizzaPrices(int selected){
+	private void setPizzaPrices(int selected) {
 		prices[0] = pSmall.get(selected);
 		prices[1] = pMed.get(selected);
 		prices[2] = pLarge.get(selected);
-
+		priceList.setSelectedIndex(0);
 		priceList.setListData(prices);
 		this.validate();
 	}
-	
-	private JPanel getQuantityPane(){
-		JPanel quantityPane = new JPanel(new GridLayout(1,2));
+
+	private JPanel getQuantityPane() {
+		JPanel quantityPane = new JPanel(new GridLayout(1, 2));
 		JLabel quantLabel = new JLabel("Enter Quantity :");
-		JTextField quantText = new JTextField("1");
+		quantText = new JTextField("1");
 		quantityPane.add(quantLabel);
 		quantityPane.add(quantText);
 		return quantityPane;
-		
+
 	}
-	
-	public JPanel getSubmitPane(){
+
+	public JPanel getSubmitPane() {
 		JPanel submitPane = new JPanel();
-		
+
 		JButton submit = new JButton("Add to Order");
 		submitPane.add(submit);
 		submit.addActionListener(this);
 		return submitPane;
 	}
-	
+
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(new BufferedReader(
 				new FileReader("pizzas.txt")));
@@ -106,15 +114,32 @@ public class PizzasTable extends JFrame implements ActionListener{
 			pDesc.add(sc.nextLine());
 		}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Add to Order")){
-			
-		}	
+		if (e.getActionCommand().equals("Add to Order")) {
+
+			try {
+				quantity = Integer.parseInt(quantText.getText());
+			} catch (NumberFormatException nfe) {
+				nfe.getStackTrace();
+			}
+			this.dispose();
+		}
 	}
-	
-	private class PizzaSelector implements ListSelectionListener{
+
+	public Item getOrderItem() {
+		selectedPizza = pizzaSize + " " + selectedPizza;
+		Item newItem = new Pizza(selectedPizza, new BigDecimal(pizzaPrice),
+				pizzaDesc);
+		return newItem;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	private class PizzaSelector implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
@@ -122,18 +147,31 @@ public class PizzasTable extends JFrame implements ActionListener{
 				if (pName.get(a).equals(pizzasList.getSelectedValue())) {
 					selectedPizza = pName.get(a);
 					setPizzaPrices(a);
+					pizzaDesc = pDesc.get(a);
+					priceList.setSelectedIndex(0);
 					break;
 				}
 			}
 		}
 	}
-	private class PriceSelector implements ListSelectionListener{
+
+	private class PriceSelector implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			pizzaPrice = prices[priceList.getSelectedIndex()];
+			int selectedIndex = priceList.getSelectedIndex();
+			if (selectedIndex == -1) {
+				selectedIndex = 0;
+			}
+			if (selectedIndex == 0) {
+				pizzaSize = "Small";
+			} else if (selectedIndex == 1) {
+				pizzaSize = "Medium";
+			} else {
+				pizzaSize = "Large";
+			}
+			pizzaPrice = prices[selectedIndex];
 		}
 	}
-	
-	
+
 }

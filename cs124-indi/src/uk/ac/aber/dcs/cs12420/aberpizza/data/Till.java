@@ -17,8 +17,6 @@ import java.sql.Date;
 
 import javax.swing.text.DateFormatter;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.gui.Manager;
-
 public class Till implements Serializable {
 
 	/**

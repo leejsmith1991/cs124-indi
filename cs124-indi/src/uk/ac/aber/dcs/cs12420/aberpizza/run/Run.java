@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs12420.aberpizza.run;
 
 import java.io.IOException;
 import uk.ac.aber.dcs.cs12420.aberpizza.gui.MainFrame;
+import uk.ac.aber.dcs.cs12420.aberpizza.gui.Manager;
 
 
 public class Run {
@@ -12,6 +13,6 @@ public class Run {
 	 */
 
 	public static void main(String[] args) throws IOException {
-		MainFrame run = new MainFrame();
+		Manager run = new Manager();
 	}
 }
