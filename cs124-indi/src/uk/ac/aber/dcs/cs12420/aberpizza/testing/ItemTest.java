@@ -15,7 +15,7 @@ public class ItemTest {
 	
 	@Before
 	public void setUpTest(){
-		m = new Pizza("New Yorker", new BigDecimal("10.99"), "Meaty Pizza");
+		m = new Pizza("New Yorker", new BigDecimal("10.99"), "Large", "Meaty Pizza");
 	}
 	
 	@Test

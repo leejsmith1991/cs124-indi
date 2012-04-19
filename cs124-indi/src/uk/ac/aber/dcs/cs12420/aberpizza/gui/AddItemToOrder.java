@@ -34,46 +34,22 @@ public class AddItemToOrder extends JPanel implements ActionListener {
 	}
 
 	private JPanel getButtonsPanel() {
-		SpringLayout bpsl = new SpringLayout();
+		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBackground(Color.WHITE);
-		buttonPanel.setSize(512, 200);
-		JButton pizzas, sides, drinks;
-		pizzas = new JButton("Pizzas");
-		pizzas.addActionListener(this);
-		sides = new JButton("Sides");
-		sides.addActionListener(this);
-		drinks = new JButton("Drinks");
-		drinks.addActionListener(this);
-
-		bpsl.putConstraint(SpringLayout.EAST, buttonPanel, 10,
-				SpringLayout.EAST, pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, sides, 10, SpringLayout.WEST,
-				pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, drinks, 10, SpringLayout.WEST,
-				sides);
-
-		buttonPanel.add(pizzas);
-		buttonPanel.add(sides);
-		buttonPanel.add(drinks);
+		
 		return buttonPanel;
-	}
-
-	public Item getItem() {
-			
 	}
 	
 	public int getQuantity(){
 		return quantity;
-	}
+	} 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if (action.equals("Pizzas")) {
 			try {
-				itemFrame = new ItemPizza();
-				
+				itemFrame = new ItemPizza(manager);
 			} catch (FileNotFoundException e1) {
 
 			}

@@ -12,7 +12,9 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class ItemPizza extends ItemFrame implements ActionListener {
+public class ItemPizza extends ItemFrame implements KeyListener {
+
+	private Manager manager;
 
 	private JList pizzasList, priceList;
 	private ArrayList<String> pName, pSmall, pMed, pLarge, pDesc;
@@ -28,7 +30,8 @@ public class ItemPizza extends ItemFrame implements ActionListener {
 	private String pizzaDesc;
 	private int quantity;
 
-	public ItemPizza() throws FileNotFoundException {
+	public ItemPizza(Manager manager) throws FileNotFoundException {
+		this.manager = manager;
 		this.setSize(new Dimension(500, 500));
 		this.setVisible(true);
 
@@ -51,6 +54,8 @@ public class ItemPizza extends ItemFrame implements ActionListener {
 
 		this.add(getQuantityPane());
 		this.add(getSubmitPane());
+		
+		this.setVisible(true);
 	}
 
 	private JList getPizzaList() {
@@ -87,6 +92,7 @@ public class ItemPizza extends ItemFrame implements ActionListener {
 		JPanel quantityPane = new JPanel(new GridLayout(1, 2));
 		JLabel quantLabel = new JLabel("Enter Quantity :");
 		quantText = new JTextField("1");
+		quantText.addKeyListener(this);
 		quantityPane.add(quantLabel);
 		quantityPane.add(quantText);
 		return quantityPane;
@@ -98,7 +104,7 @@ public class ItemPizza extends ItemFrame implements ActionListener {
 
 		JButton submit = new JButton("Add to Order");
 		submitPane.add(submit);
-		submit.addActionListener(this);
+		submit.addActionListener(manager);
 		return submitPane;
 	}
 
@@ -115,28 +121,35 @@ public class ItemPizza extends ItemFrame implements ActionListener {
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Add to Order")) {
-
-			try {
-				quantity = Integer.parseInt(quantText.getText());
-			} catch (NumberFormatException nfe) {
-				nfe.getStackTrace();
-			}
-			this.dispose();
-		}
-	}
-
 	public Item getOrderItem() {
-		selectedPizza = pizzaSize + " " + selectedPizza;
 		Item newItem = new Pizza(selectedPizza, new BigDecimal(pizzaPrice),
-				pizzaDesc);
+				pizzaSize, pizzaDesc);
 		return newItem;
 	}
 
 	public int getQuantity() {
 		return quantity;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		
+		try {
+			quantity = Integer.parseInt(quantText.getText());
+		} catch (NumberFormatException nfe) {
+
+		}
 	}
 
 	private class PizzaSelector implements ListSelectionListener {

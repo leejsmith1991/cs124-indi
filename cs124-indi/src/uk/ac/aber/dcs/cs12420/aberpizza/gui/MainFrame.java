@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,11 +11,10 @@ import javax.swing.JFrame;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
 
 public class MainFrame extends JFrame {
-	Till till;
 	private MenuBar menuBar;
 
-	Manager manager;
-
+	private Manager manager;
+	
 	public MainFrame(Manager manager) {
 		this.manager = manager;
 
@@ -32,5 +32,7 @@ public class MainFrame extends JFrame {
 		add(addNewOrder);
 		add(viewSalesHistory);
 		add(closeForDay);
+		this.setVisible(true);
+		this.setSize(new Dimension(200,300));
 	}
 }
