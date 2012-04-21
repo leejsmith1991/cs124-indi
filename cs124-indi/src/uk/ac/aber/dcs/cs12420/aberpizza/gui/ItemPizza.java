@@ -32,8 +32,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	public ItemPizza(Manager manager) throws FileNotFoundException {
 		this.manager = manager;
-		this.setSize(new Dimension(500, 500));
-		this.setVisible(true);
+		
 
 		pName = new ArrayList<String>();
 		pSmall = new ArrayList<String>();
@@ -55,6 +54,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		this.add(getQuantityPane());
 		this.add(getSubmitPane());
 		
+		this.setSize(new Dimension(500, 500));
 		this.setVisible(true);
 	}
 

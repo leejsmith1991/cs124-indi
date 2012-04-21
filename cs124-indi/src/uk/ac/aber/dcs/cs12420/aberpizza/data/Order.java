@@ -15,7 +15,7 @@ public class Order{
 	private String orderTime;
 	
 	public Order(){
-		
+		items = new ArrayList<OrderItem>();
 	}
 
 	public String getCustomerName() {

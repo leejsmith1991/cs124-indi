@@ -39,20 +39,20 @@ public class Manager implements ActionListener {
 			createNewItem(ItemType.DRINK);
 
 			// Manages creating a new OrderItem
-		} else if (action.equals("Pizza")) {
+		} else if (action.equals("Pizzas")) {
 			try {
 				fireItemWindow(ItemType.PIZZA);
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else if (action.equals("Side")) {
+		} else if (action.equals("Sides")) {
 			try {
 				fireItemWindow(ItemType.SIDE);
 			} catch (FileNotFoundException e2) {
 
 			}
-		} else if (action.equals("Drink")) {
+		} else if (action.equals("Drinks")) {
 			try {
 				fireItemWindow(ItemType.DRINK);
 			} catch (FileNotFoundException e3) {
@@ -72,7 +72,7 @@ public class Manager implements ActionListener {
 
 	public void fireItemWindow(ItemType type) throws FileNotFoundException {
 		if (type == ItemType.PIZZA) {
-			itemFrame = new ItemPizza(this);
+			itemFrame = (ItemFrame) new ItemPizza(this);
 		} else if (type == ItemType.SIDE) {
 			// TODO implement ItemSide
 			// itemFrame = new ItemSide(this);
@@ -84,6 +84,7 @@ public class Manager implements ActionListener {
 
 	private void addItemToOrder() {
 		customerOrder.addItem(itemFrame.getOrderItem(), itemFrame.getQuantity());
+		itemFrame.dispose();
 	}
 
 	public void createNewItem(ItemType type) {

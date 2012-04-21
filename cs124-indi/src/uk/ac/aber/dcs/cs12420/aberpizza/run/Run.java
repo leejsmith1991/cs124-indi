@@ -6,6 +6,7 @@ import uk.ac.aber.dcs.cs12420.aberpizza.gui.AmountTendered;
 import uk.ac.aber.dcs.cs12420.aberpizza.gui.ItemPizza;
 import uk.ac.aber.dcs.cs12420.aberpizza.gui.MainFrame;
 import uk.ac.aber.dcs.cs12420.aberpizza.gui.Manager;
+import uk.ac.aber.dcs.cs12420.aberpizza.gui.NewOrder;
 
 
 public class Run {
@@ -18,7 +19,6 @@ public class Run {
 	static Manager m;
 	
 	public static void main(String[] args) throws IOException {
-		//Manager run = new Manager();
-		AmountTendered ip = new AmountTendered(m);
+		Manager run = new Manager();
 	}
 }
