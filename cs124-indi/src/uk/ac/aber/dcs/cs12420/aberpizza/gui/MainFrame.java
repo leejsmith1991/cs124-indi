@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame(Manager manager) {
 		this.manager = manager;
-
+		menuBar = new MenuBar(manager);
 		this.setLayout(new GridLayout(3, 1));
 		this.setJMenuBar(menuBar);
 		

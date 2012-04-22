@@ -7,6 +7,14 @@ public class Drink implements Item{
 	private String name;
 	private String description;
 	private BigDecimal price;
+	private ItemSize size;
+	
+	public Drink(String name, BigDecimal price, ItemSize size, String desc){
+		this.name = name;
+		this.price = price;
+		this.size = size;
+		this.description = desc;
+	}
 	
 	@Override
 	public BigDecimal getPrice() {
@@ -36,6 +44,16 @@ public class Drink implements Item{
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public ItemSize getSize() {
+		return size;
+	}
+
+	@Override
+	public void setSize(ItemSize size) {
+		this.size = size;		
 	}
 
 }

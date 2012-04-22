@@ -8,20 +8,22 @@ public class Pizza implements Item {
 	private String name;
 	private String description;
 	private BigDecimal price;
-	private String size;
+	private ItemSize size;
 	
-	public Pizza(String name, BigDecimal price, String size,  String desc){
+	public Pizza(String name, BigDecimal price, ItemSize size,  String desc){
 		this.name = name;
 		this.price = price;
 		this.description = desc;
 		this.size = size;
 	}
 	
-	public String getSize(){
+	@Override
+	public ItemSize getSize(){
 		return size;
 	}
 	
-	public void setSize(String size){
+	@Override
+	public void setSize(ItemSize size){
 		this.size = size;
 	}
 	

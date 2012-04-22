@@ -12,5 +12,8 @@ public interface Item {
 	
 	public String getName();
 	public void setName(String name);
+	
+	public ItemSize getSize();
+	public void setSize(ItemSize size);
 
 }

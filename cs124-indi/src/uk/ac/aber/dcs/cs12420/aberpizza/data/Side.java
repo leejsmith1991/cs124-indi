@@ -7,6 +7,7 @@ public class Side implements Item {
 	private String name;
 	private String description;
 	private BigDecimal price;
+	private ItemSize size;
 	
 	@Override
 	public BigDecimal getPrice() {
@@ -31,5 +32,15 @@ public class Side implements Item {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public ItemSize getSize() {
+		return size;
+	}
+	@Override
+	public void setSize(ItemSize size) {
+		this.size = size;
+		
 	}
 }

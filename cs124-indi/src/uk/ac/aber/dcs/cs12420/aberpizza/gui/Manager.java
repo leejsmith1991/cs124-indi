@@ -21,6 +21,7 @@ public class Manager implements ActionListener {
 
 	public Manager() {
 		MainFrame mf = new MainFrame(this);
+		till = new Till();
 	}
 
 	@Override
@@ -62,6 +63,13 @@ public class Manager implements ActionListener {
 			addItemToOrder();
 		} else if (action.equals("Pay Order")){
 			
+		} else if (action.equals("Save State")){
+			try {
+				till.save();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

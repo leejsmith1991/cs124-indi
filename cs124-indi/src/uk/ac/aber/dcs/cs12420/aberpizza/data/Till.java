@@ -1,21 +1,14 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
+import java.beans.*;
+import java.io.*;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.sql.Date;
+import java.text.*;
+import java.util.*;
 
-import javax.swing.text.DateFormatter;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+
 
 public class Till implements Serializable {
 
@@ -25,18 +18,29 @@ public class Till implements Serializable {
 	private static final long serialVersionUID = 811543431919259128L;
 	
 	private Date today;
-	private DateFormatter dateFormat;
-	private String pathname;
+	private SimpleDateFormat dateFormat;
+	private String todayDate;
+	private static String xmlFileName;
+	private String[] date = new String[3];
 
 	private ArrayList<Order> orders;
 
 	public Till(){
-		
+		setFileDate();
+	}
+	
+	private void setFileDate(){
+		today = new Date();
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		todayDate = dateFormat.format(today);
+		date = todayDate.split("/");
+		xmlFileName = date[0] + "_" + date[1] + "_" + date[2];
 	}
 	
 
+	
 	public void addOrder(Order order) {
-		
+		orders.add(order);
 	}
 
 	public BigDecimal getTotalForDay() {
@@ -49,7 +53,7 @@ public class Till implements Serializable {
 
 	public void save() throws IOException {
 		XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
-				new FileOutputStream(pathname)));
+				new FileOutputStream("cs124-indi/TillSaves/" + xmlFileName)));
 		encoder.writeObject(this);
 		encoder.close();
 	}
@@ -57,7 +61,7 @@ public class Till implements Serializable {
 	public static Till load(String pathname) throws IOException {
 		Till loadTill = null;
 		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
-				new FileInputStream(pathname)));
+				new FileInputStream("cs124-indi/TillSaves/" + xmlFileName)));
 		loadTill = (Till) decoder.readObject();
 		return loadTill;
 	}

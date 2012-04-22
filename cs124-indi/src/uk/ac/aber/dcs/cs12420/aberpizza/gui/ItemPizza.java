@@ -123,7 +123,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	public Item getOrderItem() {
 		Item newItem = new Pizza(selectedPizza, new BigDecimal(pizzaPrice),
-				pizzaSize, pizzaDesc);
+				ItemSize.MEDIUM, pizzaDesc);
 		return newItem;
 	}
 
