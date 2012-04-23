@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -16,12 +17,24 @@ public class Manager implements ActionListener {
 	private AddNewItemWindow addNewItem;
 	private NewOrder no;
 	private ItemFrame itemFrame;
+	private String xmlFileName;
 
 	private Order customerOrder;
 
-	public Manager() {
+	public Manager() throws IOException {
 		MainFrame mf = new MainFrame(this);
+		
 		till = new Till();
+		xmlFileName = till.getXMLFileName();
+				
+		File f = new File("cs124-indi/TillSaves" + xmlFileName + ".xml");
+		System.out.println(f.exists());
+		
+		if (!f.exists()){
+			till.save();
+		}
+		
+		till = Till.load();
 	}
 
 	@Override
@@ -40,20 +53,20 @@ public class Manager implements ActionListener {
 			createNewItem(ItemType.DRINK);
 
 			// Manages creating a new OrderItem
-		} else if (action.equals("Pizzas")) {
+		} else if (action.equals("Add Pizza")) {
 			try {
 				fireItemWindow(ItemType.PIZZA);
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else if (action.equals("Sides")) {
+		} else if (action.equals("Add Side")) {
 			try {
 				fireItemWindow(ItemType.SIDE);
 			} catch (FileNotFoundException e2) {
 
 			}
-		} else if (action.equals("Drinks")) {
+		} else if (action.equals("Add Drink")) {
 			try {
 				fireItemWindow(ItemType.DRINK);
 			} catch (FileNotFoundException e3) {
@@ -62,7 +75,7 @@ public class Manager implements ActionListener {
 		} else if (action.equals("Add to Order")) {
 			addItemToOrder();
 		} else if (action.equals("Pay Order")){
-			
+			addOrderToTill();
 		} else if (action.equals("Save State")){
 			try {
 				till.save();
@@ -73,20 +86,18 @@ public class Manager implements ActionListener {
 		}
 	}
 
-	public void createNewOrder() {
+	private void createNewOrder() {
 		no = new NewOrder(this);
 		customerOrder = new Order();
 	}
 
-	public void fireItemWindow(ItemType type) throws FileNotFoundException {
+	private void fireItemWindow(ItemType type) throws FileNotFoundException {
 		if (type == ItemType.PIZZA) {
 			itemFrame = (ItemFrame) new ItemPizza(this);
 		} else if (type == ItemType.SIDE) {
-			// TODO implement ItemSide
-			// itemFrame = new ItemSide(this);
-		} else {
-			// TODO implement ItemDrink
-			// itemFrame = new ItemDrink(this);
+			itemFrame = (ItemFrame) new ItemSide(this);
+		} else if (type == ItemType.DRINK){
+			itemFrame = (ItemFrame) new ItemDrink(this);
 		}
 	}
 
@@ -95,7 +106,7 @@ public class Manager implements ActionListener {
 		itemFrame.dispose();
 	}
 
-	public void createNewItem(ItemType type) {
+	private void createNewItem(ItemType type) {
 		if (type == ItemType.PIZZA) {
 			addNewItem = new AddNewItemWindow(ItemType.PIZZA);
 		} else if (type == ItemType.SIDE) {
@@ -104,7 +115,8 @@ public class Manager implements ActionListener {
 			addNewItem = new AddNewItemWindow(ItemType.DRINK);
 		}
 	}
+	
 	private void addOrderToTill(){
-		
+		till.addOrder(customerOrder);
 	}
 }

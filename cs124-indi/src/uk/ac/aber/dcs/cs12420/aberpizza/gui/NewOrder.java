@@ -74,11 +74,11 @@ public class NewOrder extends JFrame implements ActionListener{
 		
 		
 		JButton pizzas, sides, drinks;
-		pizzas = new JButton("Pizzas");
+		pizzas = new JButton("Add Pizza");
 		pizzas.addActionListener(manager);
-		sides = new JButton("Sides");
+		sides = new JButton("Add Side");
 		sides.addActionListener(manager);
-		drinks = new JButton("Drinks");
+		drinks = new JButton("Add Drink");
 		drinks.addActionListener(manager);
 
 /*		bpsl.putConstraint(SpringLayout.EAST, thisPane, 10,

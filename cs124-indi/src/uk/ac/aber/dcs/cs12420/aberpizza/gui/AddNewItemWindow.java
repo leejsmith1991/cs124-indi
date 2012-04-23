@@ -13,132 +13,133 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 	private static final long serialVersionUID = -4708376627751121406L;
 
 	private ItemType type;
-	private JTextField nameText, priceText;
+	private JTextField nameText, smallText, medText, largeText;
 	private JTextArea descriptionText;
-	private JLabel nameLabel, priceLabel, descriptionLabel, warningMessage;
 	private JButton submit;
-	private JPanel namePane, pricePane, submitPane, descriptionPane, warningPane;
-	private SpringLayout mainLayout;
+	private JLabel warningMessage;
+	private JPanel namePane, pricePane, submitPane, descriptionPane;
+	//private SpringLayout mainLayout;
 
 	
 	private ArrayList<String> existing;
 
-	Font f = new Font("Arial", Font.PLAIN, 12);
+	private Font f = new Font("Arial", Font.PLAIN, 12);
 
 	public AddNewItemWindow(ItemType type) {
 		this.type = type;
-
+		this.setLayout(new GridLayout(5,1));
 		this.setTitle("Create new " + type.toString().toLowerCase());
 
-		Container mainPane = this.getContentPane();
-		mainLayout = new SpringLayout();
-
-		namePane = new JPanel(new GridLayout(1, 2, 5, 5));
-		namePane.add(getNameLabel());
-		namePane.add(getNameText());
-
-		pricePane = new JPanel(new GridLayout(1, 2, 5, 5));
-		pricePane.add(getPriceLabel());
-		pricePane.add(getPriceText());
-
-		mainPane.add(namePane);
-		mainPane.add(pricePane);
-		mainLayout.putConstraint(SpringLayout.NORTH, namePane, 10,
-				SpringLayout.NORTH, this);
-		mainLayout.putConstraint(SpringLayout.NORTH, pricePane, 10,
-				SpringLayout.SOUTH, namePane);
-
-		descriptionPane = new JPanel(new BorderLayout());
-		descriptionPane.add(getDescriptionLabel(), BorderLayout.NORTH);
-		descriptionPane.add(getDescriptionText(), BorderLayout.SOUTH);
-
-		mainLayout.putConstraint(SpringLayout.NORTH, descriptionPane, 10,
-				SpringLayout.SOUTH, pricePane);
-
-		mainPane.add(descriptionPane);
-
-		submit = new JButton("Submit");
-		submit.addActionListener(this);
-		submit.addMouseListener(this);
-		submit.setSize(new Dimension(200, 20));
-		submitPane = new JPanel();
-		submit.setSize(150, 50);
-		submitPane.add(submit);
-		warningPane = new JPanel();
-		warningMessage = new JLabel();
-
-		warningPane.setSize(new Dimension(512, 200));
-		warningPane.add(warningMessage);
-				
-		mainLayout.putConstraint(SpringLayout.NORTH, submitPane, 10,
-				SpringLayout.SOUTH, descriptionPane);
-		mainLayout.putConstraint(SpringLayout.NORTH, warningPane, 10,
-				SpringLayout.SOUTH, submitPane);
-		mainPane.add(submitPane);
-		mainPane.add(warningPane);
-		mainPane.setLayout(mainLayout);
+		namePane = getNamePane();
+		this.add(namePane);
+		
+		pricePane = getPricePane();
+		this.add(pricePane);
+		
+		descriptionPane = getDescriptionPane();
+		this.add(descriptionPane);
+		
+		submitPane = getSubmitPane();
+		this.add(submitPane);
 
 		this.setResizable(false);
 		this.setVisible(true);
-		this.setSize(namePane.getWidth() + 18, 550);
+		this.setSize(400, 550);
 	}
 
-	private JLabel getNameLabel() {
-		nameLabel = new JLabel("Enter the name of the "
-				+ type.toString().toLowerCase() + " :", SwingConstants.LEFT);
+	private JPanel getNamePane(){
+		JPanel thisPane = new JPanel(new GridLayout(1,2));
+		
+		JLabel nameLabel = new JLabel("Enter name of new " + type.toString().toLowerCase(), SwingConstants.RIGHT);
 		nameLabel.setFont(f);
-		return nameLabel;
-	}
-
-	private JTextField getNameText() {
-		nameText = new JTextField("", 15);
-		nameText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		thisPane.add(nameLabel);
+		
+		nameText = new JTextField();
 		nameText.setFont(f);
-		return nameText;
+		thisPane.add(nameText);
+		
+		return thisPane;
 	}
-
-	private JLabel getPriceLabel() {
-		priceLabel = new JLabel("Enter the price of the "
-				+ type.toString().toLowerCase() + " :", SwingConstants.LEFT);
-		priceLabel.setFont(f);
-		return priceLabel;
+	
+	private JPanel getPricePane(){
+		JPanel thisPane = new JPanel(new GridLayout(3,2));
+		
+		JLabel smallLabel = new JLabel("Enter price for small " + type.toString().toLowerCase() + ": £", SwingConstants.RIGHT);
+		smallLabel.setFont(f);
+		thisPane.add(smallLabel);
+		
+		smallText = new JTextField();
+		smallText.setFont(f);
+		thisPane.add(smallText);
+		
+		JLabel medLabel = new JLabel("Enter price for medium " + type.toString().toLowerCase() + ": £" , SwingConstants.RIGHT);
+		medLabel.setFont(f);
+		thisPane.add(medLabel);
+		
+		medText = new JTextField();
+		medText.setFont(f);
+		thisPane.add(medText);
+		
+		JLabel largeLabel = new JLabel("Enter price for large " + type.toString().toLowerCase() + ": £", SwingConstants.RIGHT);
+		largeLabel.setFont(f);
+		thisPane.add(largeLabel);
+		
+		largeText = new JTextField();
+		largeText.setFont(f);
+		thisPane.add(largeText);
+		
+		return thisPane;
 	}
+	
+	//priceText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-	private JTextField getPriceText() {
-		priceText = new JTextField("", 15);
-		priceText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		priceText.setFont(f);
-		return priceText;
-	}
-
-	private JLabel getDescriptionLabel() {
-		descriptionLabel = new JLabel("Enter Description for "
-				+ type.toString().toLowerCase() + " : ");
-		descriptionLabel.setFont(f);
-		descriptionLabel.setVerticalAlignment(SwingConstants.NORTH);
-		return descriptionLabel;
-	}
-
-	private JScrollPane getDescriptionText() {
-		descriptionText = new JTextArea("");
+	private JPanel getDescriptionPane(){
+		SpringLayout thisLayout = new SpringLayout();
+		
+		JPanel thisPane = new JPanel();
+		thisPane.setSize(new Dimension(400, 250));
+		
+		JLabel descLabel = new JLabel("Enter Description of the " + type.toString().toLowerCase(), SwingConstants.LEFT);
+		descLabel.setFont(f);
+		descLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		descriptionText = new JTextArea();
 		descriptionText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		descriptionText.setLineWrap(true);
 		descriptionText.setWrapStyleWord(true);
-		descriptionText.setRows(1);
-		
+		descriptionText.setFont(f);
 		
 		JScrollPane descScroll = new JScrollPane(descriptionText);
-		descScroll
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		descScroll
-				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		descScroll.setPreferredSize(new Dimension(340, 100));
-		descScroll.setLocation(0, 0);
-
-		descriptionText.setFont(f);
-		return descScroll;
+		
+		descScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		descScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		descScroll.setSize(new Dimension(350, 200));
+		
+		thisLayout.putConstraint(SpringLayout.NORTH, thisPane, 10, SpringLayout.NORTH, descLabel);
+		thisLayout.putConstraint(SpringLayout.SOUTH, descLabel, 10, SpringLayout.NORTH, descriptionText);
+		
+		thisPane.add(descLabel);
+		thisPane.add(descScroll);
+		thisPane.setLayout(thisLayout);
+		
+		return thisPane;
 	}
 
+	private JPanel getSubmitPane(){
+		JPanel thisPane = new JPanel(new GridLayout(2,1));
+		
+		submit = new JButton("Add " + type.toString().toLowerCase() + " to system");
+		submit.setFont(f);
+		submit.addActionListener(this);
+		submit.addMouseListener(this);
+		thisPane.add(submit);
+		
+		warningMessage = new JLabel();
+		warningMessage.setFont(f);
+		thisPane.add(warningMessage);
+		return thisPane;
+	}
+	
 	private void createNew() throws NumberFormatException, IOException {
 		existing = new ArrayList<String>();
 		Scanner sc;
@@ -164,12 +165,14 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 		}
 		
 		
-		if (nameText.getText().equals("") || priceText.getText().equals("") || descriptionText.getText().equals("")){
-			//throw new InvalidArgumentException("Fields not Complete");
+		if (nameText.getText().equals("") || smallText.getText().equals("") || medText.getText().equals("") || largeText.getText().equals("") || descriptionText.getText().equals("")){
+			//TODO throw new InvalidArgumentException("Fields not Complete");
 			System.out.println("Failed, Ensure Fields are Complete");
 		} else {
 			existing.add(nameText.getText());
-			existing.add(priceText.getText());
+			existing.add(smallText.getText());
+			existing.add(medText.getText());
+			existing.add(largeText.getText());
 			if (descriptionText.getText().contains("\n")){
 				descriptionText.setText(descriptionText.getText().replaceAll("\n", ". "));
 			}
@@ -202,12 +205,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 		}
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent me) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		if (me.getComponent() == submit){
@@ -221,6 +219,13 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 		if (me.getComponent() == submit){
 			warningMessage.setText("");
 		}
+		
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent me) {
+		// TODO Auto-generated method stub
 		
 	}
 

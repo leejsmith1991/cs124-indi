@@ -12,47 +12,47 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class ItemPizza extends ItemFrame implements KeyListener {
+public class ItemSide extends ItemFrame implements KeyListener {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2180779048808264480L;
+	private static final long serialVersionUID = 4448070404095939991L;
 
 	private Manager manager;
 
-	private JList<String> pizzasList, priceList;
-	private ArrayList<String> pName, pSmall, pMed, pLarge, pDesc;
+	private JList<String> sideList, priceList;
+	private ArrayList<String> sName, sSmall, sMed, sLarge, sDesc;
 	private DefaultListModel<String> ml;
 	String[] prices = new String[3];
 
-	private JPanel pizzaListPane, priceListPane, quantityPane, submitPane;
+	private JPanel sideListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
 
 	private String selectedPizza;
-	private String pizzaSize;
-	private String pizzaPrice;
-	private String pizzaDesc;
+	private String sideSize;
+	private String sidePrice;
+	private String sideDesc;
 	private int quantity;
 
-	public ItemPizza(Manager manager) throws FileNotFoundException {
+	public ItemSide(Manager manager) throws FileNotFoundException {
 		this.manager = manager;
-		this.setTitle("Add Pizza to order");
+		this.setTitle("Add Side to order");
 
-		pName = new ArrayList<String>();
-		pSmall = new ArrayList<String>();
-		pMed = new ArrayList<String>();
-		pLarge = new ArrayList<String>();
-		pDesc = new ArrayList<String>();
+		sName = new ArrayList<String>();
+		sSmall = new ArrayList<String>();
+		sMed = new ArrayList<String>();
+		sLarge = new ArrayList<String>();
+		sDesc = new ArrayList<String>();
 		getFromFile();
 
-		pizzaListPane = getPizzaPane();
+		sideListPane = getSidePane();
 		priceListPane = getPricePane();
 		quantityPane = getQuantityPane();
 		submitPane = getSubmitPane();
 		
 		this.setLayout(new GridLayout(4, 1));
-		this.add(pizzaListPane);
+		this.add(sideListPane);
 		this.add(priceListPane);
 		this.add(quantityPane);
 		this.add(submitPane);
@@ -61,18 +61,18 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		this.setVisible(true);
 	}
 
-	private JPanel getPizzaPane(){
+	private JPanel getSidePane(){
 		JPanel thisPane = new JPanel();
 		
 		ml = new DefaultListModel<String>();
-		for (int i = 0; i < pName.size(); i++) {
-			ml.addElement(pName.get(i));
+		for (int i = 0; i < sName.size(); i++) {
+			ml.addElement(sName.get(i));
 		}
 
-		pizzasList = new JList<String>(ml);
-		PizzaSelector pizzaSelect = new PizzaSelector();
-		pizzasList.addListSelectionListener(pizzaSelect);
-		thisPane.add(pizzasList);
+		sideList = new JList<String>(ml);
+		SideSelector sideSelect = new SideSelector();
+		sideList.addListSelectionListener(sideSelect);
+		thisPane.add(sideList);
 		return thisPane;
 	}
 	
@@ -87,9 +87,9 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	}
 
 	private void setPizzaPrices(int selected) {
-		prices[0] = pSmall.get(selected);
-		prices[1] = pMed.get(selected);
-		prices[2] = pLarge.get(selected);
+		prices[0] = sSmall.get(selected);
+		prices[1] = sMed.get(selected);
+		prices[2] = sLarge.get(selected);
 		priceList.setSelectedIndex(0);
 		priceList.setListData(prices);
 		this.validate();
@@ -116,20 +116,20 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(new BufferedReader(
-				new FileReader("pizzas.txt")));
+				new FileReader("side.txt")));
 
 		while (sc.hasNextLine()) {
-			pName.add(sc.nextLine());
-			pSmall.add(sc.nextLine());
-			pMed.add(sc.nextLine());
-			pLarge.add(sc.nextLine());
-			pDesc.add(sc.nextLine());
+			sName.add(sc.nextLine());
+			sSmall.add(sc.nextLine());
+			sMed.add(sc.nextLine());
+			sLarge.add(sc.nextLine());
+			sDesc.add(sc.nextLine());
 		}
 	}
 
 	public Item getOrderItem() {
-		Item newItem = new Pizza(selectedPizza, new BigDecimal(pizzaPrice),
-				pizzaSize, pizzaDesc);
+		Item newItem = new Pizza(selectedPizza, new BigDecimal(sidePrice),
+				sideSize, sideDesc);
 		return newItem;
 	}
 	
@@ -164,15 +164,15 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	 * @see javax.swing.event.ListSelectionListener 
 	 */
 	
-	private class PizzaSelector implements ListSelectionListener {
+	private class SideSelector implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			for (int a = 0; a < pName.size(); a++) {
-				if (pName.get(a).equals(pizzasList.getSelectedValue())) {
-					selectedPizza = pName.get(a);
+			for (int a = 0; a < sName.size(); a++) {
+				if (sName.get(a).equals(sideList.getSelectedValue())) {
+					selectedPizza = sName.get(a);
 					setPizzaPrices(a);
-					pizzaDesc = pDesc.get(a);
+					sideDesc = sDesc.get(a);
 					priceList.setSelectedIndex(0);
 					break;
 				}
@@ -195,13 +195,13 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 				selectedIndex = 0;
 			}
 			if (selectedIndex == 0) {
-				pizzaSize = "Small";
+				sideSize = "Small";
 			} else if (selectedIndex == 1) {
-				pizzaSize = "Medium";
+				sideSize = "Medium";
 			} else {
-				pizzaSize = "Large";
+				sideSize = "Large";
 			}
-			pizzaPrice = prices[selectedIndex];
+			sidePrice = prices[selectedIndex];
 		}
 	}
 

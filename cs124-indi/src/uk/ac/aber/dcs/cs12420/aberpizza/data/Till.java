@@ -22,10 +22,10 @@ public class Till implements Serializable {
 	private String todayDate;
 	private static String xmlFileName;
 	private String[] date = new String[3];
-
+	private final static String PATHNAME = "cs124-indi/TillSaves/";
 	private ArrayList<Order> orders;
 
-	public Till(){
+	public Till() throws IOException{
 		setFileDate();
 	}
 	
@@ -37,7 +37,9 @@ public class Till implements Serializable {
 		xmlFileName = date[0] + "_" + date[1] + "_" + date[2];
 	}
 	
-
+	public String getXMLFileName(){
+		return xmlFileName;
+	}
 	
 	public void addOrder(Order order) {
 		orders.add(order);
@@ -53,16 +55,32 @@ public class Till implements Serializable {
 
 	public void save() throws IOException {
 		XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
-				new FileOutputStream("cs124-indi/TillSaves/" + xmlFileName)));
+				new FileOutputStream(PATHNAME + xmlFileName+ ".xml")));
 		encoder.writeObject(this);
+		
 		encoder.close();
+		System.out.println("saved");
 	}
 
-	public static Till load(String pathname) throws IOException {
+	public static Till load() throws IOException {
 		Till loadTill = null;
+		
+		
 		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
-				new FileInputStream("cs124-indi/TillSaves/" + xmlFileName)));
+				new FileInputStream(PATHNAME + xmlFileName + ".xml")));
 		loadTill = (Till) decoder.readObject();
 		return loadTill;
 	}
+	
+	public static Till loadPrevious(String oldPathName) throws IOException{
+		Till loadTill = null;
+		
+		
+		
+		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
+				new FileInputStream(PATHNAME + oldPathName)));
+		loadTill = (Till) decoder.readObject();
+		return loadTill;
+	}
+	
 }
