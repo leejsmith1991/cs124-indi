@@ -116,7 +116,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(new BufferedReader(
-				new FileReader("side.txt")));
+				new FileReader("sides.txt")));
 
 		while (sc.hasNextLine()) {
 			sName.add(sc.nextLine());
@@ -133,10 +133,27 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		return newItem;
 	}
 	
+	@Override
+	public void setQuantity(){
+		try {
+		Integer.parseInt(quantText.getText());
+		} catch (NumberFormatException nfe){
+			//TODO implement error handle
+			nfe.printStackTrace();
+		}
+	}
+	
 	public int getQuantity() {
 		return quantity;
 	}
 
+	@Override
+	public BigDecimal getSubTotal() {
+		BigDecimal subtotal = new BigDecimal(sidePrice);
+		subtotal.multiply(new BigDecimal(quantity));
+		return subtotal;
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub

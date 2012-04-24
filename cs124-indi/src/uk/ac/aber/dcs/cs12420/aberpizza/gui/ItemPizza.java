@@ -50,20 +50,20 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		priceListPane = getPricePane();
 		quantityPane = getQuantityPane();
 		submitPane = getSubmitPane();
-		
+
 		this.setLayout(new GridLayout(4, 1));
 		this.add(pizzaListPane);
 		this.add(priceListPane);
 		this.add(quantityPane);
 		this.add(submitPane);
-		
+
 		this.setSize(new Dimension(500, 500));
 		this.setVisible(true);
 	}
 
-	private JPanel getPizzaPane(){
+	private JPanel getPizzaPane() {
 		JPanel thisPane = new JPanel();
-		
+
 		ml = new DefaultListModel<String>();
 		for (int i = 0; i < pName.size(); i++) {
 			ml.addElement(pName.get(i));
@@ -75,7 +75,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		thisPane.add(pizzasList);
 		return thisPane;
 	}
-	
+
 	private JPanel getPricePane() {
 		JPanel thisPane = new JPanel();
 		priceList = new JList<String>();
@@ -133,37 +133,56 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		return newItem;
 	}
 	
+	@Override
+	public void setQuantity(){
+		try {
+		Integer.parseInt(quantText.getText());
+		} catch (NumberFormatException nfe){
+			//TODO implement error handle
+			nfe.printStackTrace();
+		}
+	}
+	
 	public int getQuantity() {
 		return quantity;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		
 		try {
 			quantity = Integer.parseInt(quantText.getText());
+			System.out.println(quantity);
 		} catch (NumberFormatException nfe) {
 
 		}
 	}
 
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+
+		
+	}
+
+	@Override
+	public BigDecimal getSubTotal() {
+		BigDecimal subtotal = new BigDecimal(pizzaPrice);
+		subtotal = subtotal.multiply(new BigDecimal(quantity));
+		return subtotal;
+	}
+
 	/**
-	 * Private class to enable separate selection of items in the Pizzas List from Price List
+	 * Private class to enable separate selection of items in the Pizzas List
+	 * from Price List
+	 * 
 	 * @author Lee Smith
-	 * @see javax.swing.event.ListSelectionListener 
+	 * @see javax.swing.event.ListSelectionListener
 	 */
-	
+
 	private class PizzaSelector implements ListSelectionListener {
 
 		@Override
@@ -181,11 +200,13 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	}
 
 	/**
-	 * Private class to enable separate selection of items in the Price List from Pizzas List
+	 * Private class to enable separate selection of items in the Price List
+	 * from Pizzas List
+	 * 
 	 * @author Lee Smith
-	 * @see javax.swing.event.ListSelectionListener 
+	 * @see javax.swing.event.ListSelectionListener
 	 */
-	
+
 	private class PriceSelector implements ListSelectionListener {
 
 		@Override

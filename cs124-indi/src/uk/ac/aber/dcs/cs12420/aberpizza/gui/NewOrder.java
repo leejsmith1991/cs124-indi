@@ -5,8 +5,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.io.*;
+import java.math.BigDecimal;
+import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
 
@@ -19,9 +22,10 @@ public class NewOrder extends JFrame implements ActionListener{
 	private JPanel customerNamePane, listPane, buttonPane, subDiscPane, payCancelPane;
 	private JTextField customerName;
 	
-	private JList orderList;
+	private DefaultTableModel tableList= new DefaultTableModel(0, 3);
+	private BigDecimal totalForOrder = new BigDecimal("0");
 	
-	
+	private JLabel subText;
 	
 	public NewOrder(Manager manager) {
 		this.manager = manager;
@@ -62,7 +66,7 @@ public class NewOrder extends JFrame implements ActionListener{
 	private JPanel getOrderListPane(){
 		JPanel thisPane = new JPanel();
 		
-		orderList = new JList();
+		JTable orderList = new JTable(tableList);
 		thisPane.add(orderList);
 		
 		return thisPane;	
@@ -99,7 +103,7 @@ public class NewOrder extends JFrame implements ActionListener{
 	private JPanel getSubDiscPane(){
 		JPanel thisPane = new JPanel(new GridLayout(2,2));
 		
-		JLabel subLabel, subText, discLabel, discText;
+		JLabel subLabel, discLabel, discText;
 		subLabel = new JLabel("Subtotal:");
 		thisPane.add(subLabel);
 		subText = new JLabel("Subtotal for Order // to-do");
@@ -126,6 +130,17 @@ public class NewOrder extends JFrame implements ActionListener{
 		thisPane.add(cancel);
 		
 		return thisPane;
+	}
+	
+	public void addItemToTable(String name, int quantity, BigDecimal itemTotal){
+		String[] singleItem = new String[3];
+		singleItem[0] = name;
+		singleItem[1] = Integer.toString(quantity);
+		singleItem[2] = itemTotal.toString();
+		tableList.addRow(singleItem);
+		totalForOrder = totalForOrder.add(itemTotal);
+		subText.setText(totalForOrder.toString());
+		this.validate();		
 	}
 	
 	@Override

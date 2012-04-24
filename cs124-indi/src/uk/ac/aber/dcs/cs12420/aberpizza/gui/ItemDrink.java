@@ -23,7 +23,7 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 	private JList<String> drinkList, priceList;
 	private ArrayList<String> dName, dSmall, dMed, dLarge, dDesc;
-	private DefaultListModel<?> ml;
+	private DefaultListModel ml;
 	String[] prices = new String[3];
 
 	private JPanel drinkListPane, priceListPane, quantityPane, submitPane;
@@ -116,7 +116,7 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(new BufferedReader(
-				new FileReader("drink.txt")));
+				new FileReader("drinks.txt")));
 
 		while (sc.hasNextLine()) {
 			dName.add(sc.nextLine());
@@ -133,10 +133,27 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		return newItem;
 	}
 	
+	@Override
+	public void setQuantity(){
+		try {
+		Integer.parseInt(quantText.getText());
+		} catch (NumberFormatException nfe){
+			//TODO implement error handle
+			nfe.printStackTrace();
+		}
+	}
+	
 	public int getQuantity() {
 		return quantity;
 	}
 
+	@Override
+	public BigDecimal getSubTotal() {
+		BigDecimal subtotal = new BigDecimal(drinkPrice);
+		subtotal.multiply(new BigDecimal(quantity));
+		return subtotal;
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub

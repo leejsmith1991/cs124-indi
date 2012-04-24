@@ -102,7 +102,9 @@ public class Manager implements ActionListener {
 	}
 
 	private void addItemToOrder() {
+		
 		customerOrder.addItem(itemFrame.getOrderItem(), itemFrame.getQuantity());
+		no.addItemToTable(itemFrame.getOrderItem().getName(), itemFrame.getQuantity(), itemFrame.getSubTotal());
 		itemFrame.dispose();
 	}
 
