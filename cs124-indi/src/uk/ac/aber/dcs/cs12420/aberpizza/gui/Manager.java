@@ -5,10 +5,15 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Drink;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Item;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Pizza;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Side;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
 
 public class Manager implements ActionListener {
@@ -102,9 +107,16 @@ public class Manager implements ActionListener {
 	}
 
 	private void addItemToOrder() {
-		
-		customerOrder.addItem(itemFrame.getOrderItem(), itemFrame.getQuantity());
-		no.addItemToTable(itemFrame.getOrderItem().getName(), itemFrame.getQuantity(), itemFrame.getSubTotal());
+		Item i = null;
+		if (itemFrame.getItemType() == ItemType.PIZZA){
+			i = new Pizza(itemFrame.getSelectedItem(), new BigDecimal(itemFrame.getItemPrice()), itemFrame.getItemSize(), itemFrame.getItemDesc());
+		} else if (itemFrame.getItemType() == ItemType.SIDE){
+			i = new Side(itemFrame.getSelectedItem(), new BigDecimal(itemFrame.getItemPrice()), itemFrame.getItemSize(), itemFrame.getItemDesc());
+		} else {
+			i = new Drink(itemFrame.getSelectedItem(), new BigDecimal(itemFrame.getItemPrice()), itemFrame.getItemSize(), itemFrame.getItemDesc());
+		}
+		customerOrder.addItem(i, itemFrame.getQuantity());
+		no.addItemToTable(i.getName(), itemFrame.getQuantity(), itemFrame.getSubTotal());
 		itemFrame.dispose();
 	}
 

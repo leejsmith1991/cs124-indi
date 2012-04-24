@@ -28,17 +28,14 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	private JPanel pizzaListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
-
-	private String selectedPizza;
-	private String pizzaSize;
-	private String pizzaPrice;
-	private String pizzaDesc;
+	
+	private String selectedItem, itemSize, itemPrice, itemDesc;
 	private int quantity;
-
+	
 	public ItemPizza(Manager manager) throws FileNotFoundException {
 		this.manager = manager;
 		this.setTitle("Add Pizza to order");
-
+		this.setLayout(null);
 		pName = new ArrayList<String>();
 		pSmall = new ArrayList<String>();
 		pMed = new ArrayList<String>();
@@ -47,22 +44,40 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		getFromFile();
 
 		pizzaListPane = getPizzaPane();
-		priceListPane = getPricePane();
-		quantityPane = getQuantityPane();
-		submitPane = getSubmitPane();
+		pizzaListPane.setBounds(0, 0, pizzaListPane.getWidth(),
+				pizzaListPane.getHeight());
 
-		this.setLayout(new GridLayout(4, 1));
+		priceListPane = getPricePane();
+		priceListPane.setBounds(0, pizzaListPane.getHeight(),
+				priceListPane.getWidth(), priceListPane.getHeight());
+
+		quantityPane = getQuantityPane();
+		quantityPane.setBounds(0, pizzaListPane.getHeight() + 90,
+				quantityPane.getWidth(), quantityPane.getHeight());
+
+		submitPane = getSubmitPane();
+		submitPane.setBounds(0, pizzaListPane.getHeight() + 140,
+				submitPane.getWidth(), submitPane.getHeight());
+
 		this.add(pizzaListPane);
 		this.add(priceListPane);
 		this.add(quantityPane);
 		this.add(submitPane);
-
-		this.setSize(new Dimension(500, 500));
+		int windowWidth = pizzaListPane.getWidth();
+		int windowHeight = pizzaListPane.getHeight()
+				+ priceListPane.getHeight() + quantityPane.getHeight() + submitPane
+				.getHeight() + 30;
+		this.setSize(new Dimension(windowWidth, windowHeight));
+		this.setResizable(false);
 		this.setVisible(true);
 	}
 
 	private JPanel getPizzaPane() {
-		JPanel thisPane = new JPanel();
+		JPanel thisPane = new JPanel(null);
+
+		JLabel label = new JLabel("Select Pizza");
+		label.setBounds(5, 5, 340, 25);
+		thisPane.add(label);
 
 		ml = new DefaultListModel<String>();
 		for (int i = 0; i < pName.size(); i++) {
@@ -70,19 +85,45 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		}
 
 		pizzasList = new JList<String>(ml);
+		pizzasList
+				.setBounds(30, label.getHeight() + 10, 300, pName.size() * 21);
+
 		PizzaSelector pizzaSelect = new PizzaSelector();
 		pizzasList.addListSelectionListener(pizzaSelect);
+
 		thisPane.add(pizzasList);
+
+		thisPane.setSize(label.getWidth() + pizzasList.getHeight() + 30,
+				label.getHeight() + pizzasList.getHeight());
 		return thisPane;
 	}
 
 	private JPanel getPricePane() {
-		JPanel thisPane = new JPanel();
+		JPanel thisPane = new JPanel(null);
+
+		JLabel label = new JLabel("Select Size");
+		label.setBounds(5, 5, 340, 25);
+		thisPane.add(label);
+
+		JLabel smallLabel = new JLabel("Small:", SwingConstants.RIGHT);
+		smallLabel.setBounds(30, 29, 50, 21);
+		thisPane.add(smallLabel);
+
+		JLabel medLabel = new JLabel("Medium:", SwingConstants.RIGHT);
+		medLabel.setBounds(30, 47, 50, 21);
+		thisPane.add(medLabel);
+
+		JLabel largeLabel = new JLabel("Large:", SwingConstants.RIGHT);
+		largeLabel.setBounds(30, 64, 50, 22);
+		thisPane.add(largeLabel);
+
 		priceList = new JList<String>();
 		PriceSelector priceSelect = new PriceSelector();
 		priceList.addListSelectionListener(priceSelect);
 		setPizzaPrices(0);
+		priceList.setBounds(83, 30, 150, 60);
 		thisPane.add(priceList);
+		thisPane.setSize(450, 100);
 		return thisPane;
 	}
 
@@ -96,22 +137,30 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	}
 
 	private JPanel getQuantityPane() {
-		JPanel quantityPane = new JPanel(new GridLayout(1, 2));
-		JLabel quantLabel = new JLabel("Enter Quantity :");
-		quantText = new JTextField("1");
+		JPanel thisPane = new JPanel(null);
+		JLabel quantLabel = new JLabel("Enter Quantity :", SwingConstants.RIGHT);
+		quantLabel.setBounds(5, 17, 89, 15);
+
+		quantText = new JTextField("");
 		quantText.addKeyListener(this);
-		quantityPane.add(quantLabel);
-		quantityPane.add(quantText);
-		return quantityPane;
+		quantText.setBounds(100, 10, 200, 30);
+
+		thisPane.add(quantLabel);
+		thisPane.add(quantText);
+		thisPane.setSize(360, 50);
+		return thisPane;
 	}
 
-	public JPanel getSubmitPane() {
-		JPanel submitPane = new JPanel();
+	private JPanel getSubmitPane() {
+		JPanel thisPane = new JPanel(null);
 
 		JButton submit = new JButton("Add to Order");
-		submitPane.add(submit);
+		submit.setBounds(100, 10, 150, 30);
+		thisPane.add(submit);
 		submit.addActionListener(manager);
-		return submitPane;
+		thisPane.setSize(360, 50);
+
+		return thisPane;
 	}
 
 	public void getFromFile() throws FileNotFoundException {
@@ -127,29 +176,63 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		}
 	}
 
-	public Item getOrderItem() {
-		Item newItem = new Pizza(selectedPizza, new BigDecimal(pizzaPrice),
-				pizzaSize, pizzaDesc);
-		return newItem;
+	public String getSelectedItem() {
+		return selectedItem;
+	}
+
+	public void setSelectedItem(String selectedItem) {
+		this.selectedItem = selectedItem;
+	}
+
+	public String getItemSize() {
+		return itemSize;
+	}
+
+	public void setItemSize(String itemSize) {
+		this.itemSize = itemSize;
+	}
+
+	public String getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(String itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public String getItemDesc() {
+		return itemDesc;
+	}
+
+	public void setItemDesc(String itemDesc) {
+		this.itemDesc = itemDesc;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
+	public ItemType getItemType(){
+		return ItemType.PIZZA;
 	}
 	
 	@Override
-	public void setQuantity(){
+	public void setQuantity() {
 		try {
-		Integer.parseInt(quantText.getText());
-		} catch (NumberFormatException nfe){
-			//TODO implement error handle
+			Integer.parseInt(quantText.getText());
+		} catch (NumberFormatException nfe) {
+			// TODO implement error handle
 			nfe.printStackTrace();
 		}
 	}
-	
+
 	public int getQuantity() {
 		return quantity;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
 	}
 
 	@Override
@@ -165,12 +248,11 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 
-		
 	}
 
 	@Override
 	public BigDecimal getSubTotal() {
-		BigDecimal subtotal = new BigDecimal(pizzaPrice);
+		BigDecimal subtotal = new BigDecimal(itemPrice);
 		subtotal = subtotal.multiply(new BigDecimal(quantity));
 		return subtotal;
 	}
@@ -189,9 +271,9 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		public void valueChanged(ListSelectionEvent e) {
 			for (int a = 0; a < pName.size(); a++) {
 				if (pName.get(a).equals(pizzasList.getSelectedValue())) {
-					selectedPizza = pName.get(a);
+					selectedItem = pName.get(a);
 					setPizzaPrices(a);
-					pizzaDesc = pDesc.get(a);
+					itemDesc = pDesc.get(a);
 					priceList.setSelectedIndex(0);
 					break;
 				}
@@ -216,13 +298,13 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 				selectedIndex = 0;
 			}
 			if (selectedIndex == 0) {
-				pizzaSize = "Small";
+				itemSize = "Small";
 			} else if (selectedIndex == 1) {
-				pizzaSize = "Medium";
+				itemSize = "Medium";
 			} else {
-				pizzaSize = "Large";
+				itemSize = "Large";
 			}
-			pizzaPrice = prices[selectedIndex];
+			itemPrice = prices[selectedIndex];
 		}
 	}
 

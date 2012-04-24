@@ -2,13 +2,15 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame{
 	/**
 	 * 
 	 */
@@ -19,6 +21,14 @@ public class MainFrame extends JFrame {
 	private Manager manager;
 	
 	public MainFrame(Manager manager) {
+		/* Layout the GUI */
+		try {
+			UIManager.setLookAndFeel(
+					UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			
+		}
+		
 		this.setManager(manager);
 		menuBar = new MenuBar(manager);
 		this.setLayout(new GridLayout(3, 1));
@@ -38,6 +48,7 @@ public class MainFrame extends JFrame {
 		add(viewSalesHistory);
 		add(closeForDay);
 		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(new Dimension(200,300));
 	}
 	
@@ -66,4 +77,5 @@ public class MainFrame extends JFrame {
 	public void setManager(Manager manager) {
 		this.manager = manager;
 	}
+
 }

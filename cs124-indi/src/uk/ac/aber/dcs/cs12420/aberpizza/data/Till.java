@@ -22,7 +22,7 @@ public class Till implements Serializable {
 	private String todayDate;
 	private static String xmlFileName;
 	private String[] date = new String[3];
-	private final static String PATHNAME = "cs124-indi/TillSaves/";
+	private final static String PATHNAME = "./TillSaves/";
 	private ArrayList<Order> orders;
 
 	public Till() throws IOException{
@@ -55,28 +55,25 @@ public class Till implements Serializable {
 
 	public void save() throws IOException {
 		XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
-				new FileOutputStream(PATHNAME + xmlFileName+ ".xml")));
+				new FileOutputStream(PATHNAME + xmlFileName)));
 		encoder.writeObject(this);
 		
 		encoder.close();
-		System.out.println("saved");
+
 	}
 
 	public static Till load() throws IOException {
 		Till loadTill = null;
-		
-		
+				
 		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
-				new FileInputStream(PATHNAME + xmlFileName + ".xml")));
+				new FileInputStream(PATHNAME + xmlFileName)));
 		loadTill = (Till) decoder.readObject();
 		return loadTill;
 	}
 	
 	public static Till loadPrevious(String oldPathName) throws IOException{
 		Till loadTill = null;
-		
-		
-		
+				
 		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
 				new FileInputStream(PATHNAME + oldPathName)));
 		loadTill = (Till) decoder.readObject();

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_01" class="java.beans.XMLDecoder">
+ <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Till"/>
+</java>
