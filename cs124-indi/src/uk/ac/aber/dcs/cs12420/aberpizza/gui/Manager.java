@@ -2,33 +2,28 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Drink;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Item;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Pizza;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Side;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class Manager implements ActionListener {
+public class Manager implements ActionListener, MouseListener {
 	private Till till;
 
 	private AddNewItemWindow addNewItem;
 	private NewOrder no;
+	private AmountTendered amt;
 	private ItemFrame itemFrame;
 	private String xmlFileName;
 
 	private Order customerOrder;
+	private MainFrame mf;
 
 	public Manager() throws IOException {
-		MainFrame mf = new MainFrame(this);
-		
 		till = new Till();
 		xmlFileName = till.getXMLFileName();
 				
@@ -40,6 +35,7 @@ public class Manager implements ActionListener {
 		}
 		
 		till = Till.load();
+		mf = new MainFrame(this, till.getOrdersArray());
 	}
 
 	@Override
@@ -75,13 +71,28 @@ public class Manager implements ActionListener {
 			try {
 				fireItemWindow(ItemType.DRINK);
 			} catch (FileNotFoundException e3) {
-
+				
 			}
 		} else if (action.equals("Add to Order")) {
 			addItemToOrder();
-		} else if (action.equals("Pay Order")){
-			addOrderToTill();
-		} else if (action.equals("Save State")){
+		} else if (action.equals("Pay")){
+			amt = new AmountTendered(this, itemFrame.getSubTotal());
+		}
+		else if (action.equals("Pay Order")){
+			if (amt.getChange().signum() == -1){
+				//throw new massive exception
+			} else {
+				amt.showChangeAmount(amt.getChange());
+				addOrderToTill();
+			}
+		} else if (action.equals("Complete Order")){
+			amt.dispose();
+			amt.getChangeFrame().dispose();
+			no.dispose();
+			mf.updateArrayList(till.getOrdersArray());
+		}
+		
+		else if (action.equals("Save State")){
 			try {
 				till.save();
 			} catch (IOException e1) {
@@ -106,6 +117,10 @@ public class Manager implements ActionListener {
 		}
 	}
 
+	private void updateQuantity(){
+		//no.updateItemToTable(type, name, quantity, size, price, itemTotal)
+	}
+	
 	private void addItemToOrder() {
 		Item i = null;
 		if (itemFrame.getItemType() == ItemType.PIZZA){
@@ -116,10 +131,14 @@ public class Manager implements ActionListener {
 			i = new Drink(itemFrame.getSelectedItem(), new BigDecimal(itemFrame.getItemPrice()), itemFrame.getItemSize(), itemFrame.getItemDesc());
 		}
 		customerOrder.addItem(i, itemFrame.getQuantity());
-		no.addItemToTable(i.getName(), itemFrame.getQuantity(), itemFrame.getSubTotal());
+		no.addItemToTable(itemFrame.getItemType(), i.getName(), itemFrame.getQuantity(),itemFrame.getItemSize(), itemFrame.getItemPrice(), itemFrame.getSubTotal());
 		itemFrame.dispose();
 	}
-
+	
+	private void payOrder(){
+		
+	}
+	
 	private void createNewItem(ItemType type) {
 		if (type == ItemType.PIZZA) {
 			addNewItem = new AddNewItemWindow(ItemType.PIZZA);
@@ -131,6 +150,37 @@ public class Manager implements ActionListener {
 	}
 	
 	private void addOrderToTill(){
+		no.setCustomerName();
+		customerOrder.setCustomerName(no.getCustomerName());
 		till.addOrder(customerOrder);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

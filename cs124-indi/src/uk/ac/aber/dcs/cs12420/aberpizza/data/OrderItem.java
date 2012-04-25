@@ -24,4 +24,8 @@ public class OrderItem {
 		itemPrice.multiply(new BigDecimal(quantity));
 		return itemPrice;
 	}
+	
+	public String toString(){
+		return item.getName() + " x " + Integer.toString(quantity);
+	}
 }

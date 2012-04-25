@@ -1,155 +1,227 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
 
-public class NewOrder extends JFrame implements ActionListener{
+public class NewOrder extends JFrame implements ActionListener, ListSelectionListener{
 
 	private static final long serialVersionUID = 4978171281055317618L;
 	private Manager manager;
-	private ItemFrame itemFrame;
+
+	private JPanel customerNamePane, listPane, buttonPane, subDiscPane,
+			payCancelPane;
+	private JTextField customerText;
 	
-	private JPanel customerNamePane, listPane, buttonPane, subDiscPane, payCancelPane;
-	private JTextField customerName;
+	private JList orderList;
+	private DefaultListModel tableList = new DefaultListModel();
 	
-	private DefaultTableModel tableList= new DefaultTableModel(0, 3);
 	private BigDecimal totalForOrder = new BigDecimal("0");
-	
 	private JLabel subText;
+	
+	private int selectedIndex = 0;
+	private String customerName;
 	
 	public NewOrder(Manager manager) {
 		this.manager = manager;
-		
-		//TODO Change to SpringLayout
-		this.setLayout(new GridLayout(5, 1));
+		this.setLayout(null);
 		
 		customerNamePane = getCustomerNamePane();
+		customerNamePane.setBounds(0, 0, customerNamePane.getWidth(),
+				customerNamePane.getHeight());
 		this.add(customerNamePane);
-		
-		listPane = getOrderListPane();
-		this.add(listPane);
-		
+
 		buttonPane = getButtonPane();
+		buttonPane.setBounds(0, customerNamePane.getHeight(),
+				buttonPane.getWidth(), buttonPane.getHeight());
 		this.add(buttonPane);
-		
+
+		listPane = getOrderListPane();
+		listPane.setBounds(0,
+				customerNamePane.getHeight() + buttonPane.getHeight(),
+				listPane.getWidth(), listPane.getHeight());
+		this.add(listPane);
+
 		subDiscPane = getSubDiscPane();
+		subDiscPane.setBounds(0,
+				customerNamePane.getHeight() + buttonPane.getHeight()
+						+ listPane.getHeight(), subDiscPane.getWidth(),
+				subDiscPane.getHeight());
 		this.add(subDiscPane);
-		
+
 		payCancelPane = getPayCancelPane();
+		payCancelPane.setBounds(0, customerNamePane.getHeight() + buttonPane.getHeight()
+						+ listPane.getHeight() + subDiscPane.getHeight(), payCancelPane.getWidth(), subDiscPane.getHeight());
 		this.add(payCancelPane);
-		
+
 		this.setVisible(true);
-		this.setSize(new Dimension(500,700));
+		this.setResizable(false);
+		this.setSize(new Dimension(1024, 768));
 	}
 
-	private JPanel getCustomerNamePane(){
-		JPanel thisPane = new JPanel(new GridLayout(1,2));
-		
-		JLabel nameLabel = new JLabel("Enter Customers Name:");
-		customerName = new JTextField();
+	public int getSelectedIndex(){
+		return selectedIndex;
+	}
+	
+	private JPanel getCustomerNamePane() {
+		JPanel thisPane = new JPanel(null);
+
+		JLabel nameLabel = new JLabel("Enter Customers Name:",
+				SwingConstants.RIGHT);
+		nameLabel.setBounds(5, 5, 150, 25);
+		customerText = new JTextField();
+		customerText.setBounds(160, 5, 150, 25);
 		thisPane.add(nameLabel);
-		thisPane.add(customerName);		
-		thisPane.setSize(new Dimension(500, 50));
+		thisPane.add(customerText);
+		thisPane.setSize(new Dimension(1024, 35));
 		return thisPane;
 	}
 
-	private JPanel getOrderListPane(){
-		JPanel thisPane = new JPanel();
-		
-		JTable orderList = new JTable(tableList);
-		thisPane.add(orderList);
-		
-		return thisPane;	
-	}
-	
-	private JPanel getButtonPane(){
-		//SpringLayout bpsl = new SpringLayout();
-		JPanel thisPane = new JPanel(new GridLayout(1,3));
-		
-		
+	private JPanel getButtonPane() {
+		JPanel thisPane = new JPanel(null);
+
 		JButton pizzas, sides, drinks;
 		pizzas = new JButton("Add Pizza");
 		pizzas.addActionListener(manager);
+		pizzas.setBounds(100, 10, 200, 150);
+
 		sides = new JButton("Add Side");
 		sides.addActionListener(manager);
+		sides.setBounds(320, 10, 200, 150);
+
 		drinks = new JButton("Add Drink");
 		drinks.addActionListener(manager);
+		drinks.setBounds(540, 10, 200, 150);
 
-/*		bpsl.putConstraint(SpringLayout.EAST, thisPane, 10,
-				SpringLayout.EAST, pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, sides, 10, SpringLayout.WEST,
-				pizzas);
-		bpsl.putConstraint(SpringLayout.EAST, drinks, 10, SpringLayout.WEST,
-				sides);
-		thisPane.setLayout(bpsl);*/
-		
 		thisPane.add(pizzas);
 		thisPane.add(sides);
 		thisPane.add(drinks);
-		
+		thisPane.setSize(1024, 170);
 		return thisPane;
 	}
 
-	private JPanel getSubDiscPane(){
-		JPanel thisPane = new JPanel(new GridLayout(2,2));
+	private JPanel getOrderListPane() {
+		JPanel thisPane = new JPanel(null);
+
+		JLabel label = new JLabel("Items in Order");
+		label.setBounds(5, 5, 1000, 25);
+
+		orderList = new JList(tableList);
+		orderList.addMouseListener(manager);
+		orderList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		UpdatePopupMenu uq = new UpdatePopupMenu(manager);
+		orderList.setComponentPopupMenu(uq);
 		
-		JLabel subLabel, discLabel, discText;
-		subLabel = new JLabel("Subtotal:");
-		thisPane.add(subLabel);
-		subText = new JLabel("Subtotal for Order // to-do");
-		thisPane.add(subText);
-		discLabel = new JLabel("Amount of Discount");
-		thisPane.add(discLabel);
-		discText = new JLabel("Discount // to-do");
-		thisPane.add(discText);
-		
+		orderList.setLocation(0, 0);
+
+		JScrollPane scroll = new JScrollPane(orderList);
+		scroll.setBounds(5, 35, 1000, 200);
+
+		thisPane.add(scroll);
+		thisPane.setSize(1024, label.getHeight() + scroll.getHeight() + 15);
 		return thisPane;
 	}
-	
-	private JPanel getPayCancelPane(){
-		JPanel thisPane = new JPanel(new GridLayout(1,2));
-		
+
+	private JPanel getSubDiscPane() {
+		JPanel thisPane = new JPanel(null);
+
+		JLabel subLabel, discLabel, discText;
+
+		subLabel = new JLabel("Subtotal : £", SwingConstants.RIGHT);
+		subLabel.setBounds(150, 5, 250, 25);
+		thisPane.add(subLabel);
+
+		subText = new JLabel("Subtotal for Order // to-do");
+		subText.setBounds(420, 5, 250, 25);
+		thisPane.add(subText);
+
+		discLabel = new JLabel("Amount of Discount : £", SwingConstants.RIGHT);
+		discLabel.setBounds(150, 50, 250, 25);
+		thisPane.add(discLabel);
+
+		discText = new JLabel("Discount // to-do");
+		discText.setBounds(420, 50, 250, 25);
+		thisPane.add(discText);
+		thisPane.setSize(1024, 100);
+		return thisPane;
+	}
+
+	private JPanel getPayCancelPane() {
+		JPanel thisPane = new JPanel(null);
+
 		JButton pay, cancel;
-		
+
 		pay = new JButton("Pay");
 		pay.addActionListener(manager);
+		pay.setBounds(137, 5, 350, 90);
 		thisPane.add(pay);
-		
+
 		cancel = new JButton("Cancel Order");
 		cancel.addActionListener(this);
+		cancel.setBounds(537, 5, 350, 90);
 		thisPane.add(cancel);
-		
+		thisPane.setSize(1024, 100);
 		return thisPane;
 	}
+
+	public String getCustomerName(){
+		return customerName;
+	}
 	
-	public void addItemToTable(String name, int quantity, BigDecimal itemTotal){
-		String[] singleItem = new String[3];
-		singleItem[0] = name;
-		singleItem[1] = Integer.toString(quantity);
-		singleItem[2] = itemTotal.toString();
-		tableList.addRow(singleItem);
+	public void setCustomerName(){
+		if (customerText.getText().equals("")){
+			//throw new invalid argument exception
+		} else {
+			customerName = customerText.getText();
+		}
+	}
+	
+	public void addItemToTable(ItemType type, String name, int quantity, String size, String price, BigDecimal itemTotal) {
+		String singleItem = Integer.toString(quantity) + " x " + name + " " + type.toString().toLowerCase();
+		String singlePrice = " @ " + price + " = " + itemTotal.toString();
+		tableList.addElement(singleItem + singlePrice);
 		totalForOrder = totalForOrder.add(itemTotal);
 		subText.setText(totalForOrder.toString());
-		this.validate();		
+		this.validate();
+	}
+
+	public void updateItemToTable(ItemType type, String name, int quantity, String size, String price, BigDecimal itemTotal) {
+		String singleItem = Integer.toString(quantity) + " x " + name + " " + type.toString().toLowerCase();
+		String singlePrice = " @ " + price + " = " + itemTotal.toString();
+		tableList.setElementAt((singleItem + singlePrice), selectedIndex);
+		totalForOrder = totalForOrder.add(itemTotal);
+		subText.setText(totalForOrder.toString());
+		this.validate();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		
-		if (action.equals("Cancel Order")){
+
+		if (action.equals("Cancel Order")) {
 			this.dispose();
 		}
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		selectedIndex = orderList.getSelectedIndex();
 		
 	}
 }

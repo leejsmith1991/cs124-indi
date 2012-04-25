@@ -38,6 +38,14 @@ public class Order{
 		}
 	}
 	
+	public void removeItem(Item item){
+		for (int i=0; i>items.size();i++){
+			if (items.get(i).equals(item)){
+				items.remove(i);
+			}
+		}
+	}
+	
 	public BigDecimal getSubtotal(){
 		BigDecimal subTotal = new BigDecimal("0");
 		for (int j = 0; j > items.size(); j++){

@@ -21,9 +21,9 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 	private Manager manager;
 
-	private JList<String> drinkList, priceList;
+	private JList drinkList, priceList;
 	private ArrayList<String> dName, dSmall, dMed, dLarge, dDesc;
-	private DefaultListModel<String> ml;
+	private DefaultListModel ml;
 	String[] prices = new String[3];
 
 	private JPanel drinkListPane, priceListPane, quantityPane, submitPane;
@@ -79,12 +79,12 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		label.setBounds(5, 5, 340, 25);
 		thisPane.add(label);
 
-		ml = new DefaultListModel<String>();
+		ml = new DefaultListModel();
 		for (int i = 0; i < dName.size(); i++) {
 			ml.addElement(dName.get(i));
 		}
 
-		drinkList = new JList<String>(ml);
+		drinkList = new JList(ml);
 		drinkList.setBounds(30, label.getHeight() + 10, 300, dName.size() * 21);
 
 		DrinkSelector drinkSelect = new DrinkSelector();
@@ -113,7 +113,8 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		largeLabel.setBounds(30, 64, 50, 22);
 		thisPane.add(largeLabel);
 
-		priceList = new JList<String>();
+		priceList = new JList();
+		priceList.setEnabled(false);
 		PriceSelector priceSelect = new PriceSelector();
 		priceList.addListSelectionListener(priceSelect);
 		setPizzaPrices(0);
@@ -241,23 +242,17 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
+		setQuantity();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 
-		try {
-			quantity = Integer.parseInt(quantText.getText());
-		} catch (NumberFormatException nfe) {
-
-		}
 	}
 
 	/**
@@ -278,6 +273,7 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 					setPizzaPrices(a);
 					itemDesc = dDesc.get(a);
 					priceList.setSelectedIndex(0);
+					priceList.setEnabled(true);
 					break;
 				}
 			}

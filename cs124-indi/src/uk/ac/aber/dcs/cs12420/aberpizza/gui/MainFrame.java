@@ -4,11 +4,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
 
 public class MainFrame extends JFrame{
 	/**
@@ -20,56 +26,55 @@ public class MainFrame extends JFrame{
 
 	private Manager manager;
 	
-	public MainFrame(Manager manager) {
-		/* Layout the GUI */
-		try {
-			UIManager.setLookAndFeel(
-					UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			
-		}
+	private DefaultListModel orders;
+	private JList ordersList;	
+	
+	private ArrayList<Order> ordersArray;
+	
+	public MainFrame(Manager manager, ArrayList<Order> orderList) {
+		ordersArray = orderList;
 		
 		this.setManager(manager);
 		menuBar = new MenuBar(manager);
-		this.setLayout(new GridLayout(3, 1));
+		
 		this.setJMenuBar(menuBar);
-		
-		setUILook();
-		
-		JButton addNewOrder = new JButton("Create New Order");
-		JButton viewSalesHistory = new JButton("View Todays Sales History");
-		JButton closeForDay = new JButton("End Day");
 
+		this.setLayout(null);
+		JButton addNewOrder = new JButton("Create New Order");
+		addNewOrder.setBounds(5,5,200, 30);
 		addNewOrder.addActionListener(manager);
+		
+		JButton viewSalesHistory = new JButton("View Todays Sales History");
+		viewSalesHistory.setBounds(5,40,200, 30);
 		viewSalesHistory.addActionListener(manager);
+		
+		JButton closeForDay = new JButton("End Day");
+		closeForDay.setBounds(5,75,200, 30);
 		closeForDay.addActionListener(manager);
 
+		orders = new DefaultListModel();
+		ordersList = new JList(orders);
+		ordersList.setBounds(210, 5, 300, 696);
+		
 		add(addNewOrder);
 		add(viewSalesHistory);
 		add(closeForDay);
+		add(ordersList);
+				
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(new Dimension(200,300));
+		this.setSize(new Dimension(1024,768));
 	}
 	
-	private void setUILook(){
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void updateArrayList(ArrayList<Order> l){
+		orders.clear();
+		ordersArray = l;
+		for (int k = 0; k < ordersArray.size(); k++){
+			orders.addElement(ordersArray.get(k).getCustomerName());
 		}
+		this.validate();
 	}
-
+	
 	public Manager getManager() {
 		return manager;
 	}

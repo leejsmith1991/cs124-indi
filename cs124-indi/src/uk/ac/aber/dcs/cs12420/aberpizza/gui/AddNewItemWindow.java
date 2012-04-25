@@ -27,7 +27,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 
 	public AddNewItemWindow(ItemType type) {
 		this.type = type;
-		this.setLayout(new GridLayout(5,1));
+		this.setLayout(null);
 		this.setTitle("Create new " + type.toString().toLowerCase());
 
 		namePane = getNamePane();
@@ -48,15 +48,16 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 	}
 
 	private JPanel getNamePane(){
-		JPanel thisPane = new JPanel(new GridLayout(1,2));
+		JPanel thisPane = new JPanel(null);
 		
 		JLabel nameLabel = new JLabel("Enter name of new " + type.toString().toLowerCase(), SwingConstants.RIGHT);
-		nameLabel.setFont(f);
+		nameLabel.setBounds(5,5,150,25);
 		thisPane.add(nameLabel);
 		
 		nameText = new JTextField();
-		nameText.setFont(f);
+		nameText.setBounds(160,5,150,25);
 		thisPane.add(nameText);
+		thisPane.setSize(320,25);
 		
 		return thisPane;
 	}
@@ -90,8 +91,6 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 		
 		return thisPane;
 	}
-	
-	//priceText.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 	private JPanel getDescriptionPane(){
 		SpringLayout thisLayout = new SpringLayout();

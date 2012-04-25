@@ -21,9 +21,9 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 	private Manager manager;
 
-	private JList<String> sideList, priceList;
+	private JList sideList, priceList;
 	private ArrayList<String> sName, sSmall, sMed, sLarge, sDesc;
-	private DefaultListModel<String> ml;
+	private DefaultListModel ml;
 	String[] prices = new String[3];
 
 	private JPanel sideListPane, priceListPane, quantityPane, submitPane;
@@ -79,12 +79,12 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		label.setBounds(5, 5, 340, 25);
 		thisPane.add(label);
 
-		ml = new DefaultListModel<String>();
+		ml = new DefaultListModel();
 		for (int i = 0; i < sName.size(); i++) {
 			ml.addElement(sName.get(i));
 		}
 
-		sideList = new JList<String>(ml);
+		sideList = new JList(ml);
 		sideList.setBounds(30, label.getHeight() + 10, 300, sName.size() * 21);
 
 		SideSelector drinkSelect = new SideSelector();
@@ -113,7 +113,8 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		largeLabel.setBounds(30, 64, 50, 22);
 		thisPane.add(largeLabel);
 
-		priceList = new JList<String>();
+		priceList = new JList();
+		priceList.setEnabled(false);
 		PriceSelector priceSelect = new PriceSelector();
 		priceList.addListSelectionListener(priceSelect);
 		setPizzaPrices(0);
@@ -231,28 +232,28 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	public BigDecimal getSubTotal() {
 		BigDecimal subtotal = new BigDecimal(itemPrice);
 		subtotal.multiply(new BigDecimal(quantity));
+		System.out.println(itemPrice.toString());
+		
 		return subtotal;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-
 		try {
 			quantity = Integer.parseInt(quantText.getText());
 		} catch (NumberFormatException nfe) {
 
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+
 	}
 
 	/**
@@ -273,6 +274,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 					setPizzaPrices(a);
 					itemDesc = sDesc.get(a);
 					priceList.setSelectedIndex(0);
+					priceList.setEnabled(true);
 					break;
 				}
 			}

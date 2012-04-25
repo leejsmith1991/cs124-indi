@@ -23,10 +23,12 @@ public class Till implements Serializable {
 	private static String xmlFileName;
 	private String[] date = new String[3];
 	private final static String PATHNAME = "./TillSaves/";
+	
 	private ArrayList<Order> orders;
 
 	public Till() throws IOException{
 		setFileDate();
+		orders = new ArrayList<Order>();
 	}
 	
 	private void setFileDate(){
@@ -43,8 +45,13 @@ public class Till implements Serializable {
 	
 	public void addOrder(Order order) {
 		orders.add(order);
+		System.out.println(order.getCustomerName());
 	}
 
+	public ArrayList getOrdersArray(){
+		return orders;
+	}
+	
 	public BigDecimal getTotalForDay() {
 		BigDecimal total = new BigDecimal("0");
 		for (int i = 0; i> orders.size(); i++){

@@ -21,9 +21,9 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	private Manager manager;
 
-	private JList<String> pizzasList, priceList;
+	private JList pizzasList, priceList;
 	private ArrayList<String> pName, pSmall, pMed, pLarge, pDesc;
-	private DefaultListModel<String> ml;
+	private DefaultListModel ml;
 	String[] prices = new String[3];
 
 	private JPanel pizzaListPane, priceListPane, quantityPane, submitPane;
@@ -79,12 +79,12 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		label.setBounds(5, 5, 340, 25);
 		thisPane.add(label);
 
-		ml = new DefaultListModel<String>();
+		ml = new DefaultListModel();
 		for (int i = 0; i < pName.size(); i++) {
 			ml.addElement(pName.get(i));
 		}
 
-		pizzasList = new JList<String>(ml);
+		pizzasList = new JList(ml);
 		pizzasList
 				.setBounds(30, label.getHeight() + 10, 300, pName.size() * 21);
 
@@ -117,7 +117,8 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		largeLabel.setBounds(30, 64, 50, 22);
 		thisPane.add(largeLabel);
 
-		priceList = new JList<String>();
+		priceList = new JList();
+		priceList.setEnabled(false);
 		PriceSelector priceSelect = new PriceSelector();
 		priceList.addListSelectionListener(priceSelect);
 		setPizzaPrices(0);
@@ -275,6 +276,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 					setPizzaPrices(a);
 					itemDesc = pDesc.get(a);
 					priceList.setSelectedIndex(0);
+					priceList.setEnabled(true);
 					break;
 				}
 			}
