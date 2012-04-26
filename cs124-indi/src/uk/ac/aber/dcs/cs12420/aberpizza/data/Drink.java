@@ -30,7 +30,10 @@ public class Drink implements Item{
 	 * Holds the selected size of the drink
 	 */
 	private String size;
-	
+	/**
+	 * Holds the itemtype, final as not able to be set;
+	 */
+	private final ItemType ITEMTYPE = ItemType.DRINK;
 	/**
 	 * Constructs a new Drink type with name, price, size and description of the item
 	 * @param String name - Name of the Drink to be created
@@ -83,6 +86,11 @@ public class Drink implements Item{
 	@Override
 	public void setSize(String size) {
 		this.size = size;		
+	}
+
+	@Override
+	public ItemType getItemType() {
+		return ITEMTYPE;
 	}
 
 }

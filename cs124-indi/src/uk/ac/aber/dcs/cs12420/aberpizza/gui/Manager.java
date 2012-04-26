@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import javax.swing.JOptionPane;
+
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
 public class Manager implements ActionListener, MouseListener {
@@ -19,20 +21,20 @@ public class Manager implements ActionListener, MouseListener {
 	private AmountTendered amt;
 	private ItemFrame itemFrame;
 	private String xmlFileName;
-
-	private Order customerOrder;
 	private MainFrame mf;
+	private Item i;
+	private Order customerOrder;
 
 	public Manager() throws IOException {
 		till = new Till();
 		xmlFileName = till.getXMLFileName();
-				
+
 		File f = new File("cs124-indi/TillSaves" + xmlFileName + ".xml");
-		
-		if (!f.exists()){
+
+		if (!f.exists()) {
 			till.save();
 		}
-		
+
 		till = Till.load();
 		mf = new MainFrame(this, till.getOrdersArray());
 	}
@@ -70,34 +72,35 @@ public class Manager implements ActionListener, MouseListener {
 			try {
 				fireItemWindow(ItemType.DRINK);
 			} catch (FileNotFoundException e3) {
-				
+
 			}
 		} else if (action.equals("Add to Order")) {
 			addItemToOrder();
-		} else if (action.equals("Pay")){
+		} else if (action.equals("Pay")) {
 			amt = new AmountTendered(this, itemFrame.getSubTotal());
-		}
-		else if (action.equals("Pay Order")){
-			if (amt.getChange().signum() == -1){
-				//throw new massive exception
+		} else if (action.equals("Pay Order")) {
+			if (amt.getChange().signum() == -1) {
+				// throw new massive exception
 			} else {
 				amt.showChangeAmount(amt.getChange());
 				addOrderToTill();
 			}
-		} else if (action.equals("Complete Order")){
+		} else if (action.equals("Complete Order")) {
 			amt.dispose();
 			amt.getChangeFrame().dispose();
 			no.dispose();
 			mf.updateArrayList(till.getOrdersArray());
-		}
-		
-		else if (action.equals("Save State")){
+		} else if (action.equals("Save State")) {
 			try {
 				till.save();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		} else if (action.equals("Update Quantity")){
+			updateQuantity();
+		} else if (action.equals("Remove Item")){
+			removeItemFromOrder();
 		}
 	}
 
@@ -111,33 +114,52 @@ public class Manager implements ActionListener, MouseListener {
 			itemFrame = (ItemFrame) new ItemPizza(this);
 		} else if (type == ItemType.SIDE) {
 			itemFrame = (ItemFrame) new ItemSide(this);
-		} else if (type == ItemType.DRINK){
+		} else if (type == ItemType.DRINK) {
 			itemFrame = (ItemFrame) new ItemDrink(this);
 		}
 	}
 
-	private void updateQuantity(){
-		//no.updateItemToTable(type, name, quantity, size, price, itemTotal)
+	private void updateQuantity() {
+		JOptionPane jop = new JOptionPane();
+		int newQuant = 1;
+		try {
+			String newQuantInput = JOptionPane.showInputDialog(null,
+					"Enter new Quantity", JOptionPane.OK_CANCEL_OPTION);
+			newQuant = Integer.parseInt(newQuantInput);
+		} catch (NumberFormatException nfe) {
+
+		}
+		customerOrder.updateItemQuantity(customerOrder.getItemAt(no.getSelectedIndex()), newQuant);
+		no.updateItemToTable(customerOrder.getItemAt(no.getSelectedIndex()), itemFrame.getQuantity(),
+				customerOrder.getItemAt(no.getSelectedIndex()).getPrice().multiply(new BigDecimal(newQuant)), no.getSelectedIndex(), customerOrder.getSubtotal());
+	}
+
+	private void removeItemFromOrder(){
+		no.removeItem(no.getSelectedIndex(), customerOrder.getSubtotal());
+		customerOrder.removeItem(no.getSelectedIndex());
 	}
 	
 	private void addItemToOrder() {
-		Item i = null;
-		if (itemFrame.getItemType() == ItemType.PIZZA){
-			i = new Pizza(itemFrame.getSelectedItem(), new BigDecimal(itemFrame.getItemPrice()), itemFrame.getItemSize(), itemFrame.getItemDesc());
-		} else if (itemFrame.getItemType() == ItemType.SIDE){
-			i = new Side(itemFrame.getSelectedItem(), new BigDecimal(itemFrame.getItemPrice()), itemFrame.getItemSize(), itemFrame.getItemDesc());
+		i = null;
+		if (itemFrame.getItemType() == ItemType.PIZZA) {
+			i = new Pizza(itemFrame.getSelectedItem(), new BigDecimal(
+					itemFrame.getItemPrice()), itemFrame.getItemSize(),
+					itemFrame.getItemDesc());
+		} else if (itemFrame.getItemType() == ItemType.SIDE) {
+			i = new Side(itemFrame.getSelectedItem(), new BigDecimal(
+					itemFrame.getItemPrice()), itemFrame.getItemSize(),
+					itemFrame.getItemDesc());
 		} else {
-			i = new Drink(itemFrame.getSelectedItem(), new BigDecimal(itemFrame.getItemPrice()), itemFrame.getItemSize(), itemFrame.getItemDesc());
+			i = new Drink(itemFrame.getSelectedItem(), new BigDecimal(
+					itemFrame.getItemPrice()), itemFrame.getItemSize(),
+					itemFrame.getItemDesc());
 		}
 		customerOrder.addItem(i, itemFrame.getQuantity());
-		no.addItemToTable(itemFrame.getItemType(), i.getName(), itemFrame.getQuantity(),itemFrame.getItemSize(), itemFrame.getItemPrice(), itemFrame.getSubTotal());
+		no.addItemToTable(i, itemFrame.getQuantity(),
+				i.getPrice().multiply(new BigDecimal(itemFrame.getQuantity())), customerOrder.getSubtotal());
 		itemFrame.dispose();
 	}
-	
-	private void payOrder(){
-		
-	}
-	
+
 	private void createNewItem(ItemType type) {
 		if (type == ItemType.PIZZA) {
 			addNewItem = new AddNewItemWindow(ItemType.PIZZA);
@@ -147,8 +169,8 @@ public class Manager implements ActionListener, MouseListener {
 			addNewItem = new AddNewItemWindow(ItemType.DRINK);
 		}
 	}
-	
-	private void addOrderToTill(){
+
+	private void addOrderToTill() {
 		no.setCustomerName();
 		customerOrder.setCustomerName(no.getCustomerName());
 		till.addOrder(customerOrder);
@@ -162,24 +184,24 @@ public class Manager implements ActionListener, MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

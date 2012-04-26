@@ -51,5 +51,7 @@ public interface Item extends Serializable{
 	 * @param size
 	 */
 	public void setSize(String size);
+	
+	public ItemType getItemType();
 
 }

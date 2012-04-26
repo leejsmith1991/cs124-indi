@@ -18,9 +18,12 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Item;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem;
 
-public class NewOrder extends JFrame implements ActionListener, ListSelectionListener{
+public class NewOrder extends JFrame implements ActionListener,
+		ListSelectionListener {
 
 	private static final long serialVersionUID = 4978171281055317618L;
 	private Manager manager;
@@ -28,20 +31,20 @@ public class NewOrder extends JFrame implements ActionListener, ListSelectionLis
 	private JPanel customerNamePane, listPane, buttonPane, subDiscPane,
 			payCancelPane;
 	private JTextField customerText;
-	
+
 	private JList orderList;
 	private DefaultListModel tableList = new DefaultListModel();
-	
+
 	private BigDecimal totalForOrder = new BigDecimal("0");
 	private JLabel subText;
-	
+
 	private int selectedIndex = 0;
 	private String customerName;
-	
+
 	public NewOrder(Manager manager) {
 		this.manager = manager;
 		this.setLayout(null);
-		
+
 		customerNamePane = getCustomerNamePane();
 		customerNamePane.setBounds(0, 0, customerNamePane.getWidth(),
 				customerNamePane.getHeight());
@@ -66,8 +69,10 @@ public class NewOrder extends JFrame implements ActionListener, ListSelectionLis
 		this.add(subDiscPane);
 
 		payCancelPane = getPayCancelPane();
-		payCancelPane.setBounds(0, customerNamePane.getHeight() + buttonPane.getHeight()
-						+ listPane.getHeight() + subDiscPane.getHeight(), payCancelPane.getWidth(), subDiscPane.getHeight());
+		payCancelPane.setBounds(0,
+				customerNamePane.getHeight() + buttonPane.getHeight()
+						+ listPane.getHeight() + subDiscPane.getHeight(),
+				payCancelPane.getWidth(), subDiscPane.getHeight());
 		this.add(payCancelPane);
 
 		this.setVisible(true);
@@ -75,10 +80,10 @@ public class NewOrder extends JFrame implements ActionListener, ListSelectionLis
 		this.setSize(new Dimension(1024, 768));
 	}
 
-	public int getSelectedIndex(){
+	public int getSelectedIndex() {
 		return selectedIndex;
 	}
-	
+
 	private JPanel getCustomerNamePane() {
 		JPanel thisPane = new JPanel(null);
 
@@ -126,8 +131,9 @@ public class NewOrder extends JFrame implements ActionListener, ListSelectionLis
 		orderList.addMouseListener(manager);
 		orderList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		UpdatePopupMenu uq = new UpdatePopupMenu(manager);
+		orderList.addListSelectionListener(this);
 		orderList.setComponentPopupMenu(uq);
-		
+
 		orderList.setLocation(0, 0);
 
 		JScrollPane scroll = new JScrollPane(orderList);
@@ -180,33 +186,45 @@ public class NewOrder extends JFrame implements ActionListener, ListSelectionLis
 		return thisPane;
 	}
 
-	public String getCustomerName(){
+	public String getCustomerName() {
 		return customerName;
 	}
-	
-	public void setCustomerName(){
-		if (customerText.getText().equals("")){
-			//throw new invalid argument exception
+
+	public void setCustomerName() {
+		if (customerText.getText().equals("")) {
+			// throw new invalid argument exception
 		} else {
 			customerName = customerText.getText();
 		}
 	}
-	
-	public void addItemToTable(ItemType type, String name, int quantity, String size, String price, BigDecimal itemTotal) {
-		String singleItem = Integer.toString(quantity) + " x " + name + " " + type.toString().toLowerCase();
-		String singlePrice = " @ " + price + " = " + itemTotal.toString();
+
+	public void addItemToTable(Item item, int quantity,
+			BigDecimal orderItemPrice, BigDecimal subTotal) {
+		String singleItem = Integer.toString(quantity) + " x " + item.getName()
+				+ " " + item.getItemType().toString().toLowerCase();
+		String singlePrice = " @ " + item.getPrice() + " = £"
+				+ orderItemPrice.toString();
 		tableList.addElement(singleItem + singlePrice);
-		totalForOrder = totalForOrder.add(itemTotal);
+		totalForOrder = totalForOrder.add(orderItemPrice);
 		subText.setText(totalForOrder.toString());
 		this.validate();
 	}
 
-	public void updateItemToTable(ItemType type, String name, int quantity, String size, String price, BigDecimal itemTotal) {
-		String singleItem = Integer.toString(quantity) + " x " + name + " " + type.toString().toLowerCase();
-		String singlePrice = " @ " + price + " = " + itemTotal.toString();
-		tableList.setElementAt((singleItem + singlePrice), selectedIndex);
-		totalForOrder = totalForOrder.add(itemTotal);
-		subText.setText(totalForOrder.toString());
+	public void updateItemToTable(Item item, int quantity, BigDecimal orderItemPrice, int index, BigDecimal subTotal) {
+		String singleItem = Integer.toString(quantity) + " x " + item.getName()
+				+ " " + item.getItemType().toString().toLowerCase();
+		String singlePrice = " @ " + item.getPrice() + " = £"
+				+ orderItemPrice.toString();
+		tableList.setElementAt((singleItem + singlePrice), index);
+		totalForOrder = totalForOrder.add(orderItemPrice);
+		subText.setText(subTotal.toString());
+		this.validate();
+	}
+
+	public void removeItem(int index, BigDecimal subTotal){
+		tableList.remove(index);
+		orderList.setSelectedIndex(selectedIndex);
+		subText.setText(subTotal.toString());
 		this.validate();
 	}
 	
@@ -222,6 +240,9 @@ public class NewOrder extends JFrame implements ActionListener, ListSelectionLis
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		selectedIndex = orderList.getSelectedIndex();
-		
+		if (selectedIndex == -1){
+			selectedIndex = 0;
+		}
+		System.out.println(selectedIndex);
 	}
 }

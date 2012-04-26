@@ -25,6 +25,8 @@ public class Side implements Item {
 	 */
 	private String size;
 
+	private final ItemType ITEMTYPE = ItemType.SIDE;
+	
 	/**
 	 * Constructs a new Side with name, price, size and description of the item
 	 * @param name
@@ -78,4 +80,10 @@ public class Side implements Item {
 		this.size = size;
 
 	}
+
+	@Override
+	public ItemType getItemType() {
+		return ITEMTYPE;
+	}
+
 }

@@ -26,8 +26,9 @@ public class MainFrame extends JFrame{
 
 	private Manager manager;
 	
-	private DefaultListModel orders;
-	private JList ordersList;	
+	private DefaultListModel orders = new DefaultListModel();
+	
+	private JList ordersList = new JList(orders);	
 	
 	private ArrayList<Order> ordersArray;
 	
@@ -52,8 +53,8 @@ public class MainFrame extends JFrame{
 		closeForDay.setBounds(5,75,200, 30);
 		closeForDay.addActionListener(manager);
 
-		orders = new DefaultListModel();
-		ordersList = new JList(orders);
+		ordersList.setModel(orders);
+		updateArrayList(ordersArray);
 		ordersList.setBounds(210, 5, 300, 696);
 		
 		add(addNewOrder);

@@ -42,12 +42,16 @@ public class Till implements Serializable {
 	public String getXMLFileName(){
 		return xmlFileName;
 	}
-	
+		
 	public void addOrder(Order order) {
 		orders.add(order);
 		System.out.println(order.getCustomerName());
 	}
 
+	public void setOrdersArray(ArrayList orders){
+		this.orders = orders;
+	}
+	
 	public ArrayList getOrdersArray(){
 		return orders;
 	}

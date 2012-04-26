@@ -24,6 +24,9 @@ public class Pizza implements Item {
 	 * Holds the selected size of the pizza
 	 */
 	private String size;
+	
+	private final ItemType ITEMTYPE = ItemType.PIZZA;
+	
 	/**
 	 * Constructs a new Pizza type with name, price, size and description of the item
 	 * @param name
@@ -76,5 +79,10 @@ public class Pizza implements Item {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public ItemType getItemType() {
+		return ITEMTYPE;
 	}
 }
