@@ -1,12 +1,17 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Order{
+public class Order implements Serializable{
 
+	/**
+	 * Serial ID for saving and loading Till data
+	 */
+	private static final long serialVersionUID = -4579109022630547790L;
 	private ArrayList<OrderItem> items;
 	private String customerName;
 	

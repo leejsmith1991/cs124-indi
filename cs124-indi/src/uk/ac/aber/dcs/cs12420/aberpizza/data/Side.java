@@ -4,11 +4,34 @@ import java.math.BigDecimal;
 
 public class Side implements Item {
 
+	/**
+	 * Serial ID to enable saving and loading of Till data
+	 */
+	private static final long serialVersionUID = 3715867360453103089L;
+	/**
+	 * Holds name of the side
+	 */
 	private String name;
+	/**
+	 * Holds description associated with the side
+	 */
 	private String description;
+	/**
+	 * Holds the price of the side
+	 */
 	private BigDecimal price;
+	/**
+	 * Holds the selected size of the side
+	 */
 	private String size;
 
+	/**
+	 * Constructs a new Side with name, price, size and description of the item
+	 * @param name
+	 * @param price
+	 * @param size
+	 * @param desc
+	 */
 	public Side(String name, BigDecimal price, String size, String desc) {
 		this.name = name;
 		this.price = price;

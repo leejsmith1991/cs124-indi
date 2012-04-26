@@ -1,15 +1,36 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 public class Pizza implements Item {
 
+	/**
+	 * Serial ID to enable saving and loading of Till data
+	 */
+	private static final long serialVersionUID = 4003485664419158971L;
+	/**
+	 * Holds name of the pizza
+	 */
 	private String name;
+	/**
+	 * Holds description associated with the pizza
+	 */
 	private String description;
+	/**
+	 * Holds the price of the pizza
+	 */
 	private BigDecimal price;
+	/**
+	 * Holds the selected size of the pizza
+	 */
 	private String size;
-	
+	/**
+	 * Constructs a new Pizza type with name, price, size and description of the item
+	 * @param name
+	 * @param price
+	 * @param size
+	 * @param desc
+	 */
 	public Pizza(String name, BigDecimal price, String size,  String desc){
 		this.name = name;
 		this.price = price;

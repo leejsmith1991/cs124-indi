@@ -28,7 +28,6 @@ public class Manager implements ActionListener, MouseListener {
 		xmlFileName = till.getXMLFileName();
 				
 		File f = new File("cs124-indi/TillSaves" + xmlFileName + ".xml");
-		System.out.println(f.exists());
 		
 		if (!f.exists()){
 			till.save();

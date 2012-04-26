@@ -1,8 +1,13 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class OrderItem {
+public class OrderItem implements Serializable{
+	/**
+	 * Serial ID to enable saving and loading of Till data
+	 */
+	private static final long serialVersionUID = -9034323080247401793L;
 	private int quantity;
 	private Item item;
 	

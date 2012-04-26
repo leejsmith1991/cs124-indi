@@ -6,10 +6,14 @@ import java.math.BigDecimal;
  * Drink class allows the program to create a new Item of the Drink type
  * 
  * @author Lee Smith
- * @see uk.ac.aber.dcs.cs12420.aberpizza.data.Item Item
+ * @see Item
  */
 
 public class Drink implements Item{
+	/**
+	 * Serial ID to enable saving and loading of Till data
+	 */
+	private static final long serialVersionUID = -843689942661586094L;
 	/**
 	 * Holds name of the drink
 	 */
@@ -28,11 +32,11 @@ public class Drink implements Item{
 	private String size;
 	
 	/**
-	 * 
-	 * @param name - Name of the Drink to be created
-	 * @param price - Price of the Drink to be created
-	 * @param size - Size of the Drink to be created
-	 * @param desc - Description of the Drink to be created
+	 * Constructs a new Drink type with name, price, size and description of the item
+	 * @param String name - Name of the Drink to be created
+	 * @param BigDecimal price - Price of the Drink to be created
+	 * @param String size - Size of the Drink to be created
+	 * @param String desc - Description of the Drink to be created
 	 */
 	public Drink(String name, BigDecimal price, String size, String desc){
 		this.name = name;
@@ -41,10 +45,6 @@ public class Drink implements Item{
 		this.description = desc;
 	}
 	
-	/**
-	 * Returns the price of the Drink created
-	 * @return price - of the Drink
-	 */
 	@Override
 	public BigDecimal getPrice() {
 		return price;
