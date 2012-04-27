@@ -58,10 +58,9 @@ public class Order implements Serializable {
 	}
 
 	public void updateItemQuantity(Item item, int quantity) {
-		for (int i = 0; i > items.size(); i++) {
-			Item find = items.get(i).getItem();
-			if (find.equals(item)) {
-				items.get(i).setQuantity(quantity);
+		for (OrderItem orderItem : items) {
+			if (orderItem.getItem().equals(item)) {
+				orderItem.setQuantity(quantity);
 				System.out.println("Quantity updated");
 			}
 		}
@@ -150,6 +149,6 @@ public class Order implements Serializable {
 
 	@Override
 	public String toString() {
-		return orderTime + "   - " + customerName + " £" + subTotal.toString();
+		return orderTime + "   - " + customerName + " ï¿½" + subTotal.toString();
 	}
 }
