@@ -6,17 +6,8 @@ import java.math.BigDecimal;
 import java.text.*;
 import java.util.*;
 
-import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
+public class Till {
 
-
-public class Till implements Serializable {
-
-	/**
-	 * Creates SerialUID to enable saving and loading of files
-	 */
-	private static final long serialVersionUID = 811543431919259128L;
-	
 	private Date today;
 	private SimpleDateFormat dateFormat;
 	private String todayDate;
@@ -48,11 +39,11 @@ public class Till implements Serializable {
 		System.out.println(order.getCustomerName());
 	}
 
-	public void setOrdersArray(ArrayList orders){
+	public void setOrdersArray(ArrayList<Order> orders){
 		this.orders = orders;
 	}
 	
-	public ArrayList getOrdersArray(){
+	public ArrayList<Order> getOrdersArray(){
 		return orders;
 	}
 	

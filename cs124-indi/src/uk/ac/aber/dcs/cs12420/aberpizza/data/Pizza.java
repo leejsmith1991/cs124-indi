@@ -5,10 +5,6 @@ import java.math.BigDecimal;
 public class Pizza implements Item {
 
 	/**
-	 * Serial ID to enable saving and loading of Till data
-	 */
-	private static final long serialVersionUID = 4003485664419158971L;
-	/**
 	 * Holds name of the pizza
 	 */
 	private String name;

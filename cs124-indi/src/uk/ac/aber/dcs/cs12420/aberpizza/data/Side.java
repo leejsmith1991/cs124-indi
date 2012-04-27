@@ -5,10 +5,6 @@ import java.math.BigDecimal;
 public class Side implements Item {
 
 	/**
-	 * Serial ID to enable saving and loading of Till data
-	 */
-	private static final long serialVersionUID = 3715867360453103089L;
-	/**
 	 * Holds name of the side
 	 */
 	private String name;

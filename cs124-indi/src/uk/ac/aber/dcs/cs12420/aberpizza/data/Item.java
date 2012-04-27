@@ -1,6 +1,5 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 /**
  * Item interface inplemented by Pizza, Side, and Drink
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
  *@see Side
  *@see Drink
  */
-public interface Item extends Serializable{
+public interface Item{
 	
 	/**
 	 * Returns the price of a created item

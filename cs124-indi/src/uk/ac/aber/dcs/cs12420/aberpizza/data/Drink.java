@@ -11,10 +11,6 @@ import java.math.BigDecimal;
 
 public class Drink implements Item{
 	/**
-	 * Serial ID to enable saving and loading of Till data
-	 */
-	private static final long serialVersionUID = -843689942661586094L;
-	/**
 	 * Holds name of the drink
 	 */
 	private String name;
