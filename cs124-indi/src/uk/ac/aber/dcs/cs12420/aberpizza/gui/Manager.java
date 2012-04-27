@@ -83,7 +83,7 @@ public class Manager implements ActionListener, MouseListener {
 				// throw new massive exception
 			} else {
 				amt.showChangeAmount(amt.getChange());
-				addOrderToTill();
+				
 			}
 		} else if (action.equals("Complete Order")) {
 			amt.dispose();
@@ -97,12 +97,16 @@ public class Manager implements ActionListener, MouseListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else if (action.equals("Update Quantity")){
+		} else if (action.equals("Update Quantity")) {
 			updateQuantity();
-		} else if (action.equals("Remove Item")){
+		} else if (action.equals("Remove Item")) {
 			removeItemFromOrder();
+		} else if (action.equals("Calculate Discount")){
+			addOrderToTill();
+			calculateDiscount();
 		}
 	}
+
 
 	private void createNewOrder() {
 		no = new NewOrder(this);
@@ -126,38 +130,39 @@ public class Manager implements ActionListener, MouseListener {
 			String newQuantInput = JOptionPane.showInputDialog(null,
 					"Enter new Quantity", JOptionPane.OK_CANCEL_OPTION);
 			newQuant = Integer.parseInt(newQuantInput);
+			customerOrder.updateItemQuantity(customerOrder.getItemAt(no.getSelectedIndex()), newQuant);
+			customerOrder.updateSubTotal();
+			no.updateItemToTable(customerOrder, customerOrder.getItemAt(no.getSelectedIndex()), no.getSelectedIndex());
 		} catch (NumberFormatException nfe) {
-
+			
 		}
-		customerOrder.updateItemQuantity(customerOrder.getItemAt(no.getSelectedIndex()), newQuant);
-		no.updateItemToTable(customerOrder.getItemAt(no.getSelectedIndex()), itemFrame.getQuantity(),
-				customerOrder.getItemAt(no.getSelectedIndex()).getPrice().multiply(new BigDecimal(newQuant)), no.getSelectedIndex(), customerOrder.getSubtotal());
+		
 	}
 
-	private void removeItemFromOrder(){
-		no.removeItem(no.getSelectedIndex(), customerOrder.getSubtotal());
+	private void removeItemFromOrder() {
 		customerOrder.removeItem(no.getSelectedIndex());
+		customerOrder.updateSubTotal();
+		no.removeItem(customerOrder, no.getSelectedIndex(), customerOrder.getSubtotal());
 	}
-	
+
 	private void addItemToOrder() {
 		i = null;
 		if (itemFrame.getItemType() == ItemType.PIZZA) {
-			i = new Pizza(itemFrame.getSelectedItem(), new BigDecimal(
-					itemFrame.getItemPrice()), itemFrame.getItemSize(),
+			i = new Pizza(itemFrame.getSelectedItem(), itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		} else if (itemFrame.getItemType() == ItemType.SIDE) {
-			i = new Side(itemFrame.getSelectedItem(), new BigDecimal(
-					itemFrame.getItemPrice()), itemFrame.getItemSize(),
+			i = new Side(itemFrame.getSelectedItem(), itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		} else {
-			i = new Drink(itemFrame.getSelectedItem(), new BigDecimal(
-					itemFrame.getItemPrice()), itemFrame.getItemSize(),
+			i = new Drink(itemFrame.getSelectedItem(),itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		}
 		customerOrder.addItem(i, itemFrame.getQuantity());
-		no.addItemToTable(i, itemFrame.getQuantity(),
-				i.getPrice().multiply(new BigDecimal(itemFrame.getQuantity())), customerOrder.getSubtotal());
+		no.addItemToTable(customerOrder, i, itemFrame.getQuantity());
 		itemFrame.dispose();
+	}
+	private void calculateDiscount() {
+		customerOrder.getDiscount();	
 	}
 
 	private void createNewItem(ItemType type) {

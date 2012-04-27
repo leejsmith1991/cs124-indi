@@ -9,11 +9,13 @@ public class OrderItem implements Serializable{
 	 */
 	private static final long serialVersionUID = -9034323080247401793L;
 	private int quantity;
+	private BigDecimal itemTotal = new BigDecimal("0");
 	private Item item;
 	
 	public OrderItem(Item item, int quantity){
 		this.item = item;
 		this.quantity = quantity;
+		updateItemTotal();
 	}
 	
 	public Item getItem(){
@@ -39,13 +41,16 @@ public class OrderItem implements Serializable{
 	
 	public void setQuantity(int quantity){
 		this.quantity = quantity;
-		getOrderItemTotal();
+		updateItemTotal();
+	}
+	
+	public void updateItemTotal(){
+		itemTotal = item.getPrice();
+		itemTotal = itemTotal.multiply(new BigDecimal(quantity));
 	}
 	
 	public BigDecimal getOrderItemTotal(){
-		BigDecimal itemPrice = item.getPrice();
-		itemPrice.multiply(new BigDecimal(quantity));
-		return itemPrice;
+		return itemTotal;
 	}
 	
 	public String toString(){

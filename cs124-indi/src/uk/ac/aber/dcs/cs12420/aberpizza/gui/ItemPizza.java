@@ -22,14 +22,16 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	private Manager manager;
 
 	private JList pizzasList, priceList;
-	private ArrayList<String> pName, pSmall, pMed, pLarge, pDesc;
+	private ArrayList<String> pName, pDesc;
+	private ArrayList<BigDecimal> pSmall, pMed, pLarge;
 	private DefaultListModel ml;
-	String[] prices = new String[3];
+	BigDecimal[] prices = new BigDecimal[3];
 
 	private JPanel pizzaListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
 	
-	private String selectedItem, itemSize, itemPrice, itemDesc;
+	private String selectedItem, itemSize, itemDesc;
+	private BigDecimal itemPrice;
 	private int quantity;
 	
 	public ItemPizza(Manager manager) throws FileNotFoundException {
@@ -37,9 +39,9 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		this.setTitle("Add Pizza to order");
 		this.setLayout(null);
 		pName = new ArrayList<String>();
-		pSmall = new ArrayList<String>();
-		pMed = new ArrayList<String>();
-		pLarge = new ArrayList<String>();
+		pSmall = new ArrayList<BigDecimal>();
+		pMed = new ArrayList<BigDecimal>();
+		pLarge = new ArrayList<BigDecimal>();
 		pDesc = new ArrayList<String>();
 		getFromFile();
 
@@ -170,9 +172,9 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 		while (sc.hasNextLine()) {
 			pName.add(sc.nextLine());
-			pSmall.add(sc.nextLine());
-			pMed.add(sc.nextLine());
-			pLarge.add(sc.nextLine());
+			pSmall.add(new BigDecimal(sc.nextLine()));
+			pMed.add(new BigDecimal(sc.nextLine()));
+			pLarge.add(new BigDecimal(sc.nextLine()));
 			pDesc.add(sc.nextLine());
 		}
 	}
@@ -193,11 +195,11 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		this.itemSize = itemSize;
 	}
 
-	public String getItemPrice() {
+	public BigDecimal getItemPrice() {
 		return itemPrice;
 	}
 
-	public void setItemPrice(String itemPrice) {
+	public void setItemPrice(BigDecimal itemPrice) {
 		this.itemPrice = itemPrice;
 	}
 
@@ -240,7 +242,6 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	public void keyReleased(KeyEvent arg0) {
 		try {
 			quantity = Integer.parseInt(quantText.getText());
-			System.out.println(quantity);
 		} catch (NumberFormatException nfe) {
 
 		}
@@ -253,7 +254,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	@Override
 	public BigDecimal getSubTotal() {
-		BigDecimal subtotal = new BigDecimal(itemPrice);
+		BigDecimal subtotal = itemPrice;
 		subtotal = subtotal.multiply(new BigDecimal(quantity));
 		return subtotal;
 	}

@@ -92,5 +92,4 @@ public class Drink implements Item{
 	public ItemType getItemType() {
 		return ITEMTYPE;
 	}
-
 }

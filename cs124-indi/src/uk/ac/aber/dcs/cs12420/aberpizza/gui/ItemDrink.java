@@ -22,14 +22,17 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 	private Manager manager;
 
 	private JList drinkList, priceList;
-	private ArrayList<String> dName, dSmall, dMed, dLarge, dDesc;
+	private ArrayList<String> dName, dDesc;
+	private ArrayList<BigDecimal>  dSmall, dMed, dLarge;
 	private DefaultListModel ml;
-	String[] prices = new String[3];
+	BigDecimal[] prices = new BigDecimal[3];
 
 	private JPanel drinkListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
 
-	private String selectedItem, itemSize, itemPrice, itemDesc;
+	private String selectedItem, itemSize, itemDesc;
+
+	BigDecimal itemPrice;
 	private int quantity;
 
 	public ItemDrink(Manager manager) throws FileNotFoundException {
@@ -37,9 +40,9 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		this.setTitle("Add Drink to order");
 		this.setLayout(null);
 		dName = new ArrayList<String>();
-		dSmall = new ArrayList<String>();
-		dMed = new ArrayList<String>();
-		dLarge = new ArrayList<String>();
+		dSmall = new ArrayList<BigDecimal>();
+		dMed = new ArrayList<BigDecimal>();
+		dLarge = new ArrayList<BigDecimal>();
 		dDesc = new ArrayList<String>();
 		getFromFile();
 
@@ -166,15 +169,15 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 		while (sc.hasNextLine()) {
 			dName.add(sc.nextLine());
-			dSmall.add(sc.nextLine());
-			dMed.add(sc.nextLine());
-			dLarge.add(sc.nextLine());
+			dSmall.add(new BigDecimal(sc.nextLine()));
+			dMed.add(new BigDecimal(sc.nextLine()));
+			dLarge.add(new BigDecimal(sc.nextLine()));
 			dDesc.add(sc.nextLine());
 		}
 	}
 
 	public Item getOrderItem() {
-		Item newItem = new Drink(selectedItem, new BigDecimal(itemPrice),
+		Item newItem = new Drink(selectedItem, itemPrice,
 				itemSize, itemDesc);
 		return newItem;
 	}
@@ -195,11 +198,11 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		this.itemSize = itemSize;
 	}
 
-	public String getItemPrice() {
+	public BigDecimal getItemPrice() {
 		return itemPrice;
 	}
 
-	public void setItemPrice(String itemPrice) {
+	public void setItemPrice(BigDecimal itemPrice) {
 		this.itemPrice = itemPrice;
 	}
 
@@ -235,7 +238,7 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 	@Override
 	public BigDecimal getSubTotal() {
-		BigDecimal subtotal = new BigDecimal(itemPrice);
+		BigDecimal subtotal = itemPrice;
 		subtotal.multiply(new BigDecimal(quantity));
 		return subtotal;
 	}

@@ -18,8 +18,8 @@ public abstract class ItemFrame extends JFrame {
 	public abstract void setSelectedItem(String selectItem);
 	public abstract String getSelectedItem();
 	
-	public abstract void setItemPrice(String itemPrice);
-	public abstract String getItemPrice();
+	public abstract void setItemPrice(BigDecimal itemPrice);
+	public abstract BigDecimal getItemPrice();
 	
 	public abstract void setItemSize(String itemSize);
 	public abstract String getItemSize();

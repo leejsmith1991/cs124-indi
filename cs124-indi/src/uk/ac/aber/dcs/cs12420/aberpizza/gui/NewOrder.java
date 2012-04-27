@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Item;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem;
 
 public class NewOrder extends JFrame implements ActionListener,
@@ -164,7 +166,13 @@ public class NewOrder extends JFrame implements ActionListener,
 		discText = new JLabel("Discount // to-do");
 		discText.setBounds(420, 50, 250, 25);
 		thisPane.add(discText);
-		thisPane.setSize(1024, 100);
+		
+		JButton calcDisc = new JButton("Calculate Discount");
+		calcDisc.setBounds(700, 25, 150, 35);
+		calcDisc.addActionListener(manager);
+		thisPane.add(calcDisc);
+		
+		thisPane.setSize(1024, 150);
 		return thisPane;
 	}
 
@@ -197,35 +205,44 @@ public class NewOrder extends JFrame implements ActionListener,
 			customerName = customerText.getText();
 		}
 	}
+	
+	public void addItemToTable(Order order, Item item, int quantity) {
+		String itemName = item.getName();
+		String itemType = item.getItemType().toString().toLowerCase();
+		String itemPrice = item.getPrice().toString();
+		String itemTotal = order.getItems().get(order.getItems().size()-1).getOrderItemTotal().toString();
 
-	public void addItemToTable(Item item, int quantity,
-			BigDecimal orderItemPrice, BigDecimal subTotal) {
-		String singleItem = Integer.toString(quantity) + " x " + item.getName()
-				+ " " + item.getItemType().toString().toLowerCase();
-		String singlePrice = " @ " + item.getPrice() + " = £"
-				+ orderItemPrice.toString();
-		tableList.addElement(singleItem + singlePrice);
-		totalForOrder = totalForOrder.add(orderItemPrice);
-		subText.setText(totalForOrder.toString());
+		tableList.addElement((quantity + " x " + itemName + " " + itemType + " @ " + itemPrice + " = £" + itemTotal));
+		setSubTextText(order);
 		this.validate();
 	}
 
-	public void updateItemToTable(Item item, int quantity, BigDecimal orderItemPrice, int index, BigDecimal subTotal) {
-		String singleItem = Integer.toString(quantity) + " x " + item.getName()
-				+ " " + item.getItemType().toString().toLowerCase();
-		String singlePrice = " @ " + item.getPrice() + " = £"
-				+ orderItemPrice.toString();
-		tableList.setElementAt((singleItem + singlePrice), index);
-		totalForOrder = totalForOrder.add(orderItemPrice);
-		subText.setText(subTotal.toString());
+	public void updateItemToTable(Order order, Item item, int quantity) {
+		String itemName = item.getName();
+		String itemType = item.getItemType().toString().toLowerCase();
+		String itemPrice = item.getPrice().toString();
+		String itemTotal = order.getItems().get(selectedIndex).getOrderItemTotal().toString();
+
+		tableList.setElementAt((quantity + " x " + itemName + " " + itemType + " @ " + itemPrice + " = £" + itemTotal), selectedIndex);
+		setSubTextText(order);
 		this.validate();
 	}
 
-	public void removeItem(int index, BigDecimal subTotal){
+	public void removeItem(Order order, int index, BigDecimal subTotal) {
 		tableList.remove(index);
 		orderList.setSelectedIndex(selectedIndex);
-		subText.setText(subTotal.toString());
+		setSubTextText(order);
 		this.validate();
+	}
+
+	public void setSubTextText(Order order){
+		ArrayList<OrderItem> orderItems = order.getItems();
+		BigDecimal total = new BigDecimal("0");
+		for (int i = 0; i < orderItems.size(); i++){
+			total = total.add(orderItems.get(i).getOrderItemTotal());
+		}
+		
+		subText.setText(total.toString());
 	}
 	
 	@Override
@@ -240,9 +257,8 @@ public class NewOrder extends JFrame implements ActionListener,
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		selectedIndex = orderList.getSelectedIndex();
-		if (selectedIndex == -1){
+		if (selectedIndex == -1) {
 			selectedIndex = 0;
 		}
-		System.out.println(selectedIndex);
 	}
 }

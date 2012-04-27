@@ -46,6 +46,7 @@ public class Order implements Serializable {
 
 	public void addItem(Item item, int quantity) {
 		items.add(new OrderItem(item, quantity));
+		updateSubTotal();
 	}
 
 	public ArrayList<OrderItem> getItems() {
@@ -58,19 +59,20 @@ public class Order implements Serializable {
 
 	public void updateItemQuantity(Item item, int quantity) {
 		for (int i = 0; i > items.size(); i++) {
-			if (items.get(i).equals(item)) {
+			Item find = items.get(i).getItem();
+			if (find.equals(item)) {
 				items.get(i).setQuantity(quantity);
+				System.out.println("Quantity updated");
 			}
 		}
 	}
 
-	public Item getItemAt(int index){
+	public Item getItemAt(int index) {
 		return items.get(index).getItem();
 	}
-	
+
 	public void removeItem(int index) {
 		items.remove(index);
-		System.out.println("Item Removed");
 	}
 
 	public void setSubtotal(BigDecimal subtotal) {
@@ -78,16 +80,64 @@ public class Order implements Serializable {
 	}
 
 	public BigDecimal getSubtotal() {
+		return subTotal;
+	}
+
+	public void updateSubTotal() {
 		subTotal = new BigDecimal("0");
 		for (int j = 0; j < items.size(); j++) {
 			subTotal.add(items.get(j).getOrderItemTotal());
 		}
-		System.out.println("Fired");
-		return subTotal;
+
 	}
 
 	public BigDecimal getDiscount() {
+		ArrayList<OrderItem> smallPizza = new ArrayList<OrderItem>();
+		ArrayList<OrderItem> mediumPizza = new ArrayList<OrderItem>();
+		ArrayList<OrderItem> largePizza = new ArrayList<OrderItem>();
+
+		for (int i = 0; i < items.size(); i++) {
+			if (items.get(i).getItemType() == ItemType.PIZZA) {
+				if (items.get(i).getItem().getSize().equals("Small")) {
+					smallPizza.add(items.get(i));
+				} else if (items.get(i).getItem().getSize().equals("Medium")) {
+					mediumPizza.add(items.get(i));
+				} else {
+					largePizza.add(items.get(i));
+				}
+			}
+		}
+
+		int pizzaS = 0;
+		int pizzaM = 0;
+		int pizzaL = 0;
+
+		for (int a = 0; a < smallPizza.size(); a++) {
+			pizzaS = pizzaS + (1 * smallPizza.get(a).getQuantity());
+		}
+		for (int a = 0; a < mediumPizza.size(); a++) {
+			pizzaM = pizzaM + (1 * mediumPizza.get(a).getQuantity());
+		}
+		for (int a = 0; a < largePizza.size(); a++) {
+			pizzaL = pizzaL + (1 * largePizza.get(a).getQuantity());
+		}
+
+		sort(smallPizza);
+
 		return null;
+	}
+
+	public ArrayList<OrderItem> sort(ArrayList<OrderItem> list) {
+		boolean sorted = true;
+
+		while (sorted) {
+			
+		}
+
+		for (int a = 0; a < list.size(); a++) {
+			System.out.println(list.get(a).getItem().getPrice());
+		}
+		return list;
 	}
 
 	public String getReceipt() {

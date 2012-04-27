@@ -22,14 +22,17 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	private Manager manager;
 
 	private JList sideList, priceList;
-	private ArrayList<String> sName, sSmall, sMed, sLarge, sDesc;
+	private ArrayList<String> sName, sDesc;
+	private ArrayList<BigDecimal>  sSmall, sMed, sLarge;
 	private DefaultListModel ml;
-	String[] prices = new String[3];
+	BigDecimal[] prices = new BigDecimal[3];
 
 	private JPanel sideListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
 
-	private String selectedItem, itemSize, itemPrice, itemDesc;
+	private String selectedItem, itemSize, itemDesc;
+
+	BigDecimal itemPrice;
 	private int quantity;
 	
 	public ItemSide(Manager manager) throws FileNotFoundException {
@@ -37,9 +40,9 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		this.setTitle("Add Side to order");
 		this.setLayout(null);
 		sName = new ArrayList<String>();
-		sSmall = new ArrayList<String>();
-		sMed = new ArrayList<String>();
-		sLarge = new ArrayList<String>();
+		sSmall = new ArrayList<BigDecimal>();
+		sMed = new ArrayList<BigDecimal>();
+		sLarge = new ArrayList<BigDecimal>();
 		sDesc = new ArrayList<String>();
 		getFromFile();
 
@@ -168,9 +171,9 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 		while (sc.hasNextLine()) {
 			sName.add(sc.nextLine());
-			sSmall.add(sc.nextLine());
-			sMed.add(sc.nextLine());
-			sLarge.add(sc.nextLine());
+			sSmall.add(new BigDecimal(sc.nextLine()));
+			sMed.add(new BigDecimal(sc.nextLine()));
+			sLarge.add(new BigDecimal(sc.nextLine()));
 			sDesc.add(sc.nextLine());
 		}
 	}
@@ -191,11 +194,11 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		this.itemSize = itemSize;
 	}
 
-	public String getItemPrice() {
+	public BigDecimal getItemPrice() {
 		return itemPrice;
 	}
 
-	public void setItemPrice(String itemPrice) {
+	public void setItemPrice(BigDecimal itemPrice) {
 		this.itemPrice = itemPrice;
 	}
 
@@ -230,10 +233,8 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 	@Override
 	public BigDecimal getSubTotal() {
-		BigDecimal subtotal = new BigDecimal(itemPrice);
+		BigDecimal subtotal = itemPrice;
 		subtotal.multiply(new BigDecimal(quantity));
-		System.out.println(itemPrice.toString());
-		
 		return subtotal;
 	}
 
