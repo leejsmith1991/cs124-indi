@@ -19,7 +19,7 @@ public class Pizza implements Item {
 	/**
 	 * Holds the price of the pizza
 	 */
-	private BigDecimal price;
+	private BigDecimal price = new BigDecimal("0");
 	/**
 	 * Holds the selected size of the pizza
 	 */

@@ -20,7 +20,7 @@ public class Order implements Serializable {
 	private Date today;
 	private String orderTime;
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss");
-	private BigDecimal subTotal;
+	private BigDecimal subTotal = new BigDecimal("0");
 
 	public Order() {
 		items = new ArrayList<OrderItem>();

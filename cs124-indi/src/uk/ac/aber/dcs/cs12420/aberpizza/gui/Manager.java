@@ -83,7 +83,7 @@ public class Manager implements ActionListener, MouseListener {
 				// throw new massive exception
 			} else {
 				amt.showChangeAmount(amt.getChange());
-				
+				addOrderToTill();
 			}
 		} else if (action.equals("Complete Order")) {
 			amt.dispose();
@@ -102,7 +102,7 @@ public class Manager implements ActionListener, MouseListener {
 		} else if (action.equals("Remove Item")) {
 			removeItemFromOrder();
 		} else if (action.equals("Calculate Discount")){
-			addOrderToTill();
+			
 			calculateDiscount();
 		}
 	}
@@ -132,7 +132,7 @@ public class Manager implements ActionListener, MouseListener {
 			newQuant = Integer.parseInt(newQuantInput);
 			customerOrder.updateItemQuantity(customerOrder.getItemAt(no.getSelectedIndex()), newQuant);
 			customerOrder.updateSubTotal();
-			no.updateItemToTable(customerOrder, customerOrder.getItemAt(no.getSelectedIndex()), no.getSelectedIndex());
+			no.updateTable(customerOrder);
 		} catch (NumberFormatException nfe) {
 			
 		}
@@ -142,7 +142,7 @@ public class Manager implements ActionListener, MouseListener {
 	private void removeItemFromOrder() {
 		customerOrder.removeItem(no.getSelectedIndex());
 		customerOrder.updateSubTotal();
-		no.removeItem(customerOrder, no.getSelectedIndex(), customerOrder.getSubtotal());
+		no.updateTable(customerOrder);
 	}
 
 	private void addItemToOrder() {
@@ -158,7 +158,7 @@ public class Manager implements ActionListener, MouseListener {
 					itemFrame.getItemDesc());
 		}
 		customerOrder.addItem(i, itemFrame.getQuantity());
-		no.addItemToTable(customerOrder, i, itemFrame.getQuantity());
+		no.updateTable(customerOrder);
 		itemFrame.dispose();
 	}
 	private void calculateDiscount() {

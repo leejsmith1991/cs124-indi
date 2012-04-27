@@ -206,31 +206,12 @@ public class NewOrder extends JFrame implements ActionListener,
 		}
 	}
 	
-	public void addItemToTable(Order order, Item item, int quantity) {
-		String itemName = item.getName();
-		String itemType = item.getItemType().toString().toLowerCase();
-		String itemPrice = item.getPrice().toString();
-		String itemTotal = order.getItems().get(order.getItems().size()-1).getOrderItemTotal().toString();
-
-		tableList.addElement((quantity + " x " + itemName + " " + itemType + " @ " + itemPrice + " = £" + itemTotal));
-		setSubTextText(order);
-		this.validate();
-	}
-
-	public void updateItemToTable(Order order, Item item, int quantity) {
-		String itemName = item.getName();
-		String itemType = item.getItemType().toString().toLowerCase();
-		String itemPrice = item.getPrice().toString();
-		String itemTotal = order.getItems().get(selectedIndex).getOrderItemTotal().toString();
-
-		tableList.setElementAt((quantity + " x " + itemName + " " + itemType + " @ " + itemPrice + " = £" + itemTotal), selectedIndex);
-		setSubTextText(order);
-		this.validate();
-	}
-
-	public void removeItem(Order order, int index, BigDecimal subTotal) {
-		tableList.remove(index);
-		orderList.setSelectedIndex(selectedIndex);
+	public void updateTable(Order order) {
+		tableList.clear();
+		for (int i = 0; i < order.getItems().size(); i++){
+			tableList.addElement(order.getItems().get(i).toString());
+		}
+		
 		setSubTextText(order);
 		this.validate();
 	}

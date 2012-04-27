@@ -54,6 +54,6 @@ public class OrderItem implements Serializable{
 	}
 	
 	public String toString(){
-		return item.getName() + " x " + Integer.toString(quantity);
+		return Integer.toString(quantity) + " x " + item.getName() + " @ " + item.getPrice() + " = £" + itemTotal.toString();
 	}
 }

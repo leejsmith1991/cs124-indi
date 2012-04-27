@@ -36,7 +36,7 @@ public class Till implements Serializable {
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		todayDate = dateFormat.format(today);
 		date = todayDate.split("/");
-		xmlFileName = date[0] + "_" + date[1] + "_" + date[2];
+		xmlFileName = date[0] + "_" + date[1] + "_" + date[2] + ".xml";
 	}
 	
 	public String getXMLFileName(){
