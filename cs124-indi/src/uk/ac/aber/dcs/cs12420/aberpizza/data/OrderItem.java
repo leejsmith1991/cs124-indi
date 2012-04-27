@@ -8,6 +8,10 @@ public class OrderItem {
 	private BigDecimal itemTotal = new BigDecimal("0");
 	private Item item = null;
 	
+	public OrderItem(){
+		
+	}
+	
 	public OrderItem(Item item, int quantity){
 		this.item = item;
 		this.quantity = quantity;
@@ -45,11 +49,15 @@ public class OrderItem {
 		itemTotal = itemTotal.multiply(new BigDecimal(quantity));
 	}
 	
+	public void setOrderItemTotal(BigDecimal itemTotal){
+		this.itemTotal = itemTotal;
+	}
+	
 	public BigDecimal getOrderItemTotal(){
 		return itemTotal;
 	}
 	
 	public String toString(){
-		return Integer.toString(quantity) + " x " + item.getName() + " @ " + item.getPrice() + " = ï¿½" + itemTotal.toString();
+		return Integer.toString(quantity) + " x " + item.getName() + " @ " + item.getPrice() + " = £" + itemTotal.toString();
 	}
 }

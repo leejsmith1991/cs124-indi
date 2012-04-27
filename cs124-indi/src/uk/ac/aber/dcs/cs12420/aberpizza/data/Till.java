@@ -15,7 +15,7 @@ public class Till {
 	private String[] date = new String[3];
 	private final static String PATHNAME = "./TillSaves/";
 	
-	private ArrayList<Order> orders;
+	private ArrayList<Order> orders = new ArrayList<Order>();
 
 	public Till() throws IOException{
 		setFileDate();
@@ -33,7 +33,7 @@ public class Till {
 	public String getXMLFileName(){
 		return xmlFileName;
 	}
-		
+	
 	public void addOrder(Order order) {
 		orders.add(order);
 		System.out.println(order.getCustomerName());
@@ -56,26 +56,43 @@ public class Till {
 	}
 
 	public void save() throws IOException {
-		
-		try { 
-		XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
-				new FileOutputStream(PATHNAME + xmlFileName)));
-		encoder.writeObject(this);
-		
-		encoder.close();
-		} 
-		catch(Exception e) { 
+		try {
+			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
+					new FileOutputStream(PATHNAME + xmlFileName)));
+			encoder.writeObject(this);
+
+			encoder.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
+	
+	private static String loadPath(){
+		Date now = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		String[] fileName = format.format(now).split("/");
+		String pathName = fileName[0] + "_" + fileName[1] + "_" + fileName[2] + ".xml";
+		return pathName;
+	}
+	
 	public static Till load() throws IOException {
 		Till loadTill = null;
-				
+		File f = new File(PATHNAME + loadPath());
+		
+		System.out.println(f.exists());
+		
+		if (!f.exists()){
+			Till till = new Till();
+			till.save();
+		}
 		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
-				new FileInputStream(PATHNAME + xmlFileName)));
-		loadTill = (Till) decoder.readObject();
+				new FileInputStream(PATHNAME + loadPath())));
+		try{
+			loadTill = (Till) decoder.readObject();
+		} catch (ArrayIndexOutOfBoundsException e){
+			
+		}
 		return loadTill;
 	}
 	
@@ -84,7 +101,11 @@ public class Till {
 				
 		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
 				new FileInputStream(PATHNAME + oldPathName)));
-		loadTill = (Till) decoder.readObject();
+		try{
+			loadTill = (Till) decoder.readObject();
+		} catch (ArrayIndexOutOfBoundsException e){
+			
+		}
 		return loadTill;
 	}
 	

@@ -13,23 +13,28 @@ public class Drink implements Item{
 	/**
 	 * Holds name of the drink
 	 */
-	private String name;
+	private String name = null;
 	/**
 	 * Holds description associated with the drink
 	 */
-	private String description;
+	private String description = null;
 	/**
 	 * Holds the price of the drink
 	 */
-	private BigDecimal price;
+	private BigDecimal price = new BigDecimal("0");
 	/**
 	 * Holds the selected size of the drink
 	 */
-	private String size;
+	private String size = null;
 	/**
 	 * Holds the itemtype, final as not able to be set;
 	 */
 	private final ItemType ITEMTYPE = ItemType.DRINK;
+	
+	public Drink(){
+		
+	}
+	
 	/**
 	 * Constructs a new Drink type with name, price, size and description of the item
 	 * @param String name - Name of the Drink to be created

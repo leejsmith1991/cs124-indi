@@ -7,11 +7,11 @@ public class Pizza implements Item {
 	/**
 	 * Holds name of the pizza
 	 */
-	private String name;
+	private String name = null;
 	/**
 	 * Holds description associated with the pizza
 	 */
-	private String description;
+	private String description = null;
 	/**
 	 * Holds the price of the pizza
 	 */
@@ -22,6 +22,10 @@ public class Pizza implements Item {
 	private String size;
 	
 	private final ItemType ITEMTYPE = ItemType.PIZZA;
+	
+	public Pizza(){
+		
+	}
 	
 	/**
 	 * Constructs a new Pizza type with name, price, size and description of the item

@@ -25,16 +25,7 @@ public class Manager implements ActionListener, MouseListener {
 	private Item i;
 	private Order customerOrder;
 
-	public Manager() throws IOException {
-		till = new Till();
-		xmlFileName = till.getXMLFileName();
-
-		File f = new File("cs124-indi/TillSaves" + xmlFileName + ".xml");
-
-		if (!f.exists()) {
-			till.save();
-		}
-
+	public Manager() throws IOException {		
 		till = Till.load();
 		mf = new MainFrame(this, till.getOrdersArray());
 	}
@@ -124,7 +115,6 @@ public class Manager implements ActionListener, MouseListener {
 	}
 
 	private void updateQuantity() {
-		JOptionPane jop = new JOptionPane();
 		int newQuant = 1;
 		try {
 			String newQuantInput = JOptionPane.showInputDialog(null,

@@ -12,11 +12,13 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame implements ListSelectionListener{
 	/**
 	 * 
 	 */
@@ -27,11 +29,13 @@ public class MainFrame extends JFrame{
 	private Manager manager;
 	
 	private DefaultListModel orders = new DefaultListModel();
+	private DefaultListModel indiOrder = new DefaultListModel();
 	
-	private JList ordersList = new JList(orders);	
+	private JList ordersList = new JList(orders);
+	private JList indiOrderList = new JList(indiOrder);
 	
-	private ArrayList<Order> ordersArray;
-	
+	private ArrayList<Order> ordersArray = new ArrayList<Order>();
+		
 	public MainFrame(Manager manager, ArrayList<Order> orderList) {
 		ordersArray = orderList;
 		
@@ -56,11 +60,16 @@ public class MainFrame extends JFrame{
 		ordersList.setModel(orders);
 		updateArrayList(ordersArray);
 		ordersList.setBounds(210, 5, 300, 696);
+		ordersList.addListSelectionListener(this);
+		
+		indiOrderList.setBounds(520, 5, 300, 696);
+		
 		
 		add(addNewOrder);
 		add(viewSalesHistory);
 		add(closeForDay);
 		add(ordersList);
+		add(indiOrderList);
 				
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,6 +91,22 @@ public class MainFrame extends JFrame{
 
 	public void setManager(Manager manager) {
 		this.manager = manager;
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		int selectedIndex = ordersList.getSelectedIndex();
+		
+		if (selectedIndex == -1){
+			selectedIndex = 0;
+		}
+		
+		Order selectedOrder = ordersArray.get(selectedIndex);
+		indiOrder.clear();
+		for (int i = 0; i < selectedOrder.getItems().size(); i++){
+			indiOrder.addElement(selectedOrder.getItems().get(i).toString());
+		}
+		indiOrderList.setModel(indiOrder);
 	}
 
 }

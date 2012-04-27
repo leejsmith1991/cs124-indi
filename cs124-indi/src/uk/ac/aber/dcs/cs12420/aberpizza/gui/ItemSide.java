@@ -23,16 +23,16 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 	private JList sideList, priceList;
 	private ArrayList<String> sName, sDesc;
-	private ArrayList<BigDecimal>  sSmall, sMed, sLarge;
+	private ArrayList<BigDecimal>  sPrice;
 	private DefaultListModel ml;
-	BigDecimal[] prices = new BigDecimal[3];
 
 	private JPanel sideListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
+	private JLabel itemPriceLabel;
 
 	private String selectedItem, itemSize, itemDesc;
 
-	BigDecimal itemPrice;
+	private BigDecimal itemPrice;
 	private int quantity;
 	
 	public ItemSide(Manager manager) throws FileNotFoundException {
@@ -40,9 +40,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		this.setTitle("Add Side to order");
 		this.setLayout(null);
 		sName = new ArrayList<String>();
-		sSmall = new ArrayList<BigDecimal>();
-		sMed = new ArrayList<BigDecimal>();
-		sLarge = new ArrayList<BigDecimal>();
+		sPrice = new ArrayList<BigDecimal>();
 		sDesc = new ArrayList<String>();
 		getFromFile();
 
@@ -55,11 +53,11 @@ public class ItemSide extends ItemFrame implements KeyListener {
 				priceListPane.getWidth(), priceListPane.getHeight());
 
 		quantityPane = getQuantityPane();
-		quantityPane.setBounds(0, sideListPane.getHeight() + 90,
+		quantityPane.setBounds(0, sideListPane.getHeight() + 30,
 				quantityPane.getWidth(), quantityPane.getHeight());
 
 		submitPane = getSubmitPane();
-		submitPane.setBounds(0, sideListPane.getHeight() + 140,
+		submitPane.setBounds(0, sideListPane.getHeight() + 80,
 				submitPane.getWidth(), submitPane.getHeight());
 
 		this.add(sideListPane);
@@ -100,40 +98,22 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	private JPanel getPricePane() {
 		JPanel thisPane = new JPanel(null);
 
-		JLabel label = new JLabel("Select Size");
-		label.setBounds(5, 5, 340, 25);
+		JLabel label = new JLabel("Item Price:", SwingConstants.RIGHT);
+		label.setBounds(5, 5, 100, 25);
 		thisPane.add(label);
 
-		JLabel smallLabel = new JLabel("Small:", SwingConstants.RIGHT);
-		smallLabel.setBounds(30, 29, 50, 21);
-		thisPane.add(smallLabel);
+		itemPriceLabel = new JLabel("");
+		itemPriceLabel.setBounds(110, 5, 50, 25);
+		thisPane.add(itemPriceLabel);
 
-		JLabel medLabel = new JLabel("Medium:", SwingConstants.RIGHT);
-		medLabel.setBounds(30, 47, 50, 21);
-		thisPane.add(medLabel);
-
-		JLabel largeLabel = new JLabel("Large:", SwingConstants.RIGHT);
-		largeLabel.setBounds(30, 64, 50, 22);
-		thisPane.add(largeLabel);
-
-		priceList = new JList();
-		priceList.setEnabled(false);
-		PriceSelector priceSelect = new PriceSelector();
-		priceList.addListSelectionListener(priceSelect);
-		setPizzaPrices(0);
-		priceList.setBounds(83, 30, 150, 60);
-		thisPane.add(priceList);
-		thisPane.setSize(450, 100);
+		thisPane.setSize(450, 30);
 		return thisPane;
 	}
 
 
 	private void setPizzaPrices(int selected) {
-		prices[0] = sSmall.get(selected);
-		prices[1] = sMed.get(selected);
-		prices[2] = sLarge.get(selected);
-		priceList.setSelectedIndex(0);
-		priceList.setListData(prices);
+		itemPriceLabel.setText(sPrice.get(selected).toString());
+		itemPrice = sPrice.get(selected);
 		this.validate();
 	}
 
@@ -171,9 +151,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 		while (sc.hasNextLine()) {
 			sName.add(sc.nextLine());
-			sSmall.add(new BigDecimal(sc.nextLine()));
-			sMed.add(new BigDecimal(sc.nextLine()));
-			sLarge.add(new BigDecimal(sc.nextLine()));
+			sPrice.add(new BigDecimal(sc.nextLine()));
 			sDesc.add(sc.nextLine());
 		}
 	}
@@ -274,39 +252,9 @@ public class ItemSide extends ItemFrame implements KeyListener {
 					selectedItem = sName.get(a);
 					setPizzaPrices(a);
 					itemDesc = sDesc.get(a);
-					priceList.setSelectedIndex(0);
-					priceList.setEnabled(true);
 					break;
 				}
 			}
 		}
 	}
-
-	/**
-	 * Private class to enable separate selection of items in the Price List
-	 * from Pizzas List
-	 * 
-	 * @author Lee Smith
-	 * @see javax.swing.event.ListSelectionListener
-	 */
-
-	private class PriceSelector implements ListSelectionListener {
-
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			int selectedIndex = priceList.getSelectedIndex();
-			if (selectedIndex == -1) {
-				selectedIndex = 0;
-			}
-			if (selectedIndex == 0) {
-				itemSize = "Small";
-			} else if (selectedIndex == 1) {
-				itemSize = "Medium";
-			} else {
-				itemSize = "Large";
-			}
-			itemPrice = prices[selectedIndex];
-		}
-	}
-
 }

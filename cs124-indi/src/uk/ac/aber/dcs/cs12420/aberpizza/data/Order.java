@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs12420.aberpizza.data;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class Order{
@@ -89,18 +90,6 @@ public class Order{
 		ArrayList<OrderItem> mediumPizza = new ArrayList<OrderItem>();
 		ArrayList<OrderItem> largePizza = new ArrayList<OrderItem>();
 
-		for (int i = 0; i < items.size(); i++) {
-			if (items.get(i).getItemType() == ItemType.PIZZA) {
-				if (items.get(i).getItem().getSize().equals("Small")) {
-					smallPizza.add(items.get(i));
-				} else if (items.get(i).getItem().getSize().equals("Medium")) {
-					mediumPizza.add(items.get(i));
-				} else {
-					largePizza.add(items.get(i));
-				}
-			}
-		}
-
 		int pizzaS = 0;
 		int pizzaM = 0;
 		int pizzaL = 0;
@@ -115,18 +104,25 @@ public class Order{
 			pizzaL = pizzaL + (1 * largePizza.get(a).getQuantity());
 		}
 
-		sort(smallPizza);
-
 		return null;
 	}
 
 	public ArrayList<OrderItem> sort(ArrayList<OrderItem> list) {
 		boolean sorted = true;
-
-		while (sorted) {
-			
+		ArrayList<Item> itemsSingle = new ArrayList<Item>();
+		
+		for (int i = 0; i < list.size(); i++){
+			int itemQuantity = list.get(i).getQuantity();
+			do {
+				if (itemQuantity < 0){
+					itemsSingle.add(list.get(i).getItem());
+				}
+			} while (itemQuantity > 0);
 		}
-
+		
+		
+		
+		
 		for (int a = 0; a < list.size(); a++) {
 			System.out.println(list.get(a).getItem().getPrice());
 		}
@@ -143,6 +139,6 @@ public class Order{
 
 	@Override
 	public String toString() {
-		return orderTime + "   - " + customerName + " ï¿½" + subTotal.toString();
+		return orderTime + "   - " + customerName + " £" + subTotal.toString();
 	}
 }

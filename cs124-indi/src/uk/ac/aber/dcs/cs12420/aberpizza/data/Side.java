@@ -15,13 +15,17 @@ public class Side implements Item {
 	/**
 	 * Holds the price of the side
 	 */
-	private BigDecimal price;
+	private BigDecimal price = new BigDecimal("0");
 	/**
 	 * Holds the selected size of the side
 	 */
 	private String size;
 
 	private final ItemType ITEMTYPE = ItemType.SIDE;
+	
+	public Side(){
+		
+	}
 	
 	/**
 	 * Constructs a new Side with name, price, size and description of the item

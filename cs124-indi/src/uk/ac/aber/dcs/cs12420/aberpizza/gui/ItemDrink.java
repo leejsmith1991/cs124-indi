@@ -12,7 +12,7 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class ItemDrink extends ItemFrame implements KeyListener {
+public class ItemDrink extends ItemFrame implements KeyListener{
 
 	/**
 	 * 
@@ -23,12 +23,12 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 	private JList drinkList, priceList;
 	private ArrayList<String> dName, dDesc;
-	private ArrayList<BigDecimal>  dSmall, dMed, dLarge;
+	private ArrayList<BigDecimal> dPrice;
 	private DefaultListModel ml;
-	BigDecimal[] prices = new BigDecimal[3];
 
 	private JPanel drinkListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
+	private JLabel itemPriceLabel;
 
 	private String selectedItem, itemSize, itemDesc;
 
@@ -40,9 +40,7 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		this.setTitle("Add Drink to order");
 		this.setLayout(null);
 		dName = new ArrayList<String>();
-		dSmall = new ArrayList<BigDecimal>();
-		dMed = new ArrayList<BigDecimal>();
-		dLarge = new ArrayList<BigDecimal>();
+		dPrice = new ArrayList<BigDecimal>();
 		dDesc = new ArrayList<String>();
 		getFromFile();
 
@@ -55,11 +53,11 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 				priceListPane.getWidth(), priceListPane.getHeight());
 
 		quantityPane = getQuantityPane();
-		quantityPane.setBounds(0, drinkListPane.getHeight() + 90,
+		quantityPane.setBounds(0, drinkListPane.getHeight() + 30,
 				quantityPane.getWidth(), quantityPane.getHeight());
 
 		submitPane = getSubmitPane();
-		submitPane.setBounds(0, drinkListPane.getHeight() + 140,
+		submitPane.setBounds(0, drinkListPane.getHeight() + 80,
 				submitPane.getWidth(), submitPane.getHeight());
 
 		this.add(drinkListPane);
@@ -68,8 +66,8 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		this.add(submitPane);
 		int windowWidth = drinkListPane.getWidth();
 		int windowHeight = drinkListPane.getHeight()
-				+ priceListPane.getHeight() + quantityPane.getHeight() + submitPane
-				.getHeight() + 30;
+				+ priceListPane.getHeight() + quantityPane.getHeight()
+				+ submitPane.getHeight() + 30;
 		this.setSize(new Dimension(windowWidth, windowHeight));
 		this.setResizable(false);
 		this.setVisible(true);
@@ -104,35 +102,17 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 		label.setBounds(5, 5, 340, 25);
 		thisPane.add(label);
 
-		JLabel smallLabel = new JLabel("Small:", SwingConstants.RIGHT);
-		smallLabel.setBounds(30, 29, 50, 21);
-		thisPane.add(smallLabel);
+		itemPriceLabel = new JLabel();
+		itemPriceLabel.setBounds(110, 5, 50, 25);
+		thisPane.add(itemPriceLabel);
 
-		JLabel medLabel = new JLabel("Medium:", SwingConstants.RIGHT);
-		medLabel.setBounds(30, 47, 50, 21);
-		thisPane.add(medLabel);
-
-		JLabel largeLabel = new JLabel("Large:", SwingConstants.RIGHT);
-		largeLabel.setBounds(30, 64, 50, 22);
-		thisPane.add(largeLabel);
-
-		priceList = new JList();
-		priceList.setEnabled(false);
-		PriceSelector priceSelect = new PriceSelector();
-		priceList.addListSelectionListener(priceSelect);
-		setPizzaPrices(0);
-		priceList.setBounds(83, 30, 150, 60);
-		thisPane.add(priceList);
-		thisPane.setSize(450, 100);
+		thisPane.setSize(450, 30);
 		return thisPane;
 	}
 
 	private void setPizzaPrices(int selected) {
-		prices[0] = dSmall.get(selected);
-		prices[1] = dMed.get(selected);
-		prices[2] = dLarge.get(selected);
-		priceList.setSelectedIndex(0);
-		priceList.setListData(prices);
+		itemPriceLabel.setText(dPrice.get(selected).toString());
+		itemPrice = dPrice.get(selected);
 		this.validate();
 	}
 
@@ -169,16 +149,13 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 
 		while (sc.hasNextLine()) {
 			dName.add(sc.nextLine());
-			dSmall.add(new BigDecimal(sc.nextLine()));
-			dMed.add(new BigDecimal(sc.nextLine()));
-			dLarge.add(new BigDecimal(sc.nextLine()));
+			dPrice.add(new BigDecimal(sc.nextLine()));
 			dDesc.add(sc.nextLine());
 		}
 	}
 
 	public Item getOrderItem() {
-		Item newItem = new Drink(selectedItem, itemPrice,
-				itemSize, itemDesc);
+		Item newItem = new Drink(selectedItem, itemPrice, itemSize, itemDesc);
 		return newItem;
 	}
 
@@ -275,38 +252,9 @@ public class ItemDrink extends ItemFrame implements KeyListener {
 					selectedItem = dName.get(a);
 					setPizzaPrices(a);
 					itemDesc = dDesc.get(a);
-					priceList.setSelectedIndex(0);
-					priceList.setEnabled(true);
 					break;
 				}
 			}
-		}
-	}
-
-	/**
-	 * Private class to enable separate selection of items in the Price List
-	 * from Pizzas List
-	 * 
-	 * @author Lee Smith
-	 * @see javax.swing.event.ListSelectionListener
-	 */
-
-	private class PriceSelector implements ListSelectionListener {
-
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			int selectedIndex = priceList.getSelectedIndex();
-			if (selectedIndex == -1) {
-				selectedIndex = 0;
-			}
-			if (selectedIndex == 0) {
-				itemSize = "Small";
-			} else if (selectedIndex == 1) {
-				itemSize = "Medium";
-			} else {
-				itemSize = "Large";
-			}
-			itemPrice = prices[selectedIndex];
 		}
 	}
 }
