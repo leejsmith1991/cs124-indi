@@ -56,11 +56,17 @@ public class Till {
 	}
 
 	public void save() throws IOException {
+		
+		try { 
 		XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
 				new FileOutputStream(PATHNAME + xmlFileName)));
 		encoder.writeObject(this);
 		
 		encoder.close();
+		} 
+		catch(Exception e) { 
+			e.printStackTrace();
+		}
 
 	}
 

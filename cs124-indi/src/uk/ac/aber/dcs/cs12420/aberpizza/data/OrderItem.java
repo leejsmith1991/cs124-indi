@@ -6,7 +6,7 @@ public class OrderItem {
 		
 	private int quantity;
 	private BigDecimal itemTotal = new BigDecimal("0");
-	private Item item;
+	private Item item = null;
 	
 	public OrderItem(Item item, int quantity){
 		this.item = item;
