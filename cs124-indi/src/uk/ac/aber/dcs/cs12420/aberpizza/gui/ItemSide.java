@@ -28,6 +28,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 	private JPanel sideListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
+	private JTextArea descriptionText;
 	private JLabel itemPriceLabel;
 
 	private String selectedItem, itemSize, itemDesc;
@@ -91,6 +92,13 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		SideSelector drinkSelect = new SideSelector();
 		sideList.addListSelectionListener(drinkSelect);
 		thisPane.add(sideList);
+		
+		descriptionText = new JTextArea("");
+		descriptionText.setWrapStyleWord(true);
+		descriptionText.setLineWrap(true);
+		descriptionText.setBounds(230, label.getHeight() + 10, 200, 150);
+		descriptionText.setEnabled(false);
+		thisPane.add(descriptionText);
 		thisPane.setSize(label.getWidth() + 10, sideList.getHeight() + 30);
 		return thisPane;
 	}
@@ -244,6 +252,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 				if (sName.get(a).equals(sideList.getSelectedValue())) {
 					selectedItem = sName.get(a);
 					setSidePrices(a);
+					descriptionText.setText(itemDesc);
 					itemDesc = sDesc.get(a);
 					break;
 				}

@@ -29,6 +29,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	private JPanel pizzaListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
+	private JTextArea descriptionText;
 	
 	private String selectedItem, itemSize, itemDesc;
 	private BigDecimal itemPrice;
@@ -87,15 +88,19 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		}
 
 		pizzasList = new JList(ml);
-		pizzasList
-				.setBounds(30, label.getHeight() + 10, 300, pName.size() * 21);
+		pizzasList.setBounds(30, label.getHeight() + 10, 200, pName.size() * 21);
 
 		PizzaSelector pizzaSelect = new PizzaSelector();
 		pizzasList.addListSelectionListener(pizzaSelect);
-
 		thisPane.add(pizzasList);
-
-		thisPane.setSize(label.getWidth() + pizzasList.getHeight() + 30,
+		
+		descriptionText = new JTextArea("");
+		descriptionText.setWrapStyleWord(true);
+		descriptionText.setLineWrap(true);
+		descriptionText.setBounds(230, label.getHeight() + 10, 200, 150);
+		descriptionText.setEnabled(false);
+		thisPane.add(descriptionText);
+		thisPane.setSize(label.getWidth() + pizzasList.getHeight() + descriptionText.getWidth() + 40 ,
 				label.getHeight() + pizzasList.getHeight());
 		return thisPane;
 	}
@@ -269,6 +274,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 					selectedItem = pName.get(a);
 					setPizzaPrices(a);
 					itemDesc = pDesc.get(a);
+					descriptionText.setText(itemDesc);
 					priceList.setSelectedIndex(0);
 					priceList.setEnabled(true);
 					break;

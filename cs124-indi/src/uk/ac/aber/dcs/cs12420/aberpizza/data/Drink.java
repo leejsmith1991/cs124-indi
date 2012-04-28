@@ -50,6 +50,16 @@ public class Drink implements Item{
 	}
 	
 	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -69,15 +79,7 @@ public class Drink implements Item{
 		this.description = description;
 	}
 
-	@Override
-	public String getName() {
-		return name;
-	}
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public String getSize() {

@@ -153,7 +153,7 @@ public class Manager implements ActionListener, MouseListener {
 					itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		}
-		customerOrder.addItem(i, itemFrame.getQuantity());
+		customerOrder.addItem((Item)i, itemFrame.getQuantity());
 		no.updateTable(customerOrder);
 		calculateDiscount();
 		itemFrame.dispose();
@@ -178,6 +178,7 @@ public class Manager implements ActionListener, MouseListener {
 	private void addOrderToTill() {
 		no.setCustomerName();
 		customerOrder.setCustomerName(no.getCustomerName());
+		JOptionPane.showMessageDialog(null, customerOrder.getReceipt());
 		till.addOrder(customerOrder);
 	}
 
