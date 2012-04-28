@@ -38,7 +38,7 @@ public class NewOrder extends JFrame implements ActionListener,
 	private DefaultListModel tableList = new DefaultListModel();
 
 	private BigDecimal totalForOrder = new BigDecimal("0");
-	private JLabel subText;
+	private JLabel subText, discText, totalText;
 
 	private int selectedIndex = 0;
 	private String customerName;
@@ -149,7 +149,7 @@ public class NewOrder extends JFrame implements ActionListener,
 	private JPanel getSubDiscPane() {
 		JPanel thisPane = new JPanel(null);
 
-		JLabel subLabel, discLabel, discText;
+		JLabel subLabel, discLabel, totalLabel;
 
 		subLabel = new JLabel("Subtotal : £", SwingConstants.RIGHT);
 		subLabel.setBounds(150, 5, 250, 25);
@@ -160,12 +160,20 @@ public class NewOrder extends JFrame implements ActionListener,
 		thisPane.add(subText);
 
 		discLabel = new JLabel("Amount of Discount : £", SwingConstants.RIGHT);
-		discLabel.setBounds(150, 50, 250, 25);
+		discLabel.setBounds(150, 35, 250, 25);
 		thisPane.add(discLabel);
 
-		discText = new JLabel("Discount // to-do");
-		discText.setBounds(420, 50, 250, 25);
+		discText = new JLabel("0.00");
+		discText.setBounds(420, 35, 250, 25);
 		thisPane.add(discText);
+		
+		totalLabel = new JLabel("Order Total : £", SwingConstants.RIGHT);
+		totalLabel.setBounds(150, 65, 250, 25);
+		thisPane.add(totalLabel);
+
+		totalText = new JLabel("0.00");
+		totalText.setBounds(420, 65, 250, 25);
+		thisPane.add(totalText);
 		
 		JButton calcDisc = new JButton("Calculate Discount");
 		calcDisc.setBounds(700, 25, 150, 35);
@@ -223,7 +231,12 @@ public class NewOrder extends JFrame implements ActionListener,
 			total = total.add(orderItems.get(i).getOrderItemTotal());
 		}
 		
-		subText.setText(total.toString());
+		subText.setText(order.getSubtotal().toString());
+	}
+	
+	public void setDiscountText(Order order){
+		discText.setText(order.getDiscount().toString());
+		totalText.setText(order.getOrderTotal().toString());
 	}
 	
 	@Override

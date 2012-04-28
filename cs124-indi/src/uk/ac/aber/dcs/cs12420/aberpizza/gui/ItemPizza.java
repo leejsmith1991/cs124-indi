@@ -252,13 +252,6 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 
 	}
 
-	@Override
-	public BigDecimal getSubTotal() {
-		BigDecimal subtotal = itemPrice;
-		subtotal = subtotal.multiply(new BigDecimal(quantity));
-		return subtotal;
-	}
-
 	/**
 	 * Private class to enable separate selection of items in the Pizzas List
 	 * from Price List

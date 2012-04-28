@@ -110,7 +110,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		return thisPane;
 	}
 
-	private void setPizzaPrices(int selected) {
+	private void setDrinkPrices(int selected) {
 		itemPriceLabel.setText(dPrice.get(selected).toString());
 		itemPrice = dPrice.get(selected);
 		this.validate();
@@ -214,25 +214,23 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 	}
 
 	@Override
-	public BigDecimal getSubTotal() {
-		BigDecimal subtotal = itemPrice;
-		subtotal.multiply(new BigDecimal(quantity));
-		return subtotal;
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		setQuantity();
+		try {
+			quantity = Integer.parseInt(quantText.getText());
+			System.out.println(quantity);
+		} catch (NumberFormatException nfe) {
+
+		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-
+		
 	}
 
 	/**
@@ -250,7 +248,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 			for (int a = 0; a < dName.size(); a++) {
 				if (dName.get(a).equals(drinkList.getSelectedValue())) {
 					selectedItem = dName.get(a);
-					setPizzaPrices(a);
+					setDrinkPrices(a);
 					itemDesc = dDesc.get(a);
 					break;
 				}

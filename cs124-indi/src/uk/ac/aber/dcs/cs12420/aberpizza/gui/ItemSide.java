@@ -111,7 +111,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	}
 
 
-	private void setPizzaPrices(int selected) {
+	private void setSidePrices(int selected) {
 		itemPriceLabel.setText(sPrice.get(selected).toString());
 		itemPrice = sPrice.get(selected);
 		this.validate();
@@ -210,13 +210,6 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	}
 
 	@Override
-	public BigDecimal getSubTotal() {
-		BigDecimal subtotal = itemPrice;
-		subtotal.multiply(new BigDecimal(quantity));
-		return subtotal;
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 
 	}
@@ -250,7 +243,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 			for (int a = 0; a < sName.size(); a++) {
 				if (sName.get(a).equals(sideList.getSelectedValue())) {
 					selectedItem = sName.get(a);
-					setPizzaPrices(a);
+					setSidePrices(a);
 					itemDesc = sDesc.get(a);
 					break;
 				}

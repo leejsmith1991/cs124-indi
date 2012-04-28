@@ -25,7 +25,7 @@ public class Manager implements ActionListener, MouseListener {
 	private Item i;
 	private Order customerOrder;
 
-	public Manager() throws IOException {		
+	public Manager() throws IOException {
 		till = Till.load();
 		mf = new MainFrame(this, till.getOrdersArray());
 	}
@@ -68,7 +68,7 @@ public class Manager implements ActionListener, MouseListener {
 		} else if (action.equals("Add to Order")) {
 			addItemToOrder();
 		} else if (action.equals("Pay")) {
-			amt = new AmountTendered(this, itemFrame.getSubTotal());
+			amt = new AmountTendered(this, customerOrder.getOrderTotal());
 		} else if (action.equals("Pay Order")) {
 			if (amt.getChange().signum() == -1) {
 				// throw new massive exception
@@ -92,12 +92,10 @@ public class Manager implements ActionListener, MouseListener {
 			updateQuantity();
 		} else if (action.equals("Remove Item")) {
 			removeItemFromOrder();
-		} else if (action.equals("Calculate Discount")){
-			
+		} else if (action.equals("Calculate Discount")) {
 			calculateDiscount();
 		}
 	}
-
 
 	private void createNewOrder() {
 		no = new NewOrder(this);
@@ -115,18 +113,24 @@ public class Manager implements ActionListener, MouseListener {
 	}
 
 	private void updateQuantity() {
-		int newQuant = 1;
+		int newQuant = 0;
 		try {
 			String newQuantInput = JOptionPane.showInputDialog(null,
 					"Enter new Quantity", JOptionPane.OK_CANCEL_OPTION);
 			newQuant = Integer.parseInt(newQuantInput);
-			customerOrder.updateItemQuantity(customerOrder.getItemAt(no.getSelectedIndex()), newQuant);
-			customerOrder.updateSubTotal();
-			no.updateTable(customerOrder);
+			if (newQuant == 0) {
+				removeItemFromOrder();
+			} else {
+				customerOrder.updateItemQuantity(
+						customerOrder.getItemAt(no.getSelectedIndex()),
+						newQuant);
+				customerOrder.updateSubTotal();
+				no.updateTable(customerOrder);
+			}
 		} catch (NumberFormatException nfe) {
-			
+
 		}
-		
+
 	}
 
 	private void removeItemFromOrder() {
@@ -138,21 +142,27 @@ public class Manager implements ActionListener, MouseListener {
 	private void addItemToOrder() {
 		i = null;
 		if (itemFrame.getItemType() == ItemType.PIZZA) {
-			i = new Pizza(itemFrame.getSelectedItem(), itemFrame.getItemPrice(), itemFrame.getItemSize(),
+			i = new Pizza(itemFrame.getSelectedItem(),
+					itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		} else if (itemFrame.getItemType() == ItemType.SIDE) {
-			i = new Side(itemFrame.getSelectedItem(), itemFrame.getItemPrice(), itemFrame.getItemSize(),
-					itemFrame.getItemDesc());
+			i = new Side(itemFrame.getSelectedItem(), itemFrame.getItemPrice(),
+					itemFrame.getItemSize(), itemFrame.getItemDesc());
 		} else {
-			i = new Drink(itemFrame.getSelectedItem(),itemFrame.getItemPrice(), itemFrame.getItemSize(),
+			i = new Drink(itemFrame.getSelectedItem(),
+					itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		}
 		customerOrder.addItem(i, itemFrame.getQuantity());
 		no.updateTable(customerOrder);
+		calculateDiscount();
 		itemFrame.dispose();
+		
 	}
+
 	private void calculateDiscount() {
-		customerOrder.getDiscount();	
+		customerOrder.setOrderTotal(customerOrder.getDiscount());
+		no.setDiscountText(customerOrder);
 	}
 
 	private void createNewItem(ItemType type) {

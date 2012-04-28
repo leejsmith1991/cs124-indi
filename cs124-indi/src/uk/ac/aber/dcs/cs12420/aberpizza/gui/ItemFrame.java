@@ -31,7 +31,4 @@ public abstract class ItemFrame extends JFrame {
 	public abstract int getQuantity();
 	
 	public abstract ItemType getItemType();
-	
-	public abstract BigDecimal getSubTotal();
-	
 }

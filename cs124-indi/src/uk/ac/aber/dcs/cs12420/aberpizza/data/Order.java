@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-public class Order{
+public class Order {
 
 	private ArrayList<OrderItem> items;
 	private String customerName;
@@ -14,13 +14,19 @@ public class Order{
 	private final String NL = "\n";
 	private Date today;
 	private String orderTime;
-	private SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss");
+	private String orderDate;
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+	private SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 	private BigDecimal subTotal = new BigDecimal("0");
+	private BigDecimal orderTotal = new BigDecimal("0");
+	private String discountType;
+	
 
 	public Order() {
 		items = new ArrayList<OrderItem>();
 		today = new Date();
-		orderTime = dateFormatter.format(today);
+		orderTime = timeFormatter.format(today);
+		orderDate = dateFormatter.format(today);
 	}
 
 	public String getCustomerName() {
@@ -37,6 +43,14 @@ public class Order{
 
 	public void setOrderTime(Date date) {
 		this.orderTime = dateFormatter.format(date);
+	}
+
+	public BigDecimal getOrderTotal() {
+		return orderTotal;
+	}
+
+	public void setOrderTotal(BigDecimal discount) {
+		this.orderTotal = subTotal.subtract(discount);
 	}
 
 	public void addItem(Item item, int quantity) {
@@ -56,7 +70,6 @@ public class Order{
 		for (OrderItem orderItem : items) {
 			if (orderItem.getItem().equals(item)) {
 				orderItem.setQuantity(quantity);
-				System.out.println("Quantity updated");
 			}
 		}
 	}
@@ -80,59 +93,159 @@ public class Order{
 	public void updateSubTotal() {
 		subTotal = new BigDecimal("0");
 		for (int j = 0; j < items.size(); j++) {
-			subTotal.add(items.get(j).getOrderItemTotal());
+			subTotal = subTotal.add(items.get(j).getOrderItemTotal());
 		}
-
+		setSubtotal(subTotal);
+		setOrderTotal(getDiscount());
 	}
 
 	public BigDecimal getDiscount() {
-		ArrayList<OrderItem> smallPizza = new ArrayList<OrderItem>();
-		ArrayList<OrderItem> mediumPizza = new ArrayList<OrderItem>();
-		ArrayList<OrderItem> largePizza = new ArrayList<OrderItem>();
+		ArrayList<Item> smallPizza = new ArrayList<Item>();
+		ArrayList<Item> mediumPizza = new ArrayList<Item>();
+		ArrayList<Item> largePizza = new ArrayList<Item>();
+		ArrayList<Item> sides = new ArrayList<Item>();
+		ArrayList<Item> drinks = new ArrayList<Item>();
 
 		int pizzaS = 0;
 		int pizzaM = 0;
 		int pizzaL = 0;
+		int sideCount = 0;
+		int drinkCount = 0;
 
-		for (int a = 0; a < smallPizza.size(); a++) {
-			pizzaS = pizzaS + (1 * smallPizza.get(a).getQuantity());
+		for (int i = 0; i < items.size(); i++) {
+			if (items.get(i).getItemType() == ItemType.PIZZA
+					&& items.get(i).getItem().getSize().equals("Small")) {
+				for (int a = 0; a < items.get(i).getQuantity(); a++) {
+					smallPizza.add(items.get(i).getItem());
+					pizzaS++;
+				}
+			} else if (items.get(i).getItemType() == ItemType.PIZZA
+					&& items.get(i).getItem().getSize().equals("Medium")) {
+				for (int a = 0; a < items.get(i).getQuantity(); a++) {
+					mediumPizza.add(items.get(i).getItem());
+					pizzaM++;
+				}
+			} else if (items.get(i).getItemType() == ItemType.PIZZA
+					&& items.get(i).getItem().getSize().equals("Large")) {
+				for (int a = 0; a < items.get(i).getQuantity(); a++) {
+					largePizza.add(items.get(i).getItem());
+					pizzaL++;
+				}
+			} else if (items.get(i).getItemType() == ItemType.SIDE) {
+				for (int a = 0; a < items.get(i).getQuantity(); a++) {
+					sides.add(items.get(i).getItem());
+					sideCount++;
+				}
+			} else if (items.get(i).getItemType() == ItemType.DRINK) {
+				for (int a = 0; a < items.get(i).getQuantity(); a++) {
+					drinks.add(items.get(i).getItem());
+					drinkCount++;
+				}
+			}
 		}
-		for (int a = 0; a < mediumPizza.size(); a++) {
-			pizzaM = pizzaM + (1 * mediumPizza.get(a).getQuantity());
+		if (pizzaS > 0) {
+			smallPizza = sort(smallPizza);
 		}
-		for (int a = 0; a < largePizza.size(); a++) {
-			pizzaL = pizzaL + (1 * largePizza.get(a).getQuantity());
+		if (pizzaM > 0){
+			mediumPizza = sort(mediumPizza);
 		}
+		if (pizzaL > 0){
+			largePizza = sort(largePizza);
+		}
+		if (sideCount > 0){
+			sides = sort(sides);
+		}
+		if (drinkCount > 0){
+			drinks = sort(drinks);
+		}
+		
+		boolean discountApplied = false;
+		BigDecimal discountItems = new BigDecimal("0");
+		BigDecimal discount = new BigDecimal("0");
 
-		return null;
+		if (pizzaL >= 3) {
+			discountItems = largePizza.get(0).getPrice();
+			discountItems = discountItems.add(largePizza.get(1).getPrice());
+			discountItems = discountItems.add(largePizza.get(2).getPrice());
+			discount = discountItems.multiply(new BigDecimal("0.3"));
+			discountApplied = true;
+			discountType = "3 Large Pizzas";
+		} else if (pizzaM >= 3 && discountApplied == false) {
+			discountItems = mediumPizza.get(0).getPrice();
+			discountItems = discountItems.add(mediumPizza.get(1).getPrice());
+			discountItems = discountItems.add(mediumPizza.get(2).getPrice());
+			discount = discountItems.multiply(new BigDecimal("0.3"));
+			discountApplied = true;
+			discountType = "3 Medium Pizzas";
+		} else if (pizzaS >= 3 && discountApplied == false) {
+			discountItems = smallPizza.get(0).getPrice();
+			discountItems = discountItems.add(smallPizza.get(1).getPrice());
+			discountItems = discountItems.add(smallPizza.get(2).getPrice());
+			discount = discountItems.multiply(new BigDecimal("0.3"));
+			discountApplied = true;
+			discountType = "3 Small Pizzas";
+		} else if (pizzaL >= 1 && sideCount >= 1 && drinkCount >= 1 && discountApplied == false){
+			discountItems = largePizza.get(0).getPrice();
+			discountItems = discountItems.add(sides.get(0).getPrice());
+			discountItems = discountItems.add(drinks.get(0).getPrice());
+			discount = discountItems.multiply(new BigDecimal("0.15"));
+			discountType = "Meal Deal";
+		}
+		
+		discount = discount.setScale(2, BigDecimal.ROUND_HALF_UP);
+		System.out.println(discount.toString() + discountType);
+		
+		setOrderTotal(discount);
+		return discount;
 	}
 
-	public ArrayList<OrderItem> sort(ArrayList<OrderItem> list) {
-		boolean sorted = true;
-		ArrayList<Item> itemsSingle = new ArrayList<Item>();
+	private ArrayList<Item> sort(ArrayList<Item> list) {
+		boolean sorted = false;
+		int equalCount = 0;
+		int listLoc = 1;
 		
-		for (int i = 0; i < list.size(); i++){
-			int itemQuantity = list.get(i).getQuantity();
-			do {
-				if (itemQuantity < 0){
-					itemsSingle.add(list.get(i).getItem());
+		while (!sorted && list.size() >1) {
+			Item a = list.get(listLoc - 1);
+			Item b = list.get(listLoc);
+			boolean changed = false;
+			
+			if (a.getPrice().compareTo(list.get(listLoc).getPrice()) <= 0) {
+				if (a.getPrice().compareTo(list.get(listLoc).getPrice()) == 0){
+					equalCount++;
 				}
-			} while (itemQuantity > 0);
+				list.set(listLoc - 1, b);
+				list.set(listLoc, a);
+				changed = true;
+			}
+			if (listLoc == list.size() - 1) {
+				listLoc = 1;
+			} else {
+				listLoc++;
+			}
+
+			if (changed == false) {
+				sorted = true;
+			}
+			if (equalCount == list.size()){
+				sorted = true;
+			}
 		}
 		
-		
-		
-		
-		for (int a = 0; a < list.size(); a++) {
-			System.out.println(list.get(a).getItem().getPrice());
-		}
 		return list;
 	}
 
 	public String getReceipt() {
 		String receipt = "";
 		receipt = receipt + "Aber Pizza" + NL;
-		receipt = receipt + orderTime;
+		receipt = receipt + "Order for " + customerName + NL;
+		receipt = receipt + "Time of Order: " + orderDate + " at "+ orderTime + NL;
+		for (int i = 0; i < items.size(); i++){
+			receipt = receipt + items.get(i).toString() + NL;
+		}
+		
+		receipt = receipt + "Subtotal : £" + subTotal.toString() + NL;
+		receipt = receipt + "Discounts " + discountType + " : £" + getDiscount().toString() + NL;
+		receipt = receipt + "Order Total : £" + orderTotal;
 
 		return receipt;
 	}
