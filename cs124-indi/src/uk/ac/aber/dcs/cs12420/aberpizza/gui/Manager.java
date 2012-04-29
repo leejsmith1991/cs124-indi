@@ -25,6 +25,11 @@ public class Manager implements ActionListener, MouseListener {
 	private Item i;
 	private Order customerOrder;
 
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	
 	public Manager() throws IOException {
 		till = Till.load();
 		mf = new MainFrame(this, till.getOrdersArray());

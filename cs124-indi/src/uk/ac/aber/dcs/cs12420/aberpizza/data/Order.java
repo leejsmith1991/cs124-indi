@@ -17,8 +17,8 @@ public class Order {
 	private String orderDate;
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 	private SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
-	private BigDecimal subTotal = new BigDecimal("0");
-	private BigDecimal orderTotal = new BigDecimal("0");
+	private BigDecimal subTotal = new BigDecimal("0.00");
+	private BigDecimal orderTotal = new BigDecimal("0.00");
 	private String discountType;
 	
 

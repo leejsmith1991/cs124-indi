@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -28,6 +29,10 @@ public class NewOrder extends JFrame implements ActionListener,
 		ListSelectionListener {
 
 	private static final long serialVersionUID = 4978171281055317618L;
+
+	/**
+	 * Manager for use of the Listeners
+	 */
 	private Manager manager;
 
 	private JPanel customerNamePane, listPane, buttonPane, subDiscPane,
@@ -36,13 +41,26 @@ public class NewOrder extends JFrame implements ActionListener,
 
 	private JList orderList;
 	private DefaultListModel tableList = new DefaultListModel();
-
+	/**
+	 * Holds the current total of the order
+	 */
 	private BigDecimal totalForOrder = new BigDecimal("0");
 	private JLabel subText, discText, totalText;
-
+	/**
+	 * Holds the currently selected index for item selected in the List that
+	 * displays items in the current order
+	 */
 	private int selectedIndex = 0;
+	/**
+	 * Holds the name of the customer
+	 */
 	private String customerName;
 
+	/**
+	 * Construst a new order frame, and lays out the components
+	 * @see Manager
+	 * @param manager
+	 */
 	public NewOrder(Manager manager) {
 		this.manager = manager;
 		this.setLayout(null);
@@ -82,9 +100,24 @@ public class NewOrder extends JFrame implements ActionListener,
 		this.setSize(new Dimension(1024, 768));
 	}
 
+	/**
+	 * Gets the Selected index for the List item selected
+	 * 
+	 * @return selectedIndex
+	 */
+
 	public int getSelectedIndex() {
 		return selectedIndex;
 	}
+
+	/**
+	 * Creates pane that allows user to enter the customers name
+	 * 
+	 * @see JPanel
+	 * @see JLabel
+	 * @see JTextField
+	 * @return JPanel with components for Entering name
+	 */
 
 	private JPanel getCustomerNamePane() {
 		JPanel thisPane = new JPanel(null);
@@ -99,6 +132,14 @@ public class NewOrder extends JFrame implements ActionListener,
 		thisPane.setSize(new Dimension(1024, 35));
 		return thisPane;
 	}
+
+	/**
+	 * JPanel with 3 Buttons that represent Pizzas, Sides, and Drinks
+	 * 
+	 * @see JPanel
+	 * @see JButton
+	 * @return JPanel with Buttons for selecting Pizzas, Sides or Drinks
+	 */
 
 	private JPanel getButtonPane() {
 		JPanel thisPane = new JPanel(null);
@@ -123,6 +164,14 @@ public class NewOrder extends JFrame implements ActionListener,
 		return thisPane;
 	}
 
+	/**
+	 * JPanel that holds a JList containing items in the current order, with
+	 * Quantity, Item and OrderItemTotal
+	 * 
+	 * @see JPanel
+	 * @see JList
+	 * @return JPanel containing JList with order items in
+	 */
 	private JPanel getOrderListPane() {
 		JPanel thisPane = new JPanel(null);
 
@@ -146,6 +195,15 @@ public class NewOrder extends JFrame implements ActionListener,
 		return thisPane;
 	}
 
+	/**
+	 * JPanel containing information on the Subtotal for the Order, Discounts
+	 * that have become effective, and the order total which is the subtotal -
+	 * discounts
+	 * @see JPanel
+	 * @see JLabel
+	 * @return JPanel containing labels displaying information on subtotal, discounts and order total
+	 */
+
 	private JPanel getSubDiscPane() {
 		JPanel thisPane = new JPanel(null);
 
@@ -155,7 +213,7 @@ public class NewOrder extends JFrame implements ActionListener,
 		subLabel.setBounds(150, 5, 250, 25);
 		thisPane.add(subLabel);
 
-		subText = new JLabel("Subtotal for Order // to-do");
+		subText = new JLabel("0.00");
 		subText.setBounds(420, 5, 250, 25);
 		thisPane.add(subText);
 
@@ -166,7 +224,7 @@ public class NewOrder extends JFrame implements ActionListener,
 		discText = new JLabel("0.00");
 		discText.setBounds(420, 35, 250, 25);
 		thisPane.add(discText);
-		
+
 		totalLabel = new JLabel("Order Total : £", SwingConstants.RIGHT);
 		totalLabel.setBounds(150, 65, 250, 25);
 		thisPane.add(totalLabel);
@@ -174,16 +232,16 @@ public class NewOrder extends JFrame implements ActionListener,
 		totalText = new JLabel("0.00");
 		totalText.setBounds(420, 65, 250, 25);
 		thisPane.add(totalText);
-		
-		JButton calcDisc = new JButton("Calculate Discount");
-		calcDisc.setBounds(700, 25, 150, 35);
-		calcDisc.addActionListener(manager);
-		thisPane.add(calcDisc);
-		
+
 		thisPane.setSize(1024, 150);
 		return thisPane;
 	}
-
+/**
+ * JPanel containing 2 buttons allowing the user to Pay the order, or cancel it
+ * @see JPanel
+ * @see JButton
+ * @return JPanel containing the 2 buttons
+ */
 	private JPanel getPayCancelPane() {
 		JPanel thisPane = new JPanel(null);
 
@@ -202,43 +260,61 @@ public class NewOrder extends JFrame implements ActionListener,
 		return thisPane;
 	}
 
+	/**
+	 * Checks if the name entered for the customer is not empty, if so produce input pane where user can enter the name
+	 * @see JOptionPane
+	 * @return customerName
+	 */
+	
 	public String getCustomerName() {
 		return customerName;
 	}
 
+	/**
+	 * Sets the customer name, and checks for 
+	 */
+	
 	public void setCustomerName() {
 		if (customerText.getText().equals("")) {
-			// throw new invalid argument exception
+			customerName = JOptionPane.showInputDialog(null,
+					"Enter Customer Name");
 		} else {
 			customerName = customerText.getText();
 		}
 	}
+
+	/**
+	 * Updates the table when an item is added, updated or removed
+	 * @param order 
+	 */
 	
 	public void updateTable(Order order) {
 		tableList.clear();
-		for (int i = 0; i < order.getItems().size(); i++){
+		for (int i = 0; i < order.getItems().size(); i++) {
 			tableList.addElement(order.getItems().get(i).toString());
 		}
-		
+
 		setSubTextText(order);
 		this.validate();
 	}
 
-	public void setSubTextText(Order order){
-		ArrayList<OrderItem> orderItems = order.getItems();
-		BigDecimal total = new BigDecimal("0");
-		for (int i = 0; i < orderItems.size(); i++){
-			total = total.add(orderItems.get(i).getOrderItemTotal());
-		}
-		
+	/**
+	 * Sets the subtotal text on the screen for user to see. 
+	 * @param order
+	 */
+	
+	public void setSubTextText(Order order) {
 		subText.setText(order.getSubtotal().toString());
 	}
-	
-	public void setDiscountText(Order order){
+	/**
+	 * Sets the discounts amount text on screen, also updates total for order text based on the discounts applied
+	 * @param order
+	 */
+	public void setDiscountText(Order order) {
 		discText.setText(order.getDiscount().toString());
 		totalText.setText(order.getOrderTotal().toString());
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
