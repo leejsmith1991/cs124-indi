@@ -37,7 +37,7 @@ public class MenuBar extends JMenuBar {
 
 	private void addFileItems() {
 		fileItems = new LinkedList<JMenuItem>();
-		fileItems.add(new JMenuItem("Load State"));
+		fileItems.add(new JMenuItem("Load Previous Day"));
 		fileItems.add(new JMenuItem("Save State"));
 		fileItems.add(new JMenuItem("Exit"));
 

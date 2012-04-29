@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_01" class="java.beans.XMLDecoder">
+ <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Till">
+  <void property="ordersArray">
+   <void method="add">
+    <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Order">
+     <void property="customerName">
+      <string>Lee</string>
+     </void>
+     <void property="items">
+      <void method="add">
+       <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem">
+        <void property="item">
+         <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Pizza">
+          <void property="name">
+           <string>MeatFeast</string>
+          </void>
+          <void property="price">
+           <object class="java.math.BigDecimal">
+            <string>4.99</string>
+           </object>
+          </void>
+          <void property="size">
+           <string>Small</string>
+          </void>
+         </object>
+        </void>
+        <void property="orderItemTotal">
+         <object class="java.math.BigDecimal">
+          <string>9.98</string>
+         </object>
+        </void>
+        <void property="quantity">
+         <int>2</int>
+        </void>
+       </object>
+      </void>
+     </void>
+     <void property="orderTotal">
+      <object class="java.math.BigDecimal">
+       <string>9.98</string>
+      </object>
+     </void>
+     <void property="subtotal">
+      <object class="java.math.BigDecimal">
+       <string>9.98</string>
+      </object>
+     </void>
+    </object>
+   </void>
+  </void>
+ </object>
+</java>

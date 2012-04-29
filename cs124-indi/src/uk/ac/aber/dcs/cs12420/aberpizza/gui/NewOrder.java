@@ -3,8 +3,6 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,10 +18,9 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Item;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
-import uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem;
+
 
 public class NewOrder extends JFrame implements ActionListener,
 		ListSelectionListener {
@@ -44,7 +41,6 @@ public class NewOrder extends JFrame implements ActionListener,
 	/**
 	 * Holds the current total of the order
 	 */
-	private BigDecimal totalForOrder = new BigDecimal("0");
 	private JLabel subText, discText, totalText;
 	/**
 	 * Holds the currently selected index for item selected in the List that

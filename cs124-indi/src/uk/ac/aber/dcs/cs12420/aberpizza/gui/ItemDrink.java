@@ -21,7 +21,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 
 	private Manager manager;
 
-	private JList drinkList, priceList;
+	private JList drinkList;
 	private ArrayList<String> dName, dDesc;
 	private ArrayList<BigDecimal> dPrice;
 	private DefaultListModel ml;

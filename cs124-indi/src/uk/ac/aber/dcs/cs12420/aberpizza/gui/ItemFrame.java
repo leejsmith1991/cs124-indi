@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import javax.swing.JFrame;
 
-import uk.ac.aber.dcs.cs12420.aberpizza.data.Item;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
 
 

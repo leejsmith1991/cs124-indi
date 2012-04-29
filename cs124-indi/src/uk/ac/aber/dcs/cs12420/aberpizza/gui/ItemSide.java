@@ -21,7 +21,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 	private Manager manager;
 
-	private JList sideList, priceList;
+	private JList sideList;
 	private ArrayList<String> sName, sDesc;
 	private ArrayList<BigDecimal>  sPrice;
 	private DefaultListModel ml;

@@ -8,9 +8,10 @@ import java.util.*;
 
 public class Till {
 
-	private Date today;
+	private Date now;
 	private SimpleDateFormat dateFormat;
 	private String todayDate;
+	private String today;
 	private static String xmlFileName;
 	private String[] date = new String[3];
 	private final static String PATHNAME = "./TillSaves/";
@@ -23,13 +24,22 @@ public class Till {
 	}
 
 	private void setFileDate() {
-		today = new Date();
+		now = new Date();
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		todayDate = dateFormat.format(today);
+		todayDate = dateFormat.format(now);
 		date = todayDate.split("/");
-		xmlFileName = date[0] + "_" + date[1] + "_" + date[2] + ".xml";
+		setToday(date[0] + "_" + date[1] + "_" + date[2]);
+		xmlFileName = getToday() + ".xml";
 	}
 
+	public void setToday(String today){
+		this.today = today;
+	}
+	
+	public String getToday(){
+		return today;
+	}
+	
 	public String getXMLFileName() {
 		return xmlFileName;
 	}
@@ -56,9 +66,6 @@ public class Till {
 	}
 
 	public void save() throws IOException {
-		
-		
-		
 		try {
 			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
 					new FileOutputStream(PATHNAME + xmlFileName)));

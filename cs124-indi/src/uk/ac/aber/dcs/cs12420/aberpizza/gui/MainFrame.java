@@ -1,17 +1,12 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -36,16 +31,22 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 	
 	private ArrayList<Order> ordersArray = new ArrayList<Order>();
 		
-	public MainFrame(Manager manager, ArrayList<Order> orderList) {
-		ordersArray = orderList;
+	public MainFrame(Manager manager, Till till, boolean thisDay) {
+		ordersArray = till.getOrdersArray();
 		
 		this.setManager(manager);
 		menuBar = new MenuBar(manager);
+		
+		this.setTitle(till.getToday());
 		
 		this.setJMenuBar(menuBar);
 
 		this.setLayout(null);
 		JButton addNewOrder = new JButton("Create New Order");
+		if (!thisDay){
+			addNewOrder.setEnabled(false);
+		}
+		
 		addNewOrder.setBounds(5,5,200, 30);
 		addNewOrder.addActionListener(manager);
 		

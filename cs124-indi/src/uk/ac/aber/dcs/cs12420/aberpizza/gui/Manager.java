@@ -7,20 +7,17 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigDecimal;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
 public class Manager implements ActionListener, MouseListener {
 	private Till till;
-
-	private AddNewItemWindow addNewItem;
 	private NewOrder no;
 	private AmountTendered amt;
 	private ItemFrame itemFrame;
-	private String xmlFileName;
 	private MainFrame mf;
 	private Item i;
 	private Order customerOrder;
@@ -32,7 +29,7 @@ public class Manager implements ActionListener, MouseListener {
 	
 	public Manager() throws IOException {
 		till = Till.load();
-		mf = new MainFrame(this, till.getOrdersArray());
+		mf = new MainFrame(this, till, true);
 	}
 
 	@Override
@@ -97,8 +94,21 @@ public class Manager implements ActionListener, MouseListener {
 			updateQuantity();
 		} else if (action.equals("Remove Item")) {
 			removeItemFromOrder();
-		} else if (action.equals("Calculate Discount")) {
-			calculateDiscount();
+		} else if (action.equals("Exit") || action.equals("End Day")) {
+			try {
+				till.save();
+				mf.dispose();
+			} catch (IOException e1) {
+				
+			}
+			
+		} else if (action.equals("Load Previous Day")){
+			System.out.println("Activated");
+			try {
+				loadPreviousDay();
+			} catch (IOException e1) {
+
+			}
 		}
 	}
 
@@ -135,7 +145,6 @@ public class Manager implements ActionListener, MouseListener {
 		} catch (NumberFormatException nfe) {
 
 		}
-
 	}
 
 	private void removeItemFromOrder() {
@@ -172,11 +181,11 @@ public class Manager implements ActionListener, MouseListener {
 
 	private void createNewItem(ItemType type) {
 		if (type == ItemType.PIZZA) {
-			addNewItem = new AddNewItemWindow(ItemType.PIZZA);
+			new AddNewItemWindow(ItemType.PIZZA);
 		} else if (type == ItemType.SIDE) {
-			addNewItem = new AddNewItemWindow(ItemType.SIDE);
+			new AddNewItemWindow(ItemType.SIDE);
 		} else {
-			addNewItem = new AddNewItemWindow(ItemType.DRINK);
+			new AddNewItemWindow(ItemType.DRINK);
 		}
 	}
 
@@ -187,6 +196,21 @@ public class Manager implements ActionListener, MouseListener {
 		till.addOrder(customerOrder);
 	}
 
+	private void loadPreviousDay() throws IOException{
+		JFileChooser fc = new JFileChooser();
+		File f = new File ("./TillSaves/");
+		fc.setCurrentDirectory(f);
+		int fcReturnVal = fc.showOpenDialog(null);
+		
+		if (fcReturnVal == JFileChooser.APPROVE_OPTION){
+			String oldPathName = fc.getSelectedFile().getName();
+			Till till = Till.loadPrevious(oldPathName);
+			mf = new MainFrame(this, till, false);
+		}
+		
+		
+		
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub

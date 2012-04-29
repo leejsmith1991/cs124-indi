@@ -5,10 +5,8 @@ import javax.swing.JPopupMenu;
 
 public class UpdatePopupMenu extends JPopupMenu {
 	JMenuItem updateQuantity, removeItem;
-	private Manager manager;
 	
 	public UpdatePopupMenu(Manager manager){
-		this.manager = manager;
 		updateQuantity = new JMenuItem("Update Quantity");
 		updateQuantity.addActionListener(manager);
 		this.add(updateQuantity);
