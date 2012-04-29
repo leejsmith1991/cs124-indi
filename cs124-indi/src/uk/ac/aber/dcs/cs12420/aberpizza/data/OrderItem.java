@@ -57,7 +57,8 @@ public class OrderItem {
 		return itemTotal;
 	}
 	
+	@Override
 	public String toString(){
-		return Integer.toString(quantity) + " x " + item.getName() + " @ " + item.getPrice() + " = £" + itemTotal.toString();
+		return Integer.toString(quantity) + " x " + item.getName() + " @ £" + item.getPrice() + " = £" + itemTotal.toString();
 	}
 }

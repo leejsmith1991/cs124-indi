@@ -18,9 +18,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener, MouseLis
 	private JButton submit;
 	private JLabel warningMessage;
 	private JPanel namePane, pricePane, submitPane, descriptionPane;
-	//private SpringLayout mainLayout;
-
-	
+		
 	private ArrayList<String> existing;
 
 	private Font f = new Font("Arial", Font.PLAIN, 12);

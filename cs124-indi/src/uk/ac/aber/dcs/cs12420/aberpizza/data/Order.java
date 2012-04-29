@@ -20,7 +20,6 @@ public class Order {
 	private BigDecimal orderTotal = new BigDecimal("0.00");
 	private String discountType;
 	
-
 	public Order() {
 		items = new ArrayList<OrderItem>();
 		today = new Date();
@@ -36,6 +35,13 @@ public class Order {
 		this.customerName = customerName;
 	}
 
+	public String getOrderDate(){
+		return orderDate;
+	}
+	public void setOrderDate(String orderDate){
+		this.orderDate = orderDate;
+	}
+	
 	public String getOrderTime() {
 		return orderTime;
 	}
@@ -48,8 +54,8 @@ public class Order {
 		return orderTotal;
 	}
 
-	public void setOrderTotal(BigDecimal discount) {
-		this.orderTotal = subTotal.subtract(discount);
+	public void setOrderTotal(BigDecimal orderTotal) {
+		this.orderTotal = orderTotal;
 	}
 
 	public void addItem(Item item, int quantity) {
@@ -65,16 +71,16 @@ public class Order {
 		this.items = items;
 	}
 
+	public Item getItemAt(int index) {
+		return items.get(index).getItem();
+	}
+
 	public void updateItemQuantity(Item item, int quantity) {
 		for (OrderItem orderItem : items) {
 			if (orderItem.getItem().equals(item)) {
 				orderItem.setQuantity(quantity);
 			}
 		}
-	}
-
-	public Item getItemAt(int index) {
-		return items.get(index).getItem();
 	}
 
 	public void removeItem(int index) {
@@ -145,19 +151,19 @@ public class Order {
 		if (pizzaS > 0) {
 			smallPizza = sort(smallPizza);
 		}
-		if (pizzaM > 0){
+		if (pizzaM > 0) {
 			mediumPizza = sort(mediumPizza);
 		}
-		if (pizzaL > 0){
+		if (pizzaL > 0) {
 			largePizza = sort(largePizza);
 		}
-		if (sideCount > 0){
+		if (sideCount > 0) {
 			sides = sort(sides);
 		}
-		if (drinkCount > 0){
+		if (drinkCount > 0) {
 			drinks = sort(drinks);
 		}
-		
+
 		boolean discountApplied = false;
 		BigDecimal discountItems = new BigDecimal("0");
 		BigDecimal discount = new BigDecimal("0");
@@ -183,18 +189,19 @@ public class Order {
 			discount = discountItems.multiply(new BigDecimal("0.3"));
 			discountApplied = true;
 			discountType = "3 Small Pizzas";
-		} else if (pizzaL >= 1 && sideCount >= 1 && drinkCount >= 1 && discountApplied == false){
+		} else if (pizzaL >= 1 && sideCount >= 1 && drinkCount >= 1
+				&& discountApplied == false) {
 			discountItems = largePizza.get(0).getPrice();
 			discountItems = discountItems.add(sides.get(0).getPrice());
 			discountItems = discountItems.add(drinks.get(0).getPrice());
 			discount = discountItems.multiply(new BigDecimal("0.15"));
 			discountType = "Meal Deal";
 		}
-		
+
 		discount = discount.setScale(2, BigDecimal.ROUND_HALF_UP);
 		System.out.println(discount.toString() + discountType);
-		
-		setOrderTotal(discount);
+
+		orderTotal = subTotal.subtract(discount);
 		return discount;
 	}
 
@@ -202,14 +209,14 @@ public class Order {
 		boolean sorted = false;
 		int equalCount = 0;
 		int listLoc = 1;
-		
-		while (!sorted && list.size() >1) {
+
+		while (!sorted && list.size() > 1) {
 			Item a = list.get(listLoc - 1);
 			Item b = list.get(listLoc);
 			boolean changed = false;
-			
+
 			if (a.getPrice().compareTo(list.get(listLoc).getPrice()) <= 0) {
-				if (a.getPrice().compareTo(list.get(listLoc).getPrice()) == 0){
+				if (a.getPrice().compareTo(list.get(listLoc).getPrice()) == 0) {
 					equalCount++;
 				}
 				list.set(listLoc - 1, b);
@@ -225,25 +232,27 @@ public class Order {
 			if (changed == false) {
 				sorted = true;
 			}
-			if (equalCount == list.size()){
+			if (equalCount == list.size()) {
 				sorted = true;
 			}
 		}
-		
+
 		return list;
 	}
 
 	public String getReceipt() {
 		String receipt = "";
-		receipt = receipt + "Aber Pizza" + NL;
+		receipt = receipt + "Aber Pizza" + NL + NL;
 		receipt = receipt + "Order for " + customerName + NL;
-		receipt = receipt + "Time of Order: " + orderDate + " at "+ orderTime + NL;
-		for (int i = 0; i < items.size(); i++){
+		receipt = receipt + "Time of Order: " + getOrderDate() + " at " + getOrderTime()
+				+ NL + NL;
+		for (int i = 0; i < items.size(); i++) {
 			receipt = receipt + items.get(i).toString() + NL;
 		}
-		
-		receipt = receipt + "Subtotal : £" + subTotal.toString() + NL;
-		receipt = receipt + "Discounts " + discountType + " : £" + getDiscount().toString() + NL;
+
+		receipt = receipt + NL +"Subtotal : £" + subTotal.toString() + NL;
+		receipt = receipt + "Discounts " + discountType + " : £"
+				+ getDiscount().toString() + NL;
 		receipt = receipt + "Order Total : £" + orderTotal;
 
 		return receipt;

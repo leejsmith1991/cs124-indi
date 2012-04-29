@@ -24,7 +24,7 @@ public interface Item{
 	 * Returns the description of a created item
 	 * @return description of item
 	 */
-	public String getDecription();
+	public String getDescription();
 	/**
 	 * Sets the description of the created item
 	 * @param description

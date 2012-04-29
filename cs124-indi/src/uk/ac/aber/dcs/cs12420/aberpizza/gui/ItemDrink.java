@@ -33,7 +33,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 
 	private String selectedItem, itemSize, itemDesc;
 
-	BigDecimal itemPrice;
+	private BigDecimal itemPrice;
 	private int quantity;
 
 	public ItemDrink(Manager manager) throws FileNotFoundException {
@@ -45,7 +45,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		dDesc = new ArrayList<String>();
 		getFromFile();
 
-		drinkListPane = getDrinkPane();
+		drinkListPane = getItemPane();
 		drinkListPane.setBounds(0, 0, drinkListPane.getWidth(),
 				drinkListPane.getHeight());
 
@@ -74,7 +74,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		this.setVisible(true);
 	}
 
-	private JPanel getDrinkPane() {
+	protected JPanel getItemPane() {
 		JPanel thisPane = new JPanel(null);
 
 		JLabel label = new JLabel("Select Drink");
@@ -104,7 +104,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		return thisPane;
 	}
 
-	private JPanel getPricePane() {
+	protected JPanel getPricePane() {
 		JPanel thisPane = new JPanel(null);
 
 		JLabel label = new JLabel("Select Size");
@@ -119,13 +119,13 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		return thisPane;
 	}
 
-	private void setDrinkPrices(int selected) {
+	protected void setItemPrices(int selected) {
 		itemPriceLabel.setText(dPrice.get(selected).toString());
 		itemPrice = dPrice.get(selected);
 		this.validate();
 	}
 
-	private JPanel getQuantityPane() {
+	protected JPanel getQuantityPane() {
 		JPanel thisPane = new JPanel(null);
 		JLabel quantLabel = new JLabel("Enter Quantity :", SwingConstants.RIGHT);
 		quantLabel.setBounds(5, 17, 89, 15);
@@ -140,7 +140,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		return thisPane;
 	}
 
-	public JPanel getSubmitPane() {
+	protected JPanel getSubmitPane() {
 		JPanel thisPane = new JPanel(null);
 
 		JButton submit = new JButton("Add to Order");
@@ -161,11 +161,6 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 			dPrice.add(new BigDecimal(sc.nextLine()));
 			dDesc.add(sc.nextLine());
 		}
-	}
-
-	public Item getOrderItem() {
-		Item newItem = new Drink(selectedItem, itemPrice, itemSize, itemDesc);
-		return newItem;
 	}
 
 	public String getSelectedItem() {
@@ -200,15 +195,14 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		this.itemDesc = itemDesc;
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
 	public ItemType getItemType() {
 		return ItemType.DRINK;
 	}
 
-	@Override
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
 	public void setQuantity() {
 		try {
 			Integer.parseInt(quantText.getText());
@@ -257,7 +251,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 			for (int a = 0; a < dName.size(); a++) {
 				if (dName.get(a).equals(drinkList.getSelectedValue())) {
 					selectedItem = dName.get(a);
-					setDrinkPrices(a);
+					setItemPrices(a);
 					descriptionText.setText(itemDesc);
 					itemDesc = dDesc.get(a);
 					break;

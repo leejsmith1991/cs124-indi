@@ -45,7 +45,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		sDesc = new ArrayList<String>();
 		getFromFile();
 
-		sideListPane = getDrinkPane();
+		sideListPane = getItemPane();
 		sideListPane.setBounds(0, 0, sideListPane.getWidth(),
 				sideListPane.getHeight());
 
@@ -74,7 +74,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		this.setVisible(true);
 	}
 
-	private JPanel getDrinkPane() {
+	protected JPanel getItemPane() {
 		JPanel thisPane = new JPanel(null);
 
 		JLabel label = new JLabel("Select Drink");
@@ -103,7 +103,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		return thisPane;
 	}
 
-	private JPanel getPricePane() {
+	protected JPanel getPricePane() {
 		JPanel thisPane = new JPanel(null);
 
 		JLabel label = new JLabel("Item Price:", SwingConstants.RIGHT);
@@ -119,13 +119,13 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	}
 
 
-	private void setSidePrices(int selected) {
+	protected void setItemPrices(int selected) {
 		itemPriceLabel.setText(sPrice.get(selected).toString());
 		itemPrice = sPrice.get(selected);
 		this.validate();
 	}
 
-	private JPanel getQuantityPane() {
+	protected JPanel getQuantityPane() {
 		JPanel thisPane = new JPanel(null);
 		JLabel quantLabel = new JLabel("Enter Quantity :", SwingConstants.RIGHT);
 		quantLabel.setBounds(5, 17, 89, 15);
@@ -140,7 +140,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		return thisPane;
 	}
 
-	private JPanel getSubmitPane() {
+	protected JPanel getSubmitPane() {
 		JPanel thisPane = new JPanel(null);
 
 		JButton submit = new JButton("Add to Order");
@@ -196,12 +196,12 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		this.itemDesc = itemDesc;
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
 	public ItemType getItemType(){
 		return ItemType.SIDE;
+	}
+	
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 	public void setQuantity() {
@@ -251,7 +251,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 			for (int a = 0; a < sName.size(); a++) {
 				if (sName.get(a).equals(sideList.getSelectedValue())) {
 					selectedItem = sName.get(a);
-					setSidePrices(a);
+					setItemPrices(a);
 					descriptionText.setText(itemDesc);
 					itemDesc = sDesc.get(a);
 					break;

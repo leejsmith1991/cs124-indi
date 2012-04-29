@@ -1,12 +1,15 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -24,17 +27,16 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 	private Manager manager;
 	
 	private DefaultListModel orders = new DefaultListModel();
-	private DefaultListModel indiOrder = new DefaultListModel();
 	
 	private JList ordersList = new JList(orders);
-	private JList indiOrderList = new JList(indiOrder);
+	private JTextArea indiOrder;
 	
 	private ArrayList<Order> ordersArray = new ArrayList<Order>();
 		
 	public MainFrame(Manager manager, Till till, boolean thisDay) {
 		ordersArray = till.getOrdersArray();
-		
-		this.setManager(manager);
+		this.addWindowListener(manager);
+		this.manager = manager;
 		menuBar = new MenuBar(manager);
 		
 		this.setTitle(till.getToday());
@@ -50,7 +52,7 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 		addNewOrder.setBounds(5,5,200, 30);
 		addNewOrder.addActionListener(manager);
 		
-		JButton viewSalesHistory = new JButton("View Todays Sales History");
+		JButton viewSalesHistory = new JButton("View Sales History");
 		viewSalesHistory.setBounds(5,40,200, 30);
 		viewSalesHistory.addActionListener(manager);
 		
@@ -62,21 +64,24 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 		updateArrayList(ordersArray);
 		ordersList.setBounds(210, 5, 300, 696);
 		ordersList.addListSelectionListener(this);
-		
-		indiOrderList.setBounds(520, 5, 300, 696);
+		indiOrder = new JTextArea("");
+		indiOrder.setBounds(520, 5, 300, 696);
 		
 		
 		add(addNewOrder);
 		add(viewSalesHistory);
 		add(closeForDay);
 		add(ordersList);
-		add(indiOrderList);
+		add(indiOrder);
 				
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		if (thisDay){
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		}
+		
 		this.setSize(new Dimension(1024,768));
 	}
-	
+
 	public void updateArrayList(ArrayList<Order> l){
 		orders.clear();
 		ordersArray = l;
@@ -84,14 +89,6 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 			orders.addElement(ordersArray.get(k).getCustomerName());
 		}
 		this.validate();
-	}
-	
-	public Manager getManager() {
-		return manager;
-	}
-
-	public void setManager(Manager manager) {
-		this.manager = manager;
 	}
 
 	@Override
@@ -103,11 +100,6 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 		}
 		
 		Order selectedOrder = ordersArray.get(selectedIndex);
-		indiOrder.clear();
-		for (int i = 0; i < selectedOrder.getItems().size(); i++){
-			indiOrder.addElement(selectedOrder.getItems().get(i).toString());
-		}
-		indiOrderList.setModel(indiOrder);
+		indiOrder.setText(selectedOrder.getReceipt());
 	}
-
 }

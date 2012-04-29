@@ -22,7 +22,20 @@ public class Till {
 		setFileDate();
 		orders = new ArrayList<Order>();
 	}
+	
+	public void addOrder(Order order) {
+		orders.add(order);
+		System.out.println(order.getCustomerName());
+	}
 
+	public void setOrdersArray(ArrayList<Order> orders) {
+		this.orders = orders;
+	}
+
+	public ArrayList<Order> getOrdersArray() {
+		return orders;
+	}
+	
 	private void setFileDate() {
 		now = new Date();
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -44,23 +57,12 @@ public class Till {
 		return xmlFileName;
 	}
 
-	public void addOrder(Order order) {
-		orders.add(order);
-		System.out.println(order.getCustomerName());
-	}
-
-	public void setOrdersArray(ArrayList<Order> orders) {
-		this.orders = orders;
-	}
-
-	public ArrayList<Order> getOrdersArray() {
-		return orders;
-	}
-
 	public BigDecimal getTotalForDay() {
-		BigDecimal total = new BigDecimal("0");
-		for (int i = 0; i > orders.size(); i++) {
-			total.add(orders.get(i).getSubtotal());
+		BigDecimal total = new BigDecimal("0.00");
+		System.out.println(orders.size());
+		for (int i = 0; i < orders.size(); i++) {
+			System.out.println(orders.get(i).getOrderTotal().toString());
+			total = total.add(orders.get(i).getOrderTotal());
 		}
 		return total;
 	}
@@ -77,7 +79,7 @@ public class Till {
 
 			encoder.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -93,20 +95,17 @@ public class Till {
 	public static Till load() throws IOException {
 		Till loadTill = null;
 		File f = new File(PATHNAME + loadPath());
-
-		System.out.println(f.exists());
-
+		
 		if (!f.exists()) {
 			Till till = new Till();
 			till.save();
 		}
+		
 		XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
-				new FileInputStream(PATHNAME + loadPath())));
-		try {
-			loadTill = (Till) decoder.readObject();
-		} catch (ArrayIndexOutOfBoundsException e) {
-
-		}
+				new FileInputStream(f)));
+		
+		loadTill = (Till) decoder.readObject();
+		decoder.close();
 		return loadTill;
 	}
 

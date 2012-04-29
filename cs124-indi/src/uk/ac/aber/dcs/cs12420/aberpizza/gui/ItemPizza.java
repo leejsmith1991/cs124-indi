@@ -25,7 +25,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 	private ArrayList<String> pName, pDesc;
 	private ArrayList<BigDecimal> pSmall, pMed, pLarge;
 	private DefaultListModel ml;
-	BigDecimal[] prices = new BigDecimal[3];
+	private BigDecimal[] prices = new BigDecimal[3];
 
 	private JPanel pizzaListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
@@ -46,7 +46,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		pDesc = new ArrayList<String>();
 		getFromFile();
 
-		pizzaListPane = getPizzaPane();
+		pizzaListPane = getItemPane();
 		pizzaListPane.setBounds(0, 0, pizzaListPane.getWidth(),
 				pizzaListPane.getHeight());
 
@@ -75,7 +75,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		this.setVisible(true);
 	}
 
-	private JPanel getPizzaPane() {
+	protected JPanel getItemPane() {
 		JPanel thisPane = new JPanel(null);
 
 		JLabel label = new JLabel("Select Pizza");
@@ -105,7 +105,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		return thisPane;
 	}
 
-	private JPanel getPricePane() {
+	protected JPanel getPricePane() {
 		JPanel thisPane = new JPanel(null);
 
 		JLabel label = new JLabel("Select Size");
@@ -128,14 +128,14 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		priceList.setEnabled(false);
 		PriceSelector priceSelect = new PriceSelector();
 		priceList.addListSelectionListener(priceSelect);
-		setPizzaPrices(0);
+		setItemPrices(0);
 		priceList.setBounds(83, 30, 150, 60);
 		thisPane.add(priceList);
 		thisPane.setSize(450, 100);
 		return thisPane;
 	}
 
-	private void setPizzaPrices(int selected) {
+	protected void setItemPrices(int selected) {
 		prices[0] = pSmall.get(selected);
 		prices[1] = pMed.get(selected);
 		prices[2] = pLarge.get(selected);
@@ -144,7 +144,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		this.validate();
 	}
 
-	private JPanel getQuantityPane() {
+	protected JPanel getQuantityPane() {
 		JPanel thisPane = new JPanel(null);
 		JLabel quantLabel = new JLabel("Enter Quantity :", SwingConstants.RIGHT);
 		quantLabel.setBounds(5, 17, 89, 15);
@@ -159,7 +159,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		return thisPane;
 	}
 
-	private JPanel getSubmitPane() {
+	protected JPanel getSubmitPane() {
 		JPanel thisPane = new JPanel(null);
 
 		JButton submit = new JButton("Add to Order");
@@ -229,7 +229,8 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 		try {
 			Integer.parseInt(quantText.getText());
 		} catch (NumberFormatException nfe) {
-			// TODO implement error handle
+			quantText.setText(JOptionPane.showInputDialog(null, "Invalid Quantity Entry"));
+			setQuantity();
 			nfe.printStackTrace();
 		}
 	}
@@ -272,7 +273,7 @@ public class ItemPizza extends ItemFrame implements KeyListener {
 			for (int a = 0; a < pName.size(); a++) {
 				if (pName.get(a).equals(pizzasList.getSelectedValue())) {
 					selectedItem = pName.get(a);
-					setPizzaPrices(a);
+					setItemPrices(a);
 					itemDesc = pDesc.get(a);
 					descriptionText.setText(itemDesc);
 					priceList.setSelectedIndex(0);

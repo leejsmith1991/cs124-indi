@@ -12,38 +12,41 @@
        <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem"> 
         <void property="item"> 
          <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Pizza"> 
+          <void property="description"> 
+           <string>Meat Feast for all the family</string> 
+          </void> 
           <void property="name"> 
            <string>MeatFeast</string> 
           </void> 
           <void property="price"> 
            <object class="java.math.BigDecimal"> 
-            <string>4.99</string> 
+            <string>12.99</string> 
            </object> 
           </void> 
           <void property="size"> 
-           <string>Small</string> 
+           <string>Large</string> 
           </void> 
          </object> 
         </void> 
         <void property="orderItemTotal"> 
          <object class="java.math.BigDecimal"> 
-          <string>14.97</string> 
+          <string>51.96</string> 
          </object> 
         </void> 
         <void property="quantity"> 
-         <int>3</int> 
+         <int>4</int> 
         </void> 
        </object> 
       </void> 
      </void> 
      <void property="orderTotal"> 
       <object class="java.math.BigDecimal"> 
-       <string>10.48</string> 
+       <string>40.27</string> 
       </object> 
      </void> 
      <void property="subtotal"> 
       <object class="java.math.BigDecimal"> 
-       <string>14.97</string> 
+       <string>51.96</string> 
       </object> 
      </void> 
     </object> 

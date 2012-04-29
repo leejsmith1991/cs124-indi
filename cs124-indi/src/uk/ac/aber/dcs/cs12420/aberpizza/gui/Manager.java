@@ -1,24 +1,38 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class Manager implements ActionListener, MouseListener {
+/*
+ * THINGS TO ASK NEIL
+ * 
+ * 1. DATE - SAVING RELATIVE TO XML SAVE NOT ORDER TIME
+ * 2. LAYOUTS
+ * 3. EXCEPTIONS
+ * 
+ */
+
+public class Manager implements ActionListener, WindowListener {
 	private Till till;
 	private NewOrder no;
 	private AmountTendered amt;
 	private ItemFrame itemFrame;
-	private MainFrame mf;
+	private MainFrame mf, mfPrev;
 	private Item i;
 	private Order customerOrder;
 
@@ -26,7 +40,7 @@ public class Manager implements ActionListener, MouseListener {
 	 * 
 	 * @throws IOException
 	 */
-	
+
 	public Manager() throws IOException {
 		till = Till.load();
 		mf = new MainFrame(this, till, true);
@@ -99,16 +113,32 @@ public class Manager implements ActionListener, MouseListener {
 				till.save();
 				mf.dispose();
 			} catch (IOException e1) {
-				
+
 			}
-			
-		} else if (action.equals("Load Previous Day")){
-			System.out.println("Activated");
+
+		} else if (action.equals("Load Previous Day")) {
 			try {
 				loadPreviousDay();
 			} catch (IOException e1) {
 
 			}
+		} else if (action.equals("View Sales History")) {
+			String dayInfo;
+			dayInfo = "Total Number of Orders: " + till.getOrdersArray().size()
+					+ "\n";
+			int totalItemsPurchased = 0;
+			BigDecimal priceTotal = new BigDecimal("0.00");
+			for (int h = 0; h < till.getOrdersArray().size(); h++) {
+				totalItemsPurchased = totalItemsPurchased
+						+ till.getOrdersArray().get(h).getItems().size();
+			}
+			dayInfo = dayInfo + "Total number of Items Purchsed: "
+					+ totalItemsPurchased + "\n";
+			dayInfo = dayInfo + "Total money taken for day: £"
+					+ till.getTotalForDay().toString();
+
+			JOptionPane.showMessageDialog(null, dayInfo);
+
 		}
 	}
 
@@ -167,11 +197,11 @@ public class Manager implements ActionListener, MouseListener {
 					itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		}
-		customerOrder.addItem((Item)i, itemFrame.getQuantity());
+		customerOrder.addItem((Item) i, itemFrame.getQuantity());
 		no.updateTable(customerOrder);
 		calculateDiscount();
 		itemFrame.dispose();
-		
+
 	}
 
 	private void calculateDiscount() {
@@ -196,46 +226,67 @@ public class Manager implements ActionListener, MouseListener {
 		till.addOrder(customerOrder);
 	}
 
-	private void loadPreviousDay() throws IOException{
+	private void loadPreviousDay() throws IOException {
 		JFileChooser fc = new JFileChooser();
-		File f = new File ("./TillSaves/");
+		File f = new File("./TillSaves/");
 		fc.setCurrentDirectory(f);
 		int fcReturnVal = fc.showOpenDialog(null);
-		
-		if (fcReturnVal == JFileChooser.APPROVE_OPTION){
+
+		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
 			String oldPathName = fc.getSelectedFile().getName();
 			Till till = Till.loadPrevious(oldPathName);
-			mf = new MainFrame(this, till, false);
+			mfPrev = new MainFrame(this, till, false);
 		}
-		
-		
-		
 	}
+
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
+	public void windowClosing(WindowEvent e) {
+		if (e.getSource() == mfPrev){
+			System.out.println("A");
+			mfPrev.dispose();
+		} else if (e.getSource().equals(mf)){
+			System.out.println("B");
+			try {
+				till.save();
+				mf.dispose();
+			} catch (IOException e1) {
+
+			}
+			
+		}
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
+	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void windowDeiconified(WindowEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 
 	}

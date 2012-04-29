@@ -175,7 +175,6 @@ public class NewOrder extends JFrame implements ActionListener,
 		label.setBounds(5, 5, 1000, 25);
 
 		orderList = new JList(tableList);
-		orderList.addMouseListener(manager);
 		orderList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		UpdatePopupMenu uq = new UpdatePopupMenu(manager);
 		orderList.addListSelectionListener(this);
@@ -291,6 +290,7 @@ public class NewOrder extends JFrame implements ActionListener,
 		}
 
 		setSubTextText(order);
+		setDiscountText(order);
 		this.validate();
 	}
 
