@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -34,6 +35,13 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 	private ArrayList<Order> ordersArray = new ArrayList<Order>();
 		
 	public MainFrame(Manager manager, Till till, boolean thisDay) {
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e){
+			
+		}
+		
 		ordersArray = till.getOrdersArray();
 		this.addWindowListener(manager);
 		this.manager = manager;
@@ -75,6 +83,7 @@ public class MainFrame extends JFrame implements ListSelectionListener{
 		add(indiOrder);
 				
 		this.setVisible(true);
+		
 		if (thisDay){
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}

@@ -1,9 +1,11 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,7 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -58,18 +63,22 @@ public class NewOrder extends JFrame implements ActionListener,
 	 * @param manager
 	 */
 	public NewOrder(Manager manager) {
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e){
+			
+		}
+		
+		
 		this.manager = manager;
-		this.setLayout(null);
+		this.getContentPane().setLayout(new BorderLayout());
 
 		customerNamePane = getCustomerNamePane();
-		customerNamePane.setBounds(0, 0, customerNamePane.getWidth(),
-				customerNamePane.getHeight());
-		this.add(customerNamePane);
+		this.add(customerNamePane, BorderLayout.NORTH);
 
 		buttonPane = getButtonPane();
-		buttonPane.setBounds(0, customerNamePane.getHeight(),
-				buttonPane.getWidth(), buttonPane.getHeight());
-		this.add(buttonPane);
+		this.add(buttonPane, BorderLayout.WEST);
 
 		listPane = getOrderListPane();
 		listPane.setBounds(0,
@@ -116,16 +125,15 @@ public class NewOrder extends JFrame implements ActionListener,
 	 */
 
 	private JPanel getCustomerNamePane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel();
 
-		JLabel nameLabel = new JLabel("Enter Customers Name:",
-				SwingConstants.RIGHT);
-		nameLabel.setBounds(5, 5, 150, 25);
+		JLabel nameLabel = new JLabel("Enter Customers Name:", SwingConstants.RIGHT);
+		nameLabel.setPreferredSize(new Dimension(200, 25));
 		customerText = new JTextField();
-		customerText.setBounds(160, 5, 150, 25);
+		customerText.setPreferredSize(new Dimension(200, 25));
 		thisPane.add(nameLabel);
 		thisPane.add(customerText);
-		thisPane.setSize(new Dimension(1024, 35));
+		thisPane.setPreferredSize(new Dimension(1024, 35));
 		return thisPane;
 	}
 
@@ -138,25 +146,32 @@ public class NewOrder extends JFrame implements ActionListener,
 	 */
 
 	private JPanel getButtonPane() {
-		JPanel thisPane = new JPanel(null);
-
+		JPanel thisPane = new JPanel();
+		SpringLayout sl = new SpringLayout();
+		
 		JButton pizzas, sides, drinks;
+		
 		pizzas = new JButton("Add Pizza");
 		pizzas.addActionListener(manager);
-		pizzas.setBounds(100, 10, 200, 150);
-
+		pizzas.setSize(new Dimension(150, 50));
+		
 		sides = new JButton("Add Side");
 		sides.addActionListener(manager);
-		sides.setBounds(320, 10, 200, 150);
-
+		sides.setSize(new Dimension(150,50));
+		
 		drinks = new JButton("Add Drink");
 		drinks.addActionListener(manager);
-		drinks.setBounds(540, 10, 200, 150);
-
+		drinks.setSize(new Dimension(150, 50));
+		
+		sl.putConstraint(SpringLayout.NORTH, thisPane, 10, SpringLayout.NORTH, pizzas);
+		sl.putConstraint(SpringLayout.SOUTH, pizzas, 10, SpringLayout.NORTH, sides);
+		sl.putConstraint(SpringLayout.SOUTH, sides, 10, SpringLayout.NORTH, drinks);
+		
 		thisPane.add(pizzas);
 		thisPane.add(sides);
 		thisPane.add(drinks);
-		thisPane.setSize(1024, 170);
+		
+		thisPane.setPreferredSize(new Dimension(150, 150));
 		return thisPane;
 	}
 

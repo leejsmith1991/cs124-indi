@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_21" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_26" class="java.beans.XMLDecoder"> 
  <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Till"> 
   <void property="ordersArray"> 
    <void method="add"> 
