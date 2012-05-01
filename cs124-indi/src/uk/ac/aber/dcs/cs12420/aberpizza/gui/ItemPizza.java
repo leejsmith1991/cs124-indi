@@ -94,7 +94,8 @@ public class ItemPizza extends ItemFrame {
 		pizzasList = new JList(ml);
 		pizzasList.setPreferredSize(new Dimension(300, 100));
 		pizzasList.addListSelectionListener(pizzaSelect);
-		thisPane.add(pizzasList, BorderLayout.WEST);
+		JScrollPane scroll = new JScrollPane(pizzasList);
+		thisPane.add(scroll, BorderLayout.WEST);
 		
 		descriptionText = new JTextArea("");
 		descriptionText.setFont(f);

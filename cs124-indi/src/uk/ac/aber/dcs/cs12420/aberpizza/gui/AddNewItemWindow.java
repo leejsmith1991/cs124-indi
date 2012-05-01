@@ -69,6 +69,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 
 		nameText = new JTextField();
 		nameText.setPreferredSize(new Dimension(200, 25));
+		nameText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		thisPane.add(nameText);
 		thisPane.setSize(new Dimension(650, 40));
 		return thisPane;
@@ -80,13 +81,14 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 			JLabel priceLabel = new JLabel("Enter price for "
 					+ type.toString().toLowerCase() + ": £        ",
 					SwingConstants.RIGHT);
-			priceLabel.setPreferredSize(new Dimension(315, 25));
+			priceLabel.setPreferredSize(new Dimension(200, 25));
 			thisPane.add(priceLabel);
 
 			priceText = new JTextField();
 			priceText.setFont(f);
+			priceText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 			thisPane.add(priceText);
-			priceText.setPreferredSize(new Dimension(315, 25));
+			priceText.setPreferredSize(new Dimension(200, 25));
 			
 			thisPane.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 			thisPane.setSize(new Dimension(650, 35));
@@ -95,16 +97,16 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 	}
 
 	private JPanel getPriceMultiPane() {
-		JPanel thisPane = new JPanel(new GridLayout(3, 2));
-
+		JPanel thisPane = new JPanel(new GridLayout(3, 1,0,5));
+		
 		JLabel smallLabel = new JLabel("Enter price for small "
 				+ type.toString().toLowerCase() + ": £        ", SwingConstants.RIGHT);
 		smallLabel.setPreferredSize(new Dimension(315, 25));
 		thisPane.add(smallLabel);
 
 		smallText = new JTextField();
-		smallText.setBorder(BorderFactory.createEmptyBorder(0,0,1,0));
-		smallText.setPreferredSize(new Dimension(315, 25));
+		smallText.setPreferredSize(new Dimension(200, 25));
+		smallText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		thisPane.add(smallText);
 
 		JLabel medLabel = new JLabel("Enter price for medium "
@@ -115,7 +117,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		medText = new JTextField();
 		medText.setPreferredSize(new Dimension(315, 25));
 		medText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
-		medText.setBorder(BorderFactory.createEmptyBorder(1,0,1,0));
+		
 		thisPane.add(medText);
 
 		JLabel largeLabel = new JLabel("Enter price for large "
@@ -124,7 +126,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		thisPane.add(largeLabel);
 		
 		largeText = new JTextField();
-		largeText.setBorder(BorderFactory.createEmptyBorder(1,0,0,0));
+		largeText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		largeText.setPreferredSize(new Dimension(315, 25));
 		
 		thisPane.add(largeText);
@@ -173,7 +175,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		submit.addMouseListener(this);
 		thisPane.add(submit, BorderLayout.NORTH);
 
-		warningMessage = new JLabel();
+		warningMessage = new JLabel("");
 		warningMessage.setPreferredSize(new Dimension(650, 25));
 		thisPane.add(warningMessage, BorderLayout.SOUTH);
 		thisPane.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
@@ -282,7 +284,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		if (me.getComponent() == submit) {
-			// warningMessage.setText("Warning, Changes will be appiled upon restart");
+			warningMessage.setText("Warning, Changes will be appiled upon restart");
 		}
 
 	}
@@ -290,7 +292,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 	@Override
 	public void mouseExited(MouseEvent me) {
 		if (me.getComponent() == submit) {
-			// warningMessage.setText("");
+			warningMessage.setText("");
 		}
 
 	}
