@@ -72,7 +72,7 @@ public class Till {
 			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
 					new FileOutputStream(PATHNAME + xmlFileName)));
 			
-			PersistenceDelegate pd=encoder.getPersistenceDelegate(Integer.class); 
+			PersistenceDelegate pd=encoder.getPersistenceDelegate(double.class); 
 			encoder.setPersistenceDelegate(BigDecimal.class,pd);
 			
 			encoder.writeObject(this);

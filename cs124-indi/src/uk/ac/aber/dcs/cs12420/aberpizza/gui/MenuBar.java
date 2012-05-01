@@ -19,10 +19,10 @@ public class MenuBar extends JMenuBar {
 	private JMenu file = new JMenu("File"), admin = new JMenu("Admin"),
 			help = new JMenu("Help");
 	private LinkedList<JMenuItem> fileItems, adminItems, helpItems;
-
-	public MenuBar(Manager manager) {
+	private boolean thisDay;
+	public MenuBar(Manager manager, boolean thisDay) {
 		this.manager = manager;
-		
+		this.thisDay = thisDay;
 		this.add(file);
 		this.add(admin);
 		this.add(help);
@@ -37,10 +37,15 @@ public class MenuBar extends JMenuBar {
 
 	private void addFileItems() {
 		fileItems = new LinkedList<JMenuItem>();
-		fileItems.add(new JMenuItem("Load Previous Day"));
-		fileItems.add(new JMenuItem("Save State"));
-		fileItems.add(new JMenuItem("Exit"));
+		JMenuItem loadPrev, save, exit;
+		fileItems.add(loadPrev = new JMenuItem("Load Previous Day"));
+		fileItems.add(save = new JMenuItem("Save State"));
+		fileItems.add(exit = new JMenuItem("Exit"));
 
+		if (!thisDay){
+			save.setEnabled(false);
+		}
+		
 		for (JMenuItem i : fileItems) {
 			i.addActionListener(manager);
 			file.add(i);

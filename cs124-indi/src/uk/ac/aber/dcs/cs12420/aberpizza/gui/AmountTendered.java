@@ -124,8 +124,7 @@ public class AmountTendered extends JFrame implements ActionListener, KeyListene
 	/*************************************/
 	@Override
 	public void keyPressed(KeyEvent ke) {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
 	@Override

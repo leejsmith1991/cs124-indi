@@ -66,20 +66,19 @@ public class Manager implements ActionListener, WindowListener {
 			try {
 				fireItemWindow(ItemType.PIZZA);
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null ,"Error occured, Seek administator help, Missing Resource File");
 			}
 		} else if (action.equals("Add Side")) {
 			try {
 				fireItemWindow(ItemType.SIDE);
 			} catch (FileNotFoundException e2) {
-
+				JOptionPane.showMessageDialog(null ,"Error occured, Seek administator help, Missing Resource File");
 			}
 		} else if (action.equals("Add Drink")) {
 			try {
 				fireItemWindow(ItemType.DRINK);
 			} catch (FileNotFoundException e3) {
-
+				JOptionPane.showMessageDialog(null ,"Error occured, Seek administator help, Missing Resource File");
 			}
 		} else if (action.equals("Add to Order")) {
 			addItemToOrder();
@@ -87,7 +86,7 @@ public class Manager implements ActionListener, WindowListener {
 			amt = new AmountTendered(this, customerOrder.getOrderTotal());
 		} else if (action.equals("Pay Order")) {
 			if (amt.getChange().signum() == -1) {
-				// throw new massive exception
+				JOptionPane.showMessageDialog(null, "Insufficent Fund recieved, Check input amount");
 			} else {
 				amt.showChangeAmount(amt.getChange());
 				addOrderToTill();
@@ -101,19 +100,21 @@ public class Manager implements ActionListener, WindowListener {
 			try {
 				till.save();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
 		} else if (action.equals("Update Quantity")) {
 			updateQuantity();
 		} else if (action.equals("Remove Item")) {
 			removeItemFromOrder();
 		} else if (action.equals("Exit") || action.equals("End Day")) {
-			try {
-				till.save();
-				mf.dispose();
-			} catch (IOException e1) {
+			if (!mfPrev.isFocused()) {
+				try {
+					till.save();
+					mf.dispose();
+				} catch (IOException e1) {
 
+				}
+			} else {
+				mfPrev.dispose();
 			}
 
 		} else if (action.equals("Load Previous Day")) {
@@ -199,7 +200,8 @@ public class Manager implements ActionListener, WindowListener {
 		}
 
 		if (itemFrame.getSelectedItem() == null) {
-			JOptionPane.showMessageDialog(null, "Unable to Complete, No ItemSelected");
+			JOptionPane.showMessageDialog(null,
+					"Unable to Complete, No ItemSelected");
 		} else {
 			itemFrame.setQuantity();
 			customerOrder.addItem((Item) i, itemFrame.getQuantity());
@@ -245,10 +247,6 @@ public class Manager implements ActionListener, WindowListener {
 		}
 	}
 
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
@@ -266,34 +264,36 @@ public class Manager implements ActionListener, WindowListener {
 
 		}
 	}
+	
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// 
+	}
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+
 
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+
 
 	}
 }
