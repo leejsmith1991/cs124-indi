@@ -1,10 +1,8 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.math.BigDecimal;
-//import java.math.BigDecimal;
 import java.util.*;
 
 import javax.swing.*;
@@ -12,7 +10,7 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class ItemDrink extends ItemFrame implements KeyListener{
+public class ItemDrink extends ItemFrame{
 
 	/**
 	 * 
@@ -35,51 +33,57 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 
 	private BigDecimal itemPrice;
 	private int quantity;
+	
+	private Font f = new Font("Arial", Font.PLAIN, 12);
 
 	public ItemDrink(Manager manager) throws FileNotFoundException {
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+
+		}
+
 		this.manager = manager;
 		this.setTitle("Add Drink to order");
-		this.setLayout(null);
+
 		dName = new ArrayList<String>();
 		dPrice = new ArrayList<BigDecimal>();
 		dDesc = new ArrayList<String>();
 		getFromFile();
 
+		this.getContentPane().setLayout(new BorderLayout());
+		JPanel topPanel = new JPanel(new BorderLayout());
 		drinkListPane = getItemPane();
-		drinkListPane.setBounds(0, 0, drinkListPane.getWidth(),
-				drinkListPane.getHeight());
-
 		priceListPane = getPricePane();
-		priceListPane.setBounds(0, drinkListPane.getHeight(),
-				priceListPane.getWidth(), priceListPane.getHeight());
+		topPanel.add(drinkListPane, BorderLayout.NORTH);
+		topPanel.add(priceListPane, BorderLayout.SOUTH);
+		this.add(topPanel, BorderLayout.NORTH);
 
+		JPanel bottomPanel = new JPanel();
 		quantityPane = getQuantityPane();
-		quantityPane.setBounds(0, drinkListPane.getHeight() + 30,
-				quantityPane.getWidth(), quantityPane.getHeight());
-
 		submitPane = getSubmitPane();
-		submitPane.setBounds(0, drinkListPane.getHeight() + 80,
-				submitPane.getWidth(), submitPane.getHeight());
+		bottomPanel.add(quantityPane, BorderLayout.NORTH);
+		bottomPanel.add(submitPane, BorderLayout.SOUTH);
+		bottomPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
+		bottomPanel.setPreferredSize(new Dimension(650, quantityPane
+				.getHeight() + submitPane.getHeight() + 20));
+		this.add(bottomPanel, BorderLayout.SOUTH);
 
-		this.add(drinkListPane);
-		this.add(priceListPane);
-		this.add(quantityPane);
-		this.add(submitPane);
 		int windowWidth = drinkListPane.getWidth();
-		int windowHeight = drinkListPane.getHeight()
-				+ priceListPane.getHeight() + quantityPane.getHeight()
-				+ submitPane.getHeight() + 30;
+		int windowHeight = drinkListPane.getHeight() + priceListPane.getHeight()
+				+ quantityPane.getHeight() + bottomPanel.getHeight() + 25;
 		this.setSize(new Dimension(windowWidth, windowHeight));
 		this.setResizable(false);
 		this.setVisible(true);
 	}
 
 	protected JPanel getItemPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel(new BorderLayout());
 
 		JLabel label = new JLabel("Select Drink");
-		label.setBounds(5, 5, 340, 25);
-		thisPane.add(label);
+		label.setPreferredSize(new Dimension(340, 25));
+		thisPane.add(label, BorderLayout.NORTH);
 
 		ml = new DefaultListModel();
 		for (int i = 0; i < dName.size(); i++) {
@@ -87,20 +91,21 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		}
 
 		drinkList = new JList(ml);
-		drinkList.setBounds(30, label.getHeight() + 10, 300, dName.size() * 21);
+		JScrollPane scroll = new JScrollPane(drinkList);
+		scroll.setPreferredSize(new Dimension(300, 100));
+		drinkList.addListSelectionListener(new ItemSelector());
+		thisPane.add(scroll, BorderLayout.WEST);
 
-		DrinkSelector drinkSelect = new DrinkSelector();
-		drinkList.addListSelectionListener(drinkSelect);
-		thisPane.add(drinkList);
-		
 		descriptionText = new JTextArea("");
+		descriptionText.setFont(f);
 		descriptionText.setWrapStyleWord(true);
 		descriptionText.setLineWrap(true);
-		descriptionText.setBounds(230, label.getHeight() + 10, 200, 150);
-		descriptionText.setEnabled(false);
-		thisPane.add(descriptionText);
-		
-		thisPane.setSize(label.getWidth() + 10, drinkList.getHeight() + 30);
+		descriptionText.setPreferredSize(new Dimension(300, 100));
+		descriptionText.setEditable(false);
+
+		thisPane.add(descriptionText, BorderLayout.EAST);
+		thisPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+		thisPane.setSize(new Dimension(650, 200));
 		return thisPane;
 	}
 
@@ -114,7 +119,6 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		itemPriceLabel = new JLabel();
 		itemPriceLabel.setBounds(110, 5, 50, 25);
 		thisPane.add(itemPriceLabel);
-
 		thisPane.setSize(450, 30);
 		return thisPane;
 	}
@@ -126,28 +130,28 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 	}
 
 	protected JPanel getQuantityPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel(new BorderLayout());
 		JLabel quantLabel = new JLabel("Enter Quantity :", SwingConstants.RIGHT);
-		quantLabel.setBounds(5, 17, 89, 15);
+		quantLabel.setPreferredSize(new Dimension(200, 25));
 
-		quantText = new JTextField("");
-		quantText.addKeyListener(this);
-		quantText.setBounds(100, 10, 200, 30);
+		quantText = new JTextField("0");
+		quantText.setPreferredSize(new Dimension(350, 20));
+		thisPane.add(quantLabel, BorderLayout.WEST);
+		thisPane.add(quantText, BorderLayout.EAST);
+		thisPane.setSize(650, 30);
 
-		thisPane.add(quantLabel);
-		thisPane.add(quantText);
-		thisPane.setSize(360, 50);
 		return thisPane;
 	}
 
 	protected JPanel getSubmitPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel();
 
 		JButton submit = new JButton("Add to Order");
-		submit.setBounds(100, 10, 150, 30);
+		submit.setFont(f);
+		submit.setPreferredSize(new Dimension(150, 30));
 		thisPane.add(submit);
 		submit.addActionListener(manager);
-		thisPane.setSize(360, 50);
+		thisPane.setSize(650, 30);
 
 		return thisPane;
 	}
@@ -199,41 +203,20 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 		return ItemType.DRINK;
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	
 	public void setQuantity() {
 		try {
-			Integer.parseInt(quantText.getText());
+			quantity = Integer.parseInt(quantText.getText());
+			if (quantity == 0){
+				throw new NumberFormatException();
+			}
 		} catch (NumberFormatException nfe) {
-			// TODO implement error handle
-			nfe.printStackTrace();
+			quantText.setText(JOptionPane.showInputDialog(null, "Invalid Quantity Entry: Enter valid Quantity"));
 		}
 	}
 
 	public int getQuantity() {
+		setQuantity();
 		return quantity;
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		try {
-			quantity = Integer.parseInt(quantText.getText());
-			System.out.println(quantity);
-		} catch (NumberFormatException nfe) {
-
-		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		
 	}
 
 	/**
@@ -244,7 +227,7 @@ public class ItemDrink extends ItemFrame implements KeyListener{
 	 * @see javax.swing.event.ListSelectionListener
 	 */
 
-	private class DrinkSelector implements ListSelectionListener {
+	private class ItemSelector implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {

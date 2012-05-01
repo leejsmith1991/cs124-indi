@@ -37,7 +37,6 @@ public abstract class ItemFrame extends JFrame {
 	public abstract String getItemDesc();
 	
 	public abstract void setQuantity();
-	public abstract void setQuantity(int quantity);
 	public abstract int getQuantity();
 	
 	public abstract ItemType getItemType();

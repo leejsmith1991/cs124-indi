@@ -197,10 +197,16 @@ public class Manager implements ActionListener, WindowListener {
 					itemFrame.getItemPrice(), itemFrame.getItemSize(),
 					itemFrame.getItemDesc());
 		}
-		customerOrder.addItem((Item) i, itemFrame.getQuantity());
-		no.updateTable(customerOrder);
-		calculateDiscount();
-		itemFrame.dispose();
+
+		if (itemFrame.getSelectedItem() == null) {
+			JOptionPane.showMessageDialog(null, "Unable to Complete, No ItemSelected");
+		} else {
+			itemFrame.setQuantity();
+			customerOrder.addItem((Item) i, itemFrame.getQuantity());
+			no.updateTable(customerOrder);
+			calculateDiscount();
+			itemFrame.dispose();
+		}
 
 	}
 
@@ -246,10 +252,10 @@ public class Manager implements ActionListener, WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		if (e.getSource() == mfPrev){
+		if (e.getSource() == mfPrev) {
 			System.out.println("A");
 			mfPrev.dispose();
-		} else if (e.getSource().equals(mf)){
+		} else if (e.getSource().equals(mf)) {
 			System.out.println("B");
 			try {
 				till.save();
@@ -257,7 +263,7 @@ public class Manager implements ActionListener, WindowListener {
 			} catch (IOException e1) {
 
 			}
-			
+
 		}
 	}
 

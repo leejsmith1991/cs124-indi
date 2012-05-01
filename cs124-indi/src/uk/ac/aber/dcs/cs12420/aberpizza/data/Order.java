@@ -11,20 +11,17 @@ public class Order {
 	private String customerName;
 
 	private final String NL = "\n";
-	private Date today;
-	private String orderTime;
-	private String orderDate;
+	private Date today= new Date();;
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 	private SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+	private String orderTime=timeFormatter.format(today);;
+	private String orderDate= dateFormatter.format(today);;
 	private BigDecimal subTotal = new BigDecimal("0.00");
 	private BigDecimal orderTotal = new BigDecimal("0.00");
 	private String discountType;
 	
 	public Order() {
 		items = new ArrayList<OrderItem>();
-		today = new Date();
-		orderTime = timeFormatter.format(today);
-		orderDate = dateFormatter.format(today);
 	}
 
 	public String getCustomerName() {
@@ -46,8 +43,8 @@ public class Order {
 		return orderTime;
 	}
 
-	public void setOrderTime(Date date) {
-		this.orderTime = dateFormatter.format(date);
+	public void setOrderTime(String orderTime) {
+		this.orderTime = orderTime;
 	}
 
 	public BigDecimal getOrderTotal() {
@@ -172,23 +169,23 @@ public class Order {
 			discountItems = largePizza.get(0).getPrice();
 			discountItems = discountItems.add(largePizza.get(1).getPrice());
 			discountItems = discountItems.add(largePizza.get(2).getPrice());
-			discount = discountItems.multiply(new BigDecimal("0.3"));
+			discount = discountItems.multiply(new BigDecimal("0.33334"));
 			discountApplied = true;
-			discountType = "3 Large Pizzas";
+			discountType = "Buy 3 get 1 Free Large Pizzas";
 		} else if (pizzaM >= 3 && discountApplied == false) {
 			discountItems = mediumPizza.get(0).getPrice();
 			discountItems = discountItems.add(mediumPizza.get(1).getPrice());
 			discountItems = discountItems.add(mediumPizza.get(2).getPrice());
-			discount = discountItems.multiply(new BigDecimal("0.3"));
+			discount = discountItems.multiply(new BigDecimal("0.33334"));
 			discountApplied = true;
-			discountType = "3 Medium Pizzas";
+			discountType = "Buy 3 get 1 Free Medium Pizzas";
 		} else if (pizzaS >= 3 && discountApplied == false) {
 			discountItems = smallPizza.get(0).getPrice();
 			discountItems = discountItems.add(smallPizza.get(1).getPrice());
 			discountItems = discountItems.add(smallPizza.get(2).getPrice());
-			discount = discountItems.multiply(new BigDecimal("0.3"));
+			discount = discountItems.multiply(new BigDecimal("0.33334"));
 			discountApplied = true;
-			discountType = "3 Small Pizzas";
+			discountType = "Buy 3 get 1 Free Small Pizzas";
 		} else if (pizzaL >= 1 && sideCount >= 1 && drinkCount >= 1
 				&& discountApplied == false) {
 			discountItems = largePizza.get(0).getPrice();
@@ -199,7 +196,6 @@ public class Order {
 		}
 
 		discount = discount.setScale(2, BigDecimal.ROUND_HALF_UP);
-		System.out.println(discount.toString() + discountType);
 
 		orderTotal = subTotal.subtract(discount);
 		return discount;

@@ -2,9 +2,13 @@ package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -18,17 +22,16 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
 
-
 public class NewOrder extends JFrame implements ActionListener,
-		ListSelectionListener {
+		ListSelectionListener, MouseListener {
 
 	private static final long serialVersionUID = 4978171281055317618L;
 
@@ -59,18 +62,18 @@ public class NewOrder extends JFrame implements ActionListener,
 
 	/**
 	 * Construst a new order frame, and lays out the components
+	 * 
 	 * @see Manager
 	 * @param manager
 	 */
 	public NewOrder(Manager manager) {
-		
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e){
-			
+		} catch (Exception e) {
+
 		}
-		
-		
+
 		this.manager = manager;
 		this.getContentPane().setLayout(new BorderLayout());
 
@@ -80,25 +83,19 @@ public class NewOrder extends JFrame implements ActionListener,
 		buttonPane = getButtonPane();
 		this.add(buttonPane, BorderLayout.WEST);
 
+		JPanel leftPane = new JPanel(new BorderLayout());
+		leftPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		listPane = getOrderListPane();
-		listPane.setBounds(0,
-				customerNamePane.getHeight() + buttonPane.getHeight(),
-				listPane.getWidth(), listPane.getHeight());
-		this.add(listPane);
 
 		subDiscPane = getSubDiscPane();
-		subDiscPane.setBounds(0,
-				customerNamePane.getHeight() + buttonPane.getHeight()
-						+ listPane.getHeight(), subDiscPane.getWidth(),
-				subDiscPane.getHeight());
-		this.add(subDiscPane);
+
+		leftPane.add(listPane, BorderLayout.CENTER);
+		leftPane.add(subDiscPane, BorderLayout.SOUTH);
+
+		this.add(leftPane, BorderLayout.EAST);
 
 		payCancelPane = getPayCancelPane();
-		payCancelPane.setBounds(0,
-				customerNamePane.getHeight() + buttonPane.getHeight()
-						+ listPane.getHeight() + subDiscPane.getHeight(),
-				payCancelPane.getWidth(), subDiscPane.getHeight());
-		this.add(payCancelPane);
+		this.add(payCancelPane, BorderLayout.SOUTH);
 
 		this.setVisible(true);
 		this.setResizable(false);
@@ -127,13 +124,16 @@ public class NewOrder extends JFrame implements ActionListener,
 	private JPanel getCustomerNamePane() {
 		JPanel thisPane = new JPanel();
 
-		JLabel nameLabel = new JLabel("Enter Customers Name:", SwingConstants.RIGHT);
+		JLabel nameLabel = new JLabel("Enter Customers Name:",
+				SwingConstants.RIGHT);
 		nameLabel.setPreferredSize(new Dimension(200, 25));
 		customerText = new JTextField();
 		customerText.setPreferredSize(new Dimension(200, 25));
+
 		thisPane.add(nameLabel);
 		thisPane.add(customerText);
 		thisPane.setPreferredSize(new Dimension(1024, 35));
+
 		return thisPane;
 	}
 
@@ -148,30 +148,39 @@ public class NewOrder extends JFrame implements ActionListener,
 	private JPanel getButtonPane() {
 		JPanel thisPane = new JPanel();
 		SpringLayout sl = new SpringLayout();
-		
+
 		JButton pizzas, sides, drinks;
-		
+
 		pizzas = new JButton("Add Pizza");
 		pizzas.addActionListener(manager);
-		pizzas.setSize(new Dimension(150, 50));
-		
+		pizzas.setPreferredSize(new Dimension(150, 50));
+
 		sides = new JButton("Add Side");
 		sides.addActionListener(manager);
-		sides.setSize(new Dimension(150,50));
-		
+		sides.setPreferredSize(new Dimension(150, 50));
+
 		drinks = new JButton("Add Drink");
 		drinks.addActionListener(manager);
-		drinks.setSize(new Dimension(150, 50));
-		
-		sl.putConstraint(SpringLayout.NORTH, thisPane, 10, SpringLayout.NORTH, pizzas);
-		sl.putConstraint(SpringLayout.SOUTH, pizzas, 10, SpringLayout.NORTH, sides);
-		sl.putConstraint(SpringLayout.SOUTH, sides, 10, SpringLayout.NORTH, drinks);
-		
+		drinks.setPreferredSize(new Dimension(150, 50));
+
+		sl.putConstraint(SpringLayout.NORTH, thisPane, 10, SpringLayout.NORTH,
+				pizzas);
+		sl.putConstraint(SpringLayout.WEST, thisPane, 20, SpringLayout.WEST,
+				pizzas);
+		sl.putConstraint(SpringLayout.SOUTH, pizzas, 10, SpringLayout.NORTH,
+				sides);
+		sl.putConstraint(SpringLayout.WEST, thisPane, 20, SpringLayout.WEST,
+				sides);
+		sl.putConstraint(SpringLayout.SOUTH, sides, 10, SpringLayout.NORTH,
+				drinks);
+		sl.putConstraint(SpringLayout.WEST, thisPane, 20, SpringLayout.WEST,
+				drinks);
+
 		thisPane.add(pizzas);
 		thisPane.add(sides);
 		thisPane.add(drinks);
-		
-		thisPane.setPreferredSize(new Dimension(150, 150));
+
+		thisPane.setPreferredSize(new Dimension(170, 150));
 		return thisPane;
 	}
 
@@ -184,24 +193,21 @@ public class NewOrder extends JFrame implements ActionListener,
 	 * @return JPanel containing JList with order items in
 	 */
 	private JPanel getOrderListPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel(new BorderLayout());
 
 		JLabel label = new JLabel("Items in Order");
-		label.setBounds(5, 5, 1000, 25);
+		label.setPreferredSize(new Dimension(800, 25));
+		thisPane.add(label, BorderLayout.NORTH);
 
 		orderList = new JList(tableList);
+		orderList.addMouseListener(this);
 		orderList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		UpdatePopupMenu uq = new UpdatePopupMenu(manager);
-		orderList.addListSelectionListener(this);
-		orderList.setComponentPopupMenu(uq);
-
-		orderList.setLocation(0, 0);
 
 		JScrollPane scroll = new JScrollPane(orderList);
-		scroll.setBounds(5, 35, 1000, 200);
+		scroll.setPreferredSize(new Dimension(800, 300));
 
-		thisPane.add(scroll);
-		thisPane.setSize(1024, label.getHeight() + scroll.getHeight() + 15);
+		thisPane.add(scroll, BorderLayout.CENTER);
+		thisPane.setSize(800, 345);
 		return thisPane;
 	}
 
@@ -209,81 +215,83 @@ public class NewOrder extends JFrame implements ActionListener,
 	 * JPanel containing information on the Subtotal for the Order, Discounts
 	 * that have become effective, and the order total which is the subtotal -
 	 * discounts
+	 * 
 	 * @see JPanel
 	 * @see JLabel
-	 * @return JPanel containing labels displaying information on subtotal, discounts and order total
+	 * @return JPanel containing labels displaying information on subtotal,
+	 *         discounts and order total
 	 */
 
 	private JPanel getSubDiscPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel(new GridLayout(3, 2));
 
 		JLabel subLabel, discLabel, totalLabel;
 
 		subLabel = new JLabel("Subtotal : £", SwingConstants.RIGHT);
-		subLabel.setBounds(150, 5, 250, 25);
 		thisPane.add(subLabel);
 
 		subText = new JLabel("0.00");
-		subText.setBounds(420, 5, 250, 25);
 		thisPane.add(subText);
 
 		discLabel = new JLabel("Amount of Discount : £", SwingConstants.RIGHT);
-		discLabel.setBounds(150, 35, 250, 25);
 		thisPane.add(discLabel);
 
 		discText = new JLabel("0.00");
-		discText.setBounds(420, 35, 250, 25);
 		thisPane.add(discText);
 
 		totalLabel = new JLabel("Order Total : £", SwingConstants.RIGHT);
-		totalLabel.setBounds(150, 65, 250, 25);
 		thisPane.add(totalLabel);
 
 		totalText = new JLabel("0.00");
-		totalText.setBounds(420, 65, 250, 25);
 		thisPane.add(totalText);
 
-		thisPane.setSize(1024, 150);
-		return thisPane;
-	}
-/**
- * JPanel containing 2 buttons allowing the user to Pay the order, or cancel it
- * @see JPanel
- * @see JButton
- * @return JPanel containing the 2 buttons
- */
-	private JPanel getPayCancelPane() {
-		JPanel thisPane = new JPanel(null);
-
-		JButton pay, cancel;
-
-		pay = new JButton("Pay");
-		pay.addActionListener(manager);
-		pay.setBounds(137, 5, 350, 90);
-		thisPane.add(pay);
-
-		cancel = new JButton("Cancel Order");
-		cancel.addActionListener(this);
-		cancel.setBounds(537, 5, 350, 90);
-		thisPane.add(cancel);
-		thisPane.setSize(1024, 100);
+		thisPane.setSize(850, 150);
 		return thisPane;
 	}
 
 	/**
-	 * Checks if the name entered for the customer is not empty, if so produce input pane where user can enter the name
+	 * JPanel containing 2 buttons allowing the user to Pay the order, or cancel
+	 * it
+	 * 
+	 * @see JPanel
+	 * @see JButton
+	 * @return JPanel containing the 2 buttons
+	 */
+	private JPanel getPayCancelPane() {
+		JPanel thisPane = new JPanel();
+		JButton pay, cancel;
+
+		pay = new JButton("Pay");
+		pay.addActionListener(manager);
+		pay.setPreferredSize(new Dimension(150, 50));
+		thisPane.add(pay);
+
+		cancel = new JButton("Cancel Order");
+		cancel.addActionListener(this);
+		cancel.setPreferredSize(new Dimension(150, 50));
+
+		thisPane.add(cancel);
+		thisPane.setSize(1024, 60);
+
+		return thisPane;
+	}
+
+	/**
+	 * Checks if the name entered for the customer is not empty, if so produce
+	 * input pane where user can enter the name
+	 * 
 	 * @see JOptionPane
 	 * @return customerName
 	 */
-	
+
 	public String getCustomerName() {
 		return customerName;
 	}
 
 	/**
-	 * Sets the customer name, and checks for 
+	 * Sets the customer name, and checks for
 	 */
-	
+
 	public void setCustomerName() {
 		if (customerText.getText().equals("")) {
 			customerName = JOptionPane.showInputDialog(null,
@@ -295,9 +303,10 @@ public class NewOrder extends JFrame implements ActionListener,
 
 	/**
 	 * Updates the table when an item is added, updated or removed
-	 * @param order 
+	 * 
+	 * @param order
 	 */
-	
+
 	public void updateTable(Order order) {
 		tableList.clear();
 		for (int i = 0; i < order.getItems().size(); i++) {
@@ -310,15 +319,19 @@ public class NewOrder extends JFrame implements ActionListener,
 	}
 
 	/**
-	 * Sets the subtotal text on the screen for user to see. 
+	 * Sets the subtotal text on the screen for user to see.
+	 * 
 	 * @param order
 	 */
-	
+
 	public void setSubTextText(Order order) {
 		subText.setText(order.getSubtotal().toString());
 	}
+
 	/**
-	 * Sets the discounts amount text on screen, also updates total for order text based on the discounts applied
+	 * Sets the discounts amount text on screen, also updates total for order
+	 * text based on the discounts applied
+	 * 
 	 * @param order
 	 */
 	public void setDiscountText(Order order) {
@@ -338,8 +351,41 @@ public class NewOrder extends JFrame implements ActionListener,
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		selectedIndex = orderList.getSelectedIndex();
+
 		if (selectedIndex == -1) {
 			selectedIndex = 0;
 		}
+	}
+
+	public void mouseClicked(MouseEvent me) {
+		if (SwingUtilities.isRightMouseButton(me)
+				&& !orderList.isSelectionEmpty()) {
+			UpdatePopupMenu up = new UpdatePopupMenu(manager);
+			up.show(orderList, me.getX(), me.getY());
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

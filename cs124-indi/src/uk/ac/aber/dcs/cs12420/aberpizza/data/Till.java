@@ -19,7 +19,6 @@ public class Till {
 	private ArrayList<Order> orders = new ArrayList<Order>();
 
 	public Till() throws IOException {
-		setFileDate();
 		orders = new ArrayList<Order>();
 	}
 	
@@ -68,6 +67,7 @@ public class Till {
 	}
 
 	public void save() throws IOException {
+		setFileDate();
 		try {
 			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
 					new FileOutputStream(PATHNAME + xmlFileName)));

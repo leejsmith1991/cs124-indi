@@ -12,7 +12,7 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class ItemSide extends ItemFrame implements KeyListener {
+public class ItemSide extends ItemFrame {
 
 	/**
 	 * 
@@ -22,8 +22,9 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	private Manager manager;
 
 	private JList sideList;
+	private ItemSelector sideSelect = new ItemSelector();
 	private ArrayList<String> sName, sDesc;
-	private ArrayList<BigDecimal>  sPrice;
+	private ArrayList<BigDecimal> sPrice;
 	private DefaultListModel ml;
 
 	private JPanel sideListPane, priceListPane, quantityPane, submitPane;
@@ -35,51 +36,57 @@ public class ItemSide extends ItemFrame implements KeyListener {
 
 	private BigDecimal itemPrice;
 	private int quantity;
-	
+
+	private Font f = new Font("Arial", Font.PLAIN, 12);
+
 	public ItemSide(Manager manager) throws FileNotFoundException {
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+
+		}
+
 		this.manager = manager;
 		this.setTitle("Add Side to order");
-		this.setLayout(null);
+
 		sName = new ArrayList<String>();
 		sPrice = new ArrayList<BigDecimal>();
 		sDesc = new ArrayList<String>();
 		getFromFile();
 
+		this.getContentPane().setLayout(new BorderLayout());
+		JPanel topPanel = new JPanel(new BorderLayout());
 		sideListPane = getItemPane();
-		sideListPane.setBounds(0, 0, sideListPane.getWidth(),
-				sideListPane.getHeight());
-
 		priceListPane = getPricePane();
-		priceListPane.setBounds(0, sideListPane.getHeight(),
-				priceListPane.getWidth(), priceListPane.getHeight());
+		topPanel.add(sideListPane, BorderLayout.NORTH);
+		topPanel.add(priceListPane, BorderLayout.SOUTH);
+		this.add(topPanel, BorderLayout.NORTH);
 
+		JPanel bottomPanel = new JPanel();
 		quantityPane = getQuantityPane();
-		quantityPane.setBounds(0, sideListPane.getHeight() + 30,
-				quantityPane.getWidth(), quantityPane.getHeight());
-
 		submitPane = getSubmitPane();
-		submitPane.setBounds(0, sideListPane.getHeight() + 80,
-				submitPane.getWidth(), submitPane.getHeight());
+		bottomPanel.add(quantityPane, BorderLayout.NORTH);
+		bottomPanel.add(submitPane, BorderLayout.SOUTH);
+		bottomPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
+		bottomPanel.setPreferredSize(new Dimension(650, quantityPane
+				.getHeight() + submitPane.getHeight() + 20));
+		this.add(bottomPanel, BorderLayout.SOUTH);
 
-		this.add(sideListPane);
-		this.add(priceListPane);
-		this.add(quantityPane);
-		this.add(submitPane);
 		int windowWidth = sideListPane.getWidth();
-		int windowHeight = sideListPane.getHeight()
-				+ priceListPane.getHeight() + quantityPane.getHeight() + submitPane
-				.getHeight() + 30;
+		int windowHeight = sideListPane.getHeight() + priceListPane.getHeight()
+				+ quantityPane.getHeight() + bottomPanel.getHeight() + 25;
 		this.setSize(new Dimension(windowWidth, windowHeight));
 		this.setResizable(false);
 		this.setVisible(true);
 	}
 
 	protected JPanel getItemPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel(new BorderLayout());
 
 		JLabel label = new JLabel("Select Drink");
-		label.setBounds(5, 5, 340, 25);
-		thisPane.add(label);
+		label.setPreferredSize(new Dimension(340, 25));
+		thisPane.add(label, BorderLayout.NORTH);
 
 		ml = new DefaultListModel();
 		for (int i = 0; i < sName.size(); i++) {
@@ -87,37 +94,38 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		}
 
 		sideList = new JList(ml);
-		sideList.setBounds(30, label.getHeight() + 10, 300, sName.size() * 21);
+		JScrollPane scroll = new JScrollPane(sideList);
+		scroll.setPreferredSize(new Dimension(300, 100));
+		sideList.addListSelectionListener(sideSelect);
+		thisPane.add(scroll, BorderLayout.WEST);
 
-		SideSelector drinkSelect = new SideSelector();
-		sideList.addListSelectionListener(drinkSelect);
-		thisPane.add(sideList);
-		
 		descriptionText = new JTextArea("");
+		descriptionText.setFont(f);
 		descriptionText.setWrapStyleWord(true);
 		descriptionText.setLineWrap(true);
-		descriptionText.setBounds(230, label.getHeight() + 10, 200, 150);
-		descriptionText.setEnabled(false);
-		thisPane.add(descriptionText);
-		thisPane.setSize(label.getWidth() + 10, sideList.getHeight() + 30);
+		descriptionText.setPreferredSize(new Dimension(300, 100));
+		descriptionText.setEditable(false);
+
+		thisPane.add(descriptionText, BorderLayout.EAST);
+		thisPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+		thisPane.setSize(new Dimension(650, 200));
 		return thisPane;
 	}
 
 	protected JPanel getPricePane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel(new BorderLayout());
 
-		JLabel label = new JLabel("Item Price:", SwingConstants.RIGHT);
-		label.setBounds(5, 5, 100, 25);
-		thisPane.add(label);
+		JLabel label = new JLabel("Price of Side:", SwingConstants.RIGHT);
+		label.setPreferredSize(new Dimension(340, 25));
+		thisPane.add(label, BorderLayout.WEST);
 
 		itemPriceLabel = new JLabel("");
-		itemPriceLabel.setBounds(110, 5, 50, 25);
-		thisPane.add(itemPriceLabel);
+		label.setPreferredSize(new Dimension(340, 25));
+		thisPane.add(itemPriceLabel, BorderLayout.EAST);
 
-		thisPane.setSize(450, 30);
+		thisPane.setSize(650, 30);
 		return thisPane;
 	}
-
 
 	protected void setItemPrices(int selected) {
 		itemPriceLabel.setText(sPrice.get(selected).toString());
@@ -126,32 +134,31 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	}
 
 	protected JPanel getQuantityPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel(new BorderLayout());
 		JLabel quantLabel = new JLabel("Enter Quantity :", SwingConstants.RIGHT);
-		quantLabel.setBounds(5, 17, 89, 15);
+		quantLabel.setPreferredSize(new Dimension(200, 25));
 
-		quantText = new JTextField("");
-		quantText.addKeyListener(this);
-		quantText.setBounds(100, 10, 200, 30);
+		quantText = new JTextField("0");
+		quantText.setPreferredSize(new Dimension(350, 20));
+		thisPane.add(quantLabel, BorderLayout.WEST);
+		thisPane.add(quantText, BorderLayout.EAST);
+		thisPane.setSize(650, 30);
 
-		thisPane.add(quantLabel);
-		thisPane.add(quantText);
-		thisPane.setSize(360, 50);
 		return thisPane;
 	}
 
 	protected JPanel getSubmitPane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel();
 
 		JButton submit = new JButton("Add to Order");
-		submit.setBounds(100, 10, 150, 30);
+		submit.setFont(f);
+		submit.setPreferredSize(new Dimension(150, 30));
 		thisPane.add(submit);
 		submit.addActionListener(manager);
-		thisPane.setSize(360, 50);
+		thisPane.setSize(650, 30);
 
 		return thisPane;
 	}
-
 
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(
@@ -196,44 +203,25 @@ public class ItemSide extends ItemFrame implements KeyListener {
 		this.itemDesc = itemDesc;
 	}
 
-	public ItemType getItemType(){
+	public ItemType getItemType() {
 		return ItemType.SIDE;
 	}
-	
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	
+
 	public void setQuantity() {
 		try {
-			Integer.parseInt(quantText.getText());
+			quantity = Integer.parseInt(quantText.getText());
+			if (quantity == 0) {
+				throw new NumberFormatException();
+			}
 		} catch (NumberFormatException nfe) {
-			// TODO implement error handle
-			nfe.printStackTrace();
+			quantText.setText(JOptionPane.showInputDialog(null,
+					"Invalid Quantity Entry: Enter valid Entry"));
+			setQuantity();
 		}
 	}
 
 	public int getQuantity() {
 		return quantity;
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		try {
-			quantity = Integer.parseInt(quantText.getText());
-		} catch (NumberFormatException nfe) {
-
-		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-
 	}
 
 	/**
@@ -244,7 +232,7 @@ public class ItemSide extends ItemFrame implements KeyListener {
 	 * @see javax.swing.event.ListSelectionListener
 	 */
 
-	private class SideSelector implements ListSelectionListener {
+	private class ItemSelector implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
