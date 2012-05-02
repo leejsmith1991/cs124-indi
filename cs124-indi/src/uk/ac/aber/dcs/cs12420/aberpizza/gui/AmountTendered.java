@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -10,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,24 +40,34 @@ public class AmountTendered extends JFrame implements ActionListener, KeyListene
 		this.manager = manager;
 		this.subTotal = subTotal;
 		
-		this.setLayout(new GridLayout(3,1));
+		JPanel pane = new JPanel(new BorderLayout());
 		
 		label = new JLabel("Enter amount tendered");
-		this.add(label);
+		label.setPreferredSize(new Dimension(200, 25));
+		pane.add(label, BorderLayout.NORTH);
 		
+		JPanel tendered = new JPanel();
 		tenderedText = new JTextField();
+		tenderedText.setPreferredSize(new Dimension(150,25));
 		tenderedText.addKeyListener(this);
-		this.add(tenderedText);
+		tendered.add(tenderedText);
+		tendered.setSize(new Dimension(150,25));
+		pane.add(tendered, BorderLayout.CENTER);
 		
 		JPanel buttonPane = new JPanel(new GridLayout(1,2));
 		payOrder = new JButton("Pay Order");
+		payOrder.setPreferredSize(new Dimension(100, 25));
 		payOrder.addActionListener(this.manager);
 		buttonPane.add(payOrder);
 		cancel = new JButton("Cancel");
+		cancel.setPreferredSize(new Dimension(100, 25));
 		cancel.addActionListener(this);
 		buttonPane.add(cancel);
-		this.add(buttonPane);
-		this.setSize(new Dimension(200, 100));
+		pane.add(buttonPane, BorderLayout.SOUTH);
+		pane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		this.add(pane);
+		this.setSize(new Dimension(250, 135));
+		this.setResizable(false);
 		this.setVisible(true);
 	}
 	

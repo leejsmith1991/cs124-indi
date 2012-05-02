@@ -113,16 +113,15 @@ public class ItemSide extends ItemFrame {
 	}
 
 	protected JPanel getPricePane() {
-		JPanel thisPane = new JPanel(new BorderLayout());
+		JPanel thisPane = new JPanel();
 
-		JLabel label = new JLabel("Price of Side:", SwingConstants.RIGHT);
-		label.setPreferredSize(new Dimension(340, 25));
-		thisPane.add(label, BorderLayout.WEST);
+		JLabel label = new JLabel("Item Price : £        ", SwingConstants.RIGHT);
+		label.setPreferredSize(new Dimension(315, 25));
+		thisPane.add(label);
 
-		itemPriceLabel = new JLabel("");
-		label.setPreferredSize(new Dimension(340, 25));
-		thisPane.add(itemPriceLabel, BorderLayout.EAST);
-
+		itemPriceLabel = new JLabel();
+		itemPriceLabel.setPreferredSize(new Dimension(315, 25));
+		thisPane.add(itemPriceLabel);
 		thisPane.setSize(650, 30);
 		return thisPane;
 	}

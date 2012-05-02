@@ -44,6 +44,7 @@ public class Manager implements ActionListener, WindowListener {
 	public Manager() throws IOException {
 		till = Till.load();
 		mf = new MainFrame(this, till, true);
+		mfPrev = null;
 	}
 
 	@Override
@@ -84,6 +85,7 @@ public class Manager implements ActionListener, WindowListener {
 			addItemToOrder();
 		} else if (action.equals("Pay")) {
 			amt = new AmountTendered(this, customerOrder.getOrderTotal());
+			amt.setLocationRelativeTo(no);
 		} else if (action.equals("Pay Order")) {
 			if (amt.getChange().signum() == -1) {
 				JOptionPane.showMessageDialog(null, "Insufficent Fund recieved, Check input amount");
@@ -106,7 +108,7 @@ public class Manager implements ActionListener, WindowListener {
 		} else if (action.equals("Remove Item")) {
 			removeItemFromOrder();
 		} else if (action.equals("Exit") || action.equals("End Day")) {
-			if (!mfPrev.isFocused()) {
+			if (mf.isFocused()) {
 				try {
 					till.save();
 					mf.dispose();
@@ -156,6 +158,7 @@ public class Manager implements ActionListener, WindowListener {
 		} else if (type == ItemType.DRINK) {
 			itemFrame = (ItemFrame) new ItemDrink(this);
 		}
+		itemFrame.setLocationRelativeTo(mf);
 	}
 
 	private void updateQuantity() {

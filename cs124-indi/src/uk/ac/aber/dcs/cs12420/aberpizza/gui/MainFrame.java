@@ -1,6 +1,8 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -9,7 +11,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -24,8 +28,6 @@ public class MainFrame extends JFrame implements ListSelectionListener {
 	private static final long serialVersionUID = -688667233906778489L;
 
 	private MenuBar menuBar;
-
-	private Manager manager;
 
 	private DefaultListModel orders = new DefaultListModel();
 
@@ -44,7 +46,6 @@ public class MainFrame extends JFrame implements ListSelectionListener {
 
 		ordersArray = till.getOrdersArray();
 		this.addWindowListener(manager);
-		this.manager = manager;
 		menuBar = new MenuBar(manager, thisDay);
 
 		if (thisDay) {
@@ -52,38 +53,62 @@ public class MainFrame extends JFrame implements ListSelectionListener {
 		} else {
 			this.setTitle("Aber Pizza Viewing Till for : " + till.getToday());
 		}
-		
+
 		this.setJMenuBar(menuBar);
 
-		this.setLayout(null);
-		JButton addNewOrder = new JButton("Create New Order");
+		this.getContentPane().setLayout(new BorderLayout());
+
+		JPanel buttonPane = new JPanel();
+		SpringLayout sl = new SpringLayout();
+
+		JButton addNewOrder, viewSalesHistory, closeForDay;
+
+		addNewOrder = new JButton("Create New Order");
+		addNewOrder.addActionListener(manager);
+		addNewOrder.setPreferredSize(new Dimension(150, 50));
+
+		viewSalesHistory = new JButton("View Sales History");
+		viewSalesHistory.addActionListener(manager);
+		viewSalesHistory.setPreferredSize(new Dimension(150, 50));
+
+		closeForDay = new JButton("End Day");
+		closeForDay.addActionListener(manager);
+		closeForDay.setPreferredSize(new Dimension(150, 50));
+
+		sl.putConstraint(SpringLayout.NORTH, buttonPane, 10,
+				SpringLayout.NORTH, addNewOrder);
+		sl.putConstraint(SpringLayout.WEST, buttonPane, 20, SpringLayout.WEST,
+				addNewOrder);
+		sl.putConstraint(SpringLayout.SOUTH, addNewOrder, 10,
+				SpringLayout.NORTH, viewSalesHistory);
+		sl.putConstraint(SpringLayout.WEST, buttonPane, 20, SpringLayout.WEST,
+				viewSalesHistory);
+		sl.putConstraint(SpringLayout.SOUTH, viewSalesHistory, 10,
+				SpringLayout.NORTH, closeForDay);
+		sl.putConstraint(SpringLayout.WEST, buttonPane, 20, SpringLayout.WEST,
+				closeForDay);
+
+		buttonPane.add(addNewOrder);
+		buttonPane.add(viewSalesHistory);
+		buttonPane.add(closeForDay);
+
+		buttonPane.setPreferredSize(new Dimension(170, 150));
+
 		if (!thisDay) {
 			addNewOrder.setEnabled(false);
 		}
 
-		addNewOrder.setBounds(5, 5, 200, 30);
-		addNewOrder.addActionListener(manager);
-
-		JButton viewSalesHistory = new JButton("View Sales History");
-		viewSalesHistory.setBounds(5, 40, 200, 30);
-		viewSalesHistory.addActionListener(manager);
-
-		JButton closeForDay = new JButton("End Day");
-		closeForDay.setBounds(5, 75, 200, 30);
-		closeForDay.addActionListener(manager);
-
 		ordersList.setModel(orders);
 		updateArrayList(ordersArray);
-		ordersList.setBounds(210, 5, 300, 696);
+		ordersList.setPreferredSize(new Dimension(300, 696));
 		ordersList.addListSelectionListener(this);
 		indiOrder = new JTextArea("");
-		indiOrder.setBounds(520, 5, 300, 696);
+		indiOrder.setEditable(false);
+		indiOrder.setPreferredSize(new Dimension(400, 696));
 
-		add(addNewOrder);
-		add(viewSalesHistory);
-		add(closeForDay);
-		add(ordersList);
-		add(indiOrder);
+		add(buttonPane, BorderLayout.WEST);
+		add(ordersList, BorderLayout.CENTER);
+		add(indiOrder, BorderLayout.EAST);
 
 		this.setVisible(true);
 

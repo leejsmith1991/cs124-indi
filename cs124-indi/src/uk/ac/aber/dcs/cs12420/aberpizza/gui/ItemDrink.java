@@ -110,16 +110,16 @@ public class ItemDrink extends ItemFrame{
 	}
 
 	protected JPanel getPricePane() {
-		JPanel thisPane = new JPanel(null);
+		JPanel thisPane = new JPanel();
 
-		JLabel label = new JLabel("Select Size");
-		label.setBounds(5, 5, 340, 25);
+		JLabel label = new JLabel("Item Price : £        ", SwingConstants.RIGHT);
+		label.setPreferredSize(new Dimension(315, 25));
 		thisPane.add(label);
 
 		itemPriceLabel = new JLabel();
-		itemPriceLabel.setBounds(110, 5, 50, 25);
+		itemPriceLabel.setPreferredSize(new Dimension(315, 25));
 		thisPane.add(itemPriceLabel);
-		thisPane.setSize(450, 30);
+		thisPane.setSize(650, 30);
 		return thisPane;
 	}
 
