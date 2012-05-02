@@ -5,7 +5,7 @@
    <void method="add"> 
     <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Order"> 
      <void property="customerName"> 
-      <string>Bert</string> 
+      <string>Lee</string> 
      </void> 
      <void property="items"> 
       <void method="add"> 
@@ -19,77 +19,7 @@
            <string>New Yorker</string> 
           </void> 
           <void property="size"> 
-           <string>Small</string> 
-          </void> 
-         </object> 
-        </void> 
-        <void property="quantity"> 
-         <int>4</int> 
-        </void> 
-       </object> 
-      </void> 
-     </void> 
-     <void property="orderDate"> 
-      <string>01/05/2012</string> 
-     </void> 
-     <void property="orderTime"> 
-      <string>00:32:05</string> 
-     </void> 
-    </object> 
-   </void> 
-   <void method="add"> 
-    <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Order"> 
-     <void property="customerName"> 
-      <string>Asher</string> 
-     </void> 
-     <void property="items"> 
-      <void method="add"> 
-       <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem"> 
-        <void property="item"> 
-         <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Pizza"> 
-          <void property="description"> 
-           <string>Meat Feast for all the family</string> 
-          </void> 
-          <void property="name"> 
-           <string>MeatFeast</string> 
-          </void> 
-          <void property="size"> 
-           <string>Small</string> 
-          </void> 
-         </object> 
-        </void> 
-        <void property="quantity"> 
-         <int>3</int> 
-        </void> 
-       </object> 
-      </void> 
-     </void> 
-     <void property="orderDate"> 
-      <string>01/05/2012</string> 
-     </void> 
-     <void property="orderTime"> 
-      <string>20:01:26</string> 
-     </void> 
-    </object> 
-   </void> 
-   <void method="add"> 
-    <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Order"> 
-     <void property="customerName"> 
-      <string>Ben</string> 
-     </void> 
-     <void property="items"> 
-      <void method="add"> 
-       <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.OrderItem"> 
-        <void property="item"> 
-         <object class="uk.ac.aber.dcs.cs12420.aberpizza.data.Pizza"> 
-          <void property="description"> 
-           <string>NEwPizza. NewPizza</string> 
-          </void> 
-          <void property="name"> 
-           <string>New Pizza</string> 
-          </void> 
-          <void property="size"> 
-           <string>Small</string> 
+           <string>Large</string> 
           </void> 
          </object> 
         </void> 
@@ -100,7 +30,7 @@
       </void> 
      </void> 
      <void property="orderTime"> 
-      <string>21:42:42</string> 
+      <string>21:56:16</string> 
      </void> 
     </object> 
    </void> 

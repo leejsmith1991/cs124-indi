@@ -115,7 +115,7 @@ public class MainFrame extends JFrame implements ListSelectionListener {
 		if (thisDay) {
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
-
+		this.setResizable(false);
 		this.setSize(new Dimension(1024, 768));
 	}
 
