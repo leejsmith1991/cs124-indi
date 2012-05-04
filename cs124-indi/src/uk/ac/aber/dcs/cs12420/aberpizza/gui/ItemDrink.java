@@ -74,6 +74,7 @@ public class ItemDrink extends ItemFrame{
 		int windowHeight = drinkListPane.getHeight() + priceListPane.getHeight()
 				+ quantityPane.getHeight() + bottomPanel.getHeight() + 25;
 		this.setSize(new Dimension(windowWidth, windowHeight));
+		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setVisible(true);
 	}

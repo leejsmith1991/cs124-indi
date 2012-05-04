@@ -26,15 +26,21 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 	private Font f = new Font("Arial", Font.PLAIN, 12);
 
 	public AddNewItemWindow(ItemType type) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+
+		}
+		
 		this.type = type;
 		this.getContentPane().setLayout(new BorderLayout());
 		this.setTitle("Create new " + type.toString().toLowerCase());
-
+		
 		JPanel topPanel = new JPanel(new BorderLayout());
 		namePane = getNamePane();
 		topPanel.add(namePane, BorderLayout.NORTH);
 
-		if (type ==ItemType.PIZZA){
+		if (type == ItemType.PIZZA){
 			pricePane = getPriceMultiPane();
 		} else {
 			pricePane = getPriceSinglePane();
@@ -54,6 +60,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		int height = namePane.getHeight() + pricePane.getHeight()
 				+ descriptionPane.getHeight() + submitPane.getHeight();
 		this.setSize(new Dimension(650, height));
+		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setVisible(true);
 
@@ -97,7 +104,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 	}
 
 	private JPanel getPriceMultiPane() {
-		JPanel thisPane = new JPanel(new GridLayout(3, 1,0,5));
+		JPanel thisPane = new JPanel(new GridLayout(3, 1, 0, 5));
 		
 		JLabel smallLabel = new JLabel("Enter price for small "
 				+ type.toString().toLowerCase() + ": £        ", SwingConstants.RIGHT);

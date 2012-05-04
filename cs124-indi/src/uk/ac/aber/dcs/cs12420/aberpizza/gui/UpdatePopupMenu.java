@@ -4,6 +4,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 public class UpdatePopupMenu extends JPopupMenu {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -515539756715760211L;
 	JMenuItem updateQuantity, removeItem;
 	
 	public UpdatePopupMenu(Manager manager){

@@ -1,31 +1,18 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-/*
- * THINGS TO ASK NEIL
- * 
- * 1. DATE - SAVING RELATIVE TO XML SAVE NOT ORDER TIME
- * 2. LAYOUTS
- * 3. EXCEPTIONS
- * 
- */
 
 public class Manager implements ActionListener, WindowListener {
 	private Till till;
@@ -130,7 +117,6 @@ public class Manager implements ActionListener, WindowListener {
 			dayInfo = "Total Number of Orders: " + till.getOrdersArray().size()
 					+ "\n";
 			int totalItemsPurchased = 0;
-			BigDecimal priceTotal = new BigDecimal("0.00");
 			for (int h = 0; h < till.getOrdersArray().size(); h++) {
 				totalItemsPurchased = totalItemsPurchased
 						+ till.getOrdersArray().get(h).getItems().size();
@@ -142,6 +128,8 @@ public class Manager implements ActionListener, WindowListener {
 
 			JOptionPane.showMessageDialog(null, dayInfo);
 
+		} else if (action.equals("About")){
+			JOptionPane.showMessageDialog(null,"Aber Pizza \nCreated by Lee Smith (ljs5)\n\nAberystwyth Univeristy 2011/14, \n\nDepartment of Computer Science, \nLlandinam Building, \nPenglais, \nAberystywth, \nCeredigion/The Vallies, \nDyfed \nWest Wales, \nWales, \nUK, \nJust North of France \nSomewhere in Europe");
 		}
 	}
 
@@ -241,6 +229,7 @@ public class Manager implements ActionListener, WindowListener {
 		JFileChooser fc = new JFileChooser();
 		File f = new File("./TillSaves/");
 		fc.setCurrentDirectory(f);
+		fc.setApproveButtonText("Load");
 		int fcReturnVal = fc.showOpenDialog(null);
 
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {

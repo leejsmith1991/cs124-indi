@@ -1,8 +1,7 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.run;
 
 import java.io.IOException;
-
-import uk.ac.aber.dcs.cs12420.aberpizza.gui.*;
+import uk.ac.aber.dcs.cs12420.aberpizza.gui.Manager;
 
 
 public class Run {

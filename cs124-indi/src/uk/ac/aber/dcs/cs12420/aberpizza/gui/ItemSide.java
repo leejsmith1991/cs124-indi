@@ -1,10 +1,8 @@
 package uk.ac.aber.dcs.cs12420.aberpizza.gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.math.BigDecimal;
-//import java.math.BigDecimal;
 import java.util.*;
 
 import javax.swing.*;
@@ -17,7 +15,7 @@ public class ItemSide extends ItemFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4448070404095939991L;
+	private static final long serialVersionUID = -4062079919681506684L;
 
 	private Manager manager;
 
@@ -77,6 +75,7 @@ public class ItemSide extends ItemFrame {
 		int windowHeight = sideListPane.getHeight() + priceListPane.getHeight()
 				+ quantityPane.getHeight() + bottomPanel.getHeight() + 25;
 		this.setSize(new Dimension(windowWidth, windowHeight));
+		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setVisible(true);
 	}
@@ -109,6 +108,7 @@ public class ItemSide extends ItemFrame {
 		thisPane.add(descriptionText, BorderLayout.EAST);
 		thisPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 		thisPane.setSize(new Dimension(650, 200));
+		
 		return thisPane;
 	}
 

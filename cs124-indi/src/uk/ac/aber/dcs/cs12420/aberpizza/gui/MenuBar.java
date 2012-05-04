@@ -42,6 +42,10 @@ public class MenuBar extends JMenuBar {
 		fileItems.add(save = new JMenuItem("Save State"));
 		fileItems.add(exit = new JMenuItem("Exit"));
 
+		loadPrev.setEnabled(true);
+		save.setEnabled(true);
+		exit.setEnabled(true);
+		
 		if (!thisDay){
 			save.setEnabled(false);
 		}

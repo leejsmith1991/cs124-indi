@@ -74,6 +74,7 @@ public class ItemPizza extends ItemFrame {
 				+ priceListPane.getHeight() + quantityPane.getHeight() + submitPane
 				.getHeight() + 30;
 		this.setSize(new Dimension(windowWidth, windowHeight));
+		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setVisible(true);
 		
