@@ -1,0 +1,9 @@
+Cola
+0.99
+Coke-Cola
+Orange Juice
+1.29
+Pure orange juice, contains bits
+Lemonade
+0.99
+Traditional lemonade made from lemons and carbonated water

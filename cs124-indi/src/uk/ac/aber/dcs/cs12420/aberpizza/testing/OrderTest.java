@@ -12,7 +12,6 @@ import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
 public class OrderTest {
 	private Order o;
-	private OrderItem orderItem;
 	private Item p, d;
 	
 	
@@ -21,7 +20,6 @@ public class OrderTest {
 		o = new Order();
 		p = new Pizza("New Yorker", new BigDecimal("10.99"), "Large", "Meaty Pizza");
 		d = new Drink("Coke", new BigDecimal("3.99"), null, "Coke");
-		orderItem = new OrderItem(p,3);
 		o.addItem(p, 3);
 	}
 	

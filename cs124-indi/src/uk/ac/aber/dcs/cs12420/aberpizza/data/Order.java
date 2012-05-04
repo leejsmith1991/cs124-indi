@@ -20,7 +20,7 @@ public class Order {
 	private String orderDate = dateFormatter.format(today);;
 	private BigDecimal subTotal = new BigDecimal("0.00");
 	private BigDecimal orderTotal = new BigDecimal("0.00");
-	private String discountType, receipt;
+	private String discountType;
 
 	/**
 	 * Constructs a new Order object, and initialises an Arraylist of OrderItem
@@ -412,6 +412,7 @@ public class Order {
 
 		return receipt;
 	}
+	
 
 	/**
 	 * Overrides the Object superclass toString() method allowing the time of
@@ -425,4 +426,6 @@ public class Order {
 	public String toString() {
 		return orderTime + "   - " + customerName + " £" + subTotal.toString();
 	}
+
+	
 }

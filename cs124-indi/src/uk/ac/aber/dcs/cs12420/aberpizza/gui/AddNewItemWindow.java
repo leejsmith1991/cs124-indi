@@ -7,8 +7,19 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import javax.swing.*;
-
 import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
+
+/**
+ * Allows a user to add a new entry to the Pizzas, Sides or Drinks files Pizzas
+ * will have 3 Text Fields where the user can enter different values for the
+ * different sizes of pizza, Small, Medium, and Large, Sides and Drinks only
+ * have one field where the user can enter the price of the item<br> <br>
+ * 
+ * Implements <code>ActionListener</code> to listen to button presses from the JFrame
+ * 
+ * @author Lee Smith
+ * 
+ */
 
 public class AddNewItemWindow extends JFrame implements ActionListener,
 		MouseListener {
@@ -25,30 +36,40 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 
 	private Font f = new Font("Arial", Font.PLAIN, 12);
 
+	/**
+	 * Constructs a new JFrame and layouts of JPanel components from the private
+	 * methods that layout the individual panels. Also parameter sets the type
+	 * of window that will be displayed, for a Pizza will allow 3 fields for
+	 * price entry, for Sides and Drinks will allow only one field
+	 * 
+	 * @param type
+	 */
+
 	public AddNewItemWindow(ItemType type) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 
 		}
-		
+
 		this.type = type;
 		this.getContentPane().setLayout(new BorderLayout());
 		this.setTitle("Create new " + type.toString().toLowerCase());
-		
+
 		JPanel topPanel = new JPanel(new BorderLayout());
 		namePane = getNamePane();
 		topPanel.add(namePane, BorderLayout.NORTH);
 
-		if (type == ItemType.PIZZA){
+		if (type == ItemType.PIZZA) {
 			pricePane = getPriceMultiPane();
 		} else {
 			pricePane = getPriceSinglePane();
 		}
-		
+
 		topPanel.add(pricePane, BorderLayout.SOUTH);
-		topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,5,10));
-		topPanel.setPreferredSize(new Dimension(650, namePane.getHeight() + pricePane.getHeight() + 15));
+		topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+		topPanel.setPreferredSize(new Dimension(650, namePane.getHeight()
+				+ pricePane.getHeight() + 15));
 		this.add(topPanel, BorderLayout.NORTH);
 
 		descriptionPane = getDescriptionPane();
@@ -66,83 +87,118 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 
 	}
 
+	/**
+	 * Creates a JPanel with a label and text field where the user can enter the
+	 * name of the new item to be created
+	 * 
+	 * @see JPanel
+	 * @see JLabel
+	 * @see JTextField
+	 * @return JPanel
+	 */
+
 	private JPanel getNamePane() {
 		JPanel thisPane = new JPanel();
 
 		JLabel nameLabel = new JLabel("Enter name of new "
-				+ type.toString().toLowerCase() + ":        ", SwingConstants.RIGHT);
+				+ type.toString().toLowerCase() + ":        ",
+				SwingConstants.RIGHT);
 		nameLabel.setPreferredSize(new Dimension(200, 25));
 		thisPane.add(nameLabel);
 
 		nameText = new JTextField();
 		nameText.setPreferredSize(new Dimension(200, 25));
-		nameText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+		nameText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		thisPane.add(nameText);
 		thisPane.setSize(new Dimension(650, 40));
 		return thisPane;
 	}
 
-	private JPanel getPriceSinglePane(){
+	/**
+	 * Creates a JPanel with 1 label and 1 text field box where the user can
+	 * input the price of the item to be created.
+	 * 
+	 * @see JPanel
+	 * @see JLabel
+	 * @see JTextField
+	 * @return JPanel
+	 */
+	private JPanel getPriceSinglePane() {
 		JPanel thisPane = new JPanel(new GridLayout(1, 2));
 
-			JLabel priceLabel = new JLabel("Enter price for "
-					+ type.toString().toLowerCase() + ": £        ",
-					SwingConstants.RIGHT);
-			priceLabel.setPreferredSize(new Dimension(200, 25));
-			thisPane.add(priceLabel);
+		JLabel priceLabel = new JLabel("Enter price for "
+				+ type.toString().toLowerCase() + ": £        ",
+				SwingConstants.RIGHT);
+		priceLabel.setPreferredSize(new Dimension(200, 25));
+		thisPane.add(priceLabel);
 
-			priceText = new JTextField();
-			priceText.setFont(f);
-			priceText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
-			thisPane.add(priceText);
-			priceText.setPreferredSize(new Dimension(200, 25));
-			
-			thisPane.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-			thisPane.setSize(new Dimension(650, 35));
-			
-			return thisPane;
+		priceText = new JTextField();
+		priceText.setFont(f);
+		priceText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		thisPane.add(priceText);
+		priceText.setPreferredSize(new Dimension(200, 25));
+
+		thisPane.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+		thisPane.setSize(new Dimension(650, 35));
+
+		return thisPane;
 	}
+
+	/**
+	 * Creates a JPanel with 3 labels (Small:, Medium:, Large:) and 3 txt fields
+	 * where the user can enter the Small Medium and Large prices respectively.
+	 * @see JPanel
+	 * @see JLabel
+	 * @see JTextField
+	 * @return JPanel
+	 */
 
 	private JPanel getPriceMultiPane() {
 		JPanel thisPane = new JPanel(new GridLayout(3, 1, 0, 5));
-		
+
 		JLabel smallLabel = new JLabel("Enter price for small "
-				+ type.toString().toLowerCase() + ": £        ", SwingConstants.RIGHT);
+				+ type.toString().toLowerCase() + ": £        ",
+				SwingConstants.RIGHT);
 		smallLabel.setPreferredSize(new Dimension(315, 25));
 		thisPane.add(smallLabel);
 
 		smallText = new JTextField();
 		smallText.setPreferredSize(new Dimension(200, 25));
-		smallText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+		smallText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		thisPane.add(smallText);
 
 		JLabel medLabel = new JLabel("Enter price for medium "
-				+ type.toString().toLowerCase() + ": £        ", SwingConstants.RIGHT);
+				+ type.toString().toLowerCase() + ": £        ",
+				SwingConstants.RIGHT);
 		medLabel.setPreferredSize(new Dimension(315, 25));
 		thisPane.add(medLabel);
 
 		medText = new JTextField();
 		medText.setPreferredSize(new Dimension(315, 25));
-		medText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
-		
+		medText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
 		thisPane.add(medText);
 
 		JLabel largeLabel = new JLabel("Enter price for large "
-				+ type.toString().toLowerCase() + ": £        ", SwingConstants.RIGHT);
+				+ type.toString().toLowerCase() + ": £        ",
+				SwingConstants.RIGHT);
 		largeLabel.setPreferredSize(new Dimension(315, 25));
 		thisPane.add(largeLabel);
-		
+
 		largeText = new JTextField();
-		largeText.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+		largeText.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		largeText.setPreferredSize(new Dimension(315, 25));
-		
+
 		thisPane.add(largeText);
-		
+
 		thisPane.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		thisPane.setSize(new Dimension(650, 100));
 		return thisPane;
 	}
-
+/**
+ * Creates a JPanel where the user can enter the description of the new item
+ * @return
+ */
 	private JPanel getDescriptionPane() {
 
 		JPanel thisPane = new JPanel(new BorderLayout());
@@ -167,7 +223,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 
 		thisPane.add(descLabel, BorderLayout.NORTH);
 		thisPane.add(descScroll, BorderLayout.SOUTH);
-		thisPane.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
+		thisPane.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		thisPane.setSize(new Dimension(650, 300));
 		return thisPane;
 	}
@@ -291,7 +347,8 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		if (me.getComponent() == submit) {
-			warningMessage.setText("Warning, Changes will be appiled upon restart");
+			warningMessage
+					.setText("Warning, Changes will be appiled upon restart");
 		}
 
 	}

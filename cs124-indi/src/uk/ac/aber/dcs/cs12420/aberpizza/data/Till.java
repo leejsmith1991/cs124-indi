@@ -147,11 +147,33 @@ public class Till {
 		return pathName;
 	}
 
+	private static void saveResourceFile(String pathname) throws IOException {
+		ArrayList<String> fileContent = new ArrayList<String>();
+
+		Scanner item = new Scanner(new BufferedReader(new FileReader("src/"
+				+ pathname)));
+
+		while (item.hasNextLine()) {
+			fileContent.add(item.nextLine());
+		}
+
+		BufferedWriter bw = new BufferedWriter(new FileWriter("./" + pathname));
+
+		for (int i = 0; i < fileContent.size(); i++) {
+			bw.write(fileContent.get(i));
+			if (i < fileContent.size() - 1) {
+				bw.newLine();
+			}
+		}
+		bw.close();
+	}
+
 	/**
 	 * As an folder external to the Runnable Jar file is required to run the
 	 * program the a file check takes place and if no folder exists it will
 	 * create one. Also for the xml file the same thing happens but runs the
-	 * save method to save a instance of a new Till as one has not been created for the day.
+	 * save method to save a instance of a new Till as one has not been created
+	 * for the day.
 	 * 
 	 * @return Till
 	 * @throws IOException
@@ -162,6 +184,24 @@ public class Till {
 		File folder = new File(PATHNAME);
 		if (!folder.exists()) {
 			folder.mkdir();
+		}
+
+		File pizzaTxt = new File("./pizzas.txt");
+
+		if (!pizzaTxt.exists()) {
+			saveResourceFile("pizzas.txt");
+		}
+		
+		File sidesTxt = new File("./sides.txt");
+
+		if (!sidesTxt.exists()) {
+			saveResourceFile("sides.txt");
+		}
+		
+		File drinksTxt = new File("./drinks.txt");
+
+		if (!drinksTxt.exists()) {
+			saveResourceFile("drinks.txt");
 		}
 
 		File f = new File(PATHNAME + loadPath());
@@ -181,8 +221,10 @@ public class Till {
 
 		return loadTill;
 	}
+
 	/**
-	 * Allows user to load in an existing XML file that is 
+	 * Allows user to load in an existing XML file that is
+	 * 
 	 * @param oldPathName
 	 * @return
 	 * @throws IOException
@@ -192,11 +234,11 @@ public class Till {
 
 		try {
 			XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(
-				new FileInputStream(PATHNAME + oldPathName)));
-		
+					new FileInputStream(PATHNAME + oldPathName)));
+
 			loadTill = (Till) decoder.readObject();
 		} catch (Exception e) {
-			
+
 		}
 		return loadTill;
 	}

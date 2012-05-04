@@ -184,7 +184,7 @@ public class ItemPizza extends ItemFrame {
 
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(new BufferedReader(
-				new FileReader("pizzas.txt")));
+				new FileReader("src/pizzas.txt")));
 
 		while (sc.hasNextLine()) {
 			pName.add(sc.nextLine());
