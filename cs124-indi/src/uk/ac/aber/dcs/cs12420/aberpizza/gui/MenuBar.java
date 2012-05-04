@@ -7,8 +7,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-
-
 public class MenuBar extends JMenuBar {
 
 	/**
@@ -17,24 +15,36 @@ public class MenuBar extends JMenuBar {
 	private static final long serialVersionUID = -7276006453724246248L;
 	private Manager manager;
 	private JMenu file = new JMenu("File"), admin = new JMenu("Admin"),
-			help = new JMenu("Help");
+			about = new JMenu("About");
 	private LinkedList<JMenuItem> fileItems, adminItems, helpItems;
 	private boolean thisDay;
+
+	/**
+	 * Constucts a new MenuBar using manager as the ActionListener, and a
+	 * boolean representing the current day to disable the save action in the
+	 * menu if the version of till is not todays
+	 * 
+	 * @param manager
+	 * @param thisDay
+	 */
 	public MenuBar(Manager manager, boolean thisDay) {
 		this.manager = manager;
 		this.thisDay = thisDay;
 		this.add(file);
 		this.add(admin);
-		this.add(help);
-		
+		this.add(about);
+
 		this.setBackground(Color.WHITE);
-		
+
 		this.addFileItems();
 		this.addAdminItems();
 		this.addHelpItems();
 
 	}
 
+	/**
+	 * Creates the File items in the menu
+	 */
 	private void addFileItems() {
 		fileItems = new LinkedList<JMenuItem>();
 		JMenuItem loadPrev, save, exit;
@@ -45,37 +55,41 @@ public class MenuBar extends JMenuBar {
 		loadPrev.setEnabled(true);
 		save.setEnabled(true);
 		exit.setEnabled(true);
-		
-		if (!thisDay){
+
+		if (!thisDay) {
 			save.setEnabled(false);
 		}
-		
+
 		for (JMenuItem i : fileItems) {
 			i.addActionListener(manager);
 			file.add(i);
 		}
 	}
-	
-	private void addAdminItems(){
+
+	/**
+	 * Creates the Administative items in the menu, to add a new till item to the till
+	 */
+	private void addAdminItems() {
 		adminItems = new LinkedList<JMenuItem>();
 		adminItems.add(new JMenuItem("Add new Pizza"));
 		adminItems.add(new JMenuItem("Add new Side"));
 		adminItems.add(new JMenuItem("Add new Drink"));
-		
-		for (JMenuItem i : adminItems){
+
+		for (JMenuItem i : adminItems) {
 			i.addActionListener(manager);
 			admin.add(i);
 		}
 	}
-	
-	private void addHelpItems(){
+	/**
+	 * Creates the About items in the menu
+	 */
+	private void addHelpItems() {
 		helpItems = new LinkedList<JMenuItem>();
-		helpItems.add(new JMenuItem("Help"));
 		helpItems.add(new JMenuItem("About"));
-		
-		for (JMenuItem i : helpItems){
+
+		for (JMenuItem i : helpItems) {
 			i.addActionListener(manager);
-			help.add(i);
+			about.add(i);
 		}
 	}
 }

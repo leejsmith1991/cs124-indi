@@ -10,7 +10,16 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
-public class ItemDrink extends ItemFrame{
+/**
+ * JFrame displaying all the drinks available for purchase. Show Name, Price,
+ * and Description of item and allows the user to enter the amount of the item
+ * that the customer requests
+ * 
+ * @author Lee Smith
+ * 
+ */
+
+public class ItemDrink extends ItemFrame {
 
 	/**
 	 * 
@@ -33,8 +42,20 @@ public class ItemDrink extends ItemFrame{
 
 	private BigDecimal itemPrice;
 	private int quantity;
-	
+
 	private Font f = new Font("Arial", Font.PLAIN, 12);
+
+	/**
+	 * Constructs a new JFrame and lays out the components using private methods
+	 * within this class that return JPanels. Passes the Manager class for use
+	 * of actionListener to act on button presses
+	 * 
+	 * @see Manager
+	 * @see JFrame
+	 * 
+	 * @param manager
+	 * @throws FileNotFoundException
+	 */
 
 	public ItemDrink(Manager manager) throws FileNotFoundException {
 
@@ -71,8 +92,9 @@ public class ItemDrink extends ItemFrame{
 		this.add(bottomPanel, BorderLayout.SOUTH);
 
 		int windowWidth = drinkListPane.getWidth();
-		int windowHeight = drinkListPane.getHeight() + priceListPane.getHeight()
-				+ quantityPane.getHeight() + bottomPanel.getHeight() + 25;
+		int windowHeight = drinkListPane.getHeight()
+				+ priceListPane.getHeight() + quantityPane.getHeight()
+				+ bottomPanel.getHeight() + 25;
 		this.setSize(new Dimension(windowWidth, windowHeight));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -113,7 +135,8 @@ public class ItemDrink extends ItemFrame{
 	protected JPanel getPricePane() {
 		JPanel thisPane = new JPanel();
 
-		JLabel label = new JLabel("Item Price : £        ", SwingConstants.RIGHT);
+		JLabel label = new JLabel("Item Price : £        ",
+				SwingConstants.RIGHT);
 		label.setPreferredSize(new Dimension(315, 25));
 		thisPane.add(label);
 
@@ -156,6 +179,11 @@ public class ItemDrink extends ItemFrame{
 
 		return thisPane;
 	}
+
+	/**
+	 * Gets the data from an external filesource and populates arraylists for
+	 * Name, Price and Description of the item
+	 */
 
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(new BufferedReader(
@@ -207,11 +235,12 @@ public class ItemDrink extends ItemFrame{
 	public void setQuantity() {
 		try {
 			quantity = Integer.parseInt(quantText.getText());
-			if (quantity == 0){
+			if (quantity == 0) {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException nfe) {
-			quantText.setText(JOptionPane.showInputDialog(null, "Invalid Quantity Entry: Enter valid Quantity"));
+			quantText.setText(JOptionPane.showInputDialog(null,
+					"Invalid Quantity Entry: Enter valid Quantity"));
 		}
 	}
 

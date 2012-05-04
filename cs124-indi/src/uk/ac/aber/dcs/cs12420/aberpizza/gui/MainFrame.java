@@ -11,6 +11,23 @@ import javax.swing.event.*;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Order;
 import uk.ac.aber.dcs.cs12420.aberpizza.data.Till;
 
+/**
+ * MainFrame wihin the program, Allows the user to create a new order, view
+ * orders history for the day, or end the current day via access to the
+ * <code>Manager</code> class. <br>
+ * <br>
+ * Has JLists that display all the orders that have been placed for the current
+ * day. If the program is closed at anytime during the day when the program
+ * reloads the items from the current day are automatically preloaded into the
+ * List.<br>
+ * <br>
+ * Selecting an item in this list displays the reciept for the order in
+ * question. This heavily relies on the overridden toString methods in the Order
+ * and OrderItem classes to build the receipt
+ * 
+ * @author Lee Smith
+ * 
+ */
 public class MainFrame extends JFrame implements ListSelectionListener {
 	/**
 	 * 
@@ -26,6 +43,21 @@ public class MainFrame extends JFrame implements ListSelectionListener {
 
 	private ArrayList<Order> ordersArray = new ArrayList<Order>();
 
+	/**
+	 * Constructs new JFrame and lays out the components in it. Parameters
+	 * include the Manager class, this is used for actionListeners on the button
+	 * presses on the Frame; The current Till state, which is used to load the
+	 * orders into the JList, and a boolean which specifies if the loaded till
+	 * is the main Till being loaded (Current Days Till), and disabled certain
+	 * features such as creating a new order for an old till, and disabling the
+	 * save function which corrupts the XML data. Also sets the
+	 * DefaultCloseOperation of the window depending on the boolean status not
+	 * allowing it, if the till is not todays version
+	 * 
+	 * @param manager
+	 * @param till
+	 * @param thisDay
+	 */
 	public MainFrame(Manager manager, Till till, boolean thisDay) {
 
 		try {
@@ -107,8 +139,15 @@ public class MainFrame extends JFrame implements ListSelectionListener {
 		}
 		this.setResizable(false);
 		this.setSize(new Dimension(1024, 768));
+		this.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Updates the JList as a new order is placed.
+	 * 
+	 * @param l
+	 *            - <code>ArrayList</code><<code>Order</code>>
+	 */
 	public void updateArrayList(ArrayList<Order> l) {
 		orders.clear();
 		ordersArray = l;
@@ -117,6 +156,14 @@ public class MainFrame extends JFrame implements ListSelectionListener {
 		}
 		this.validate();
 	}
+
+	/**
+	 * Overrides the valueChanged method in <code>ListSelectionListener</code>
+	 * so when a item in the list is selected the reciept for that order is
+	 * displayed in the TextArea
+	 * 
+	 * @see ListSelectionListener
+	 */
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

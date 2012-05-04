@@ -98,6 +98,7 @@ public class OrderItem {
 
 	/**
 	 * Sets the orderItemTotal
+	 * 
 	 * @param itemTotal
 	 */
 	public void setOrderItemTotal(BigDecimal itemTotal) {
@@ -106,6 +107,7 @@ public class OrderItem {
 
 	/**
 	 * Gets the orderItemTotal
+	 * 
 	 * @return itemTotal
 	 */
 	public BigDecimal getOrderItemTotal() {
@@ -113,11 +115,22 @@ public class OrderItem {
 	}
 
 	/**
-	 * Overrides the <code>toString()</code> method from the Object superclass, to return a string giving 
+	 * Overrides the <code>toString()</code> method from the Object superclass,
+	 * to return a string giving information on the Item ordered and quantity of
+	 * that item
 	 */
 	@Override
 	public String toString() {
-		return Integer.toString(quantity) + " x " + item.getName() + " @ £"
-				+ item.getPrice() + " = £" + itemTotal.toString();
+		if (getItemType() == ItemType.PIZZA) {
+			return Integer.toString(quantity) + " x " + item.getName() + " "
+					+ item.getSize() + " "
+					+ item.getItemType().toString().toLowerCase() + " @ £"
+					+ item.getPrice() + " = £" + itemTotal.toString();
+		} else {
+			return Integer.toString(quantity) + " x " + item.getName() + " "
+					+ item.getItemType().toString().toLowerCase() + " @ £"
+					+ item.getPrice() + " = £" + itemTotal.toString();
+		}
+
 	}
 }

@@ -38,7 +38,6 @@ public class Till {
 	 */
 	public void addOrder(Order order) {
 		orders.add(order);
-		System.out.println(order.getCustomerName());
 	}
 
 	/**
@@ -99,7 +98,6 @@ public class Till {
 	 */
 	public BigDecimal getTotalForDay() {
 		BigDecimal total = new BigDecimal("0.00");
-		System.out.println(orders.size());
 		for (int i = 0; i < orders.size(); i++) {
 			total = total.add(orders.get(i).getOrderTotal());
 		}
@@ -122,7 +120,7 @@ public class Till {
 					new FileOutputStream(PATHNAME + xmlFileName)));
 
 			PersistenceDelegate pd = encoder
-					.getPersistenceDelegate(double.class);
+					.getPersistenceDelegate(Integer.class);
 			encoder.setPersistenceDelegate(BigDecimal.class, pd);
 
 			encoder.writeObject(this);
@@ -147,27 +145,6 @@ public class Till {
 		return pathName;
 	}
 
-	private static void saveResourceFile(String pathname) throws IOException {
-		ArrayList<String> fileContent = new ArrayList<String>();
-
-		Scanner item = new Scanner(new BufferedReader(new FileReader("src/"
-				+ pathname)));
-
-		while (item.hasNextLine()) {
-			fileContent.add(item.nextLine());
-		}
-
-		BufferedWriter bw = new BufferedWriter(new FileWriter("./" + pathname));
-
-		for (int i = 0; i < fileContent.size(); i++) {
-			bw.write(fileContent.get(i));
-			if (i < fileContent.size() - 1) {
-				bw.newLine();
-			}
-		}
-		bw.close();
-	}
-
 	/**
 	 * As an folder external to the Runnable Jar file is required to run the
 	 * program the a file check takes place and if no folder exists it will
@@ -185,25 +162,7 @@ public class Till {
 		if (!folder.exists()) {
 			folder.mkdir();
 		}
-
-		File pizzaTxt = new File("./pizzas.txt");
-
-		if (!pizzaTxt.exists()) {
-			saveResourceFile("pizzas.txt");
-		}
 		
-		File sidesTxt = new File("./sides.txt");
-
-		if (!sidesTxt.exists()) {
-			saveResourceFile("sides.txt");
-		}
-		
-		File drinksTxt = new File("./drinks.txt");
-
-		if (!drinksTxt.exists()) {
-			saveResourceFile("drinks.txt");
-		}
-
 		File f = new File(PATHNAME + loadPath());
 
 		if (!f.exists()) {

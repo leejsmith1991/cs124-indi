@@ -18,30 +18,17 @@ public class NewOrder extends JFrame implements ActionListener,
 		ListSelectionListener, MouseListener {
 
 	private static final long serialVersionUID = 4978171281055317618L;
-
-	/**
-	 * Manager for use of the Listeners
-	 */
+	
 	private Manager manager;
-
+	
 	private JPanel customerNamePane, listPane, buttonPane, subDiscPane,
 			payCancelPane;
 	private JTextField customerText;
-
 	private JList orderList;
 	private DefaultListModel tableList = new DefaultListModel();
-	/**
-	 * Holds the current total of the order
-	 */
 	private JLabel subText, discText, totalText;
-	/**
-	 * Holds the currently selected index for item selected in the List that
-	 * displays items in the current order
-	 */
+	
 	private int selectedIndex = 0;
-	/**
-	 * Holds the name of the customer
-	 */
 	private String customerName;
 
 	/**
@@ -81,9 +68,10 @@ public class NewOrder extends JFrame implements ActionListener,
 		payCancelPane = getPayCancelPane();
 		this.add(payCancelPane, BorderLayout.SOUTH);
 
-		this.setVisible(true);
 		this.setResizable(false);
 		this.setSize(new Dimension(1024, 768));
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
 
 	/**
@@ -322,7 +310,7 @@ public class NewOrder extends JFrame implements ActionListener,
 		discText.setText(order.getDiscount().toString());
 		totalText.setText(order.getOrderTotal().toString());
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();

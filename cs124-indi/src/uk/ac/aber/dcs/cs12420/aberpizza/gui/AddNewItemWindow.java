@@ -13,16 +13,17 @@ import uk.ac.aber.dcs.cs12420.aberpizza.data.ItemType;
  * Allows a user to add a new entry to the Pizzas, Sides or Drinks files Pizzas
  * will have 3 Text Fields where the user can enter different values for the
  * different sizes of pizza, Small, Medium, and Large, Sides and Drinks only
- * have one field where the user can enter the price of the item<br> <br>
+ * have one field where the user can enter the price of the item<br>
+ * <br>
  * 
- * Implements <code>ActionListener</code> to listen to button presses from the JFrame
+ * Implements <code>ActionListener</code> to listen to button presses from the
+ * JFrame
  * 
  * @author Lee Smith
  * 
  */
 
-public class AddNewItemWindow extends JFrame implements ActionListener,
-		MouseListener {
+public class AddNewItemWindow extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -4708376627751121406L;
 
 	private ItemType type;
@@ -147,6 +148,7 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 	/**
 	 * Creates a JPanel with 3 labels (Small:, Medium:, Large:) and 3 txt fields
 	 * where the user can enter the Small Medium and Large prices respectively.
+	 * 
 	 * @see JPanel
 	 * @see JLabel
 	 * @see JTextField
@@ -195,10 +197,15 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		thisPane.setSize(new Dimension(650, 100));
 		return thisPane;
 	}
-/**
- * Creates a JPanel where the user can enter the description of the new item
- * @return
- */
+
+	/**
+	 * Creates a JPanel where the user can enter the description of the new item
+	 * 
+	 * @see JPanel
+	 * @see JTextArea
+	 * @see JLabel
+	 * @return JPanel
+	 */
 	private JPanel getDescriptionPane() {
 
 		JPanel thisPane = new JPanel(new BorderLayout());
@@ -228,14 +235,21 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		return thisPane;
 	}
 
+	/**
+	 * Creates a JPanel with a add item button
+	 * 
+	 * @see ActionListener
+	 * @see JPanel
+	 * @see JButton
+	 * @return
+	 */
+
 	private JPanel getSubmitPane() {
 		JPanel thisPane = new JPanel(new BorderLayout());
 
-		submit = new JButton("Add " + type.toString().toLowerCase()
-				+ " to system");
+		submit = new JButton("Add to System");
 		submit.setPreferredSize(new Dimension(200, 50));
 		submit.addActionListener(this);
-		submit.addMouseListener(this);
 		thisPane.add(submit, BorderLayout.NORTH);
 
 		warningMessage = new JLabel("");
@@ -245,6 +259,18 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		thisPane.setSize(new Dimension(650, 80));
 		return thisPane;
 	}
+
+	/**
+	 * Amends the resource file to be allow the new item to be added to the end
+	 * of the resource file. <br>
+	 * <br>
+	 * This happens by scanning the resource file adding line entries to an
+	 * <code>ArrayList</code> then adding the new entries to the bottom of the
+	 * list then running the save file method.
+	 * 
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 */
 
 	private void createNew() throws NumberFormatException, IOException {
 		existing = new ArrayList<String>();
@@ -317,23 +343,38 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 		}
 	}
 
+	/**
+	 * Saves the file using the <code>ArrayList</code> created in
+	 * <code>createNew()</code> method
+	 * 
+	 * @param fileName
+	 * @throws IOException
+	 */
+
 	public void saveFile(String fileName) throws IOException {
 		BufferedWriter bw = new BufferedWriter(
 				new FileWriter(fileName + ".txt"));
 		for (int i = 0; i < existing.size(); i++) {
 			bw.write(existing.get(i));
-			bw.newLine();
+			if (i < existing.size() - 1) {
+				bw.newLine();
+			}
 		}
 		bw.close();
 		this.dispose();
 	}
 
+	/**
+	 * Overrides the <code>actionPerformed(ActionEvent arg0)</code> method in
+	 * the ActionListener interface
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if (command.equals("Submit")) {
+		if (command.equals("Add to System")) {
 			try {
 				createNew();
+				this.dispose();
 			} catch (NumberFormatException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -342,40 +383,5 @@ public class AddNewItemWindow extends JFrame implements ActionListener,
 				e1.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent me) {
-		if (me.getComponent() == submit) {
-			warningMessage
-					.setText("Warning, Changes will be appiled upon restart");
-		}
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent me) {
-		if (me.getComponent() == submit) {
-			warningMessage.setText("");
-		}
-
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent me) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent me) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent me) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -406,7 +406,7 @@ public class Order {
 		}
 
 		receipt = receipt + NL + "Subtotal : £" + subTotal.toString() + NL;
-		receipt = receipt + "Discounts " + discountType + " : £"
+		receipt = receipt + "Discounts : " + discountType + " : £"
 				+ getDiscount().toString() + NL;
 		receipt = receipt + "Order Total : £" + orderTotal;
 

@@ -10,6 +10,17 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
+/**
+ * JFrame displaying all the Pizzas available for purchase. Show Name, Price,
+ * and Description of item. Upon selection of an item from the item lists, the
+ * price list is automatically updated with new values allowing the user to
+ * select different size of pizza that they request and allows the user to enter
+ * the amount of the item that the customer requests
+ * 
+ * @author Lee Smith
+ * 
+ */
+
 public class ItemPizza extends ItemFrame {
 
 	/**
@@ -30,21 +41,28 @@ public class ItemPizza extends ItemFrame {
 	private JPanel pizzaListPane, priceListPane, quantityPane, submitPane;
 	private JTextField quantText;
 	private JTextArea descriptionText;
-	
+
 	private String selectedItem, itemSize, itemDesc;
 	private BigDecimal itemPrice;
 	private int quantity;
-	
+
 	private Font f = new Font("Arial", Font.PLAIN, 12);
-	
+
+	/**
+	 * Constructs a new JFrame and lays out the components using private methods
+	 * within this class that return JPanels
+	 * 
+	 * @param manager
+	 * @throws FileNotFoundException
+	 */
 	public ItemPizza(Manager manager) throws FileNotFoundException {
-		
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e){
-			
+		} catch (Exception e) {
+
 		}
-		
+
 		this.manager = manager;
 		this.setTitle("Add Pizza to order");
 
@@ -63,7 +81,7 @@ public class ItemPizza extends ItemFrame {
 		topPanel.add(priceListPane, BorderLayout.SOUTH);
 		topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 		this.add(topPanel, BorderLayout.NORTH);
-		
+
 		quantityPane = getQuantityPane();
 		submitPane = getSubmitPane();
 		this.add(quantityPane, BorderLayout.CENTER);
@@ -71,13 +89,13 @@ public class ItemPizza extends ItemFrame {
 
 		int windowWidth = pizzaListPane.getWidth();
 		int windowHeight = pizzaListPane.getHeight()
-				+ priceListPane.getHeight() + quantityPane.getHeight() + submitPane
-				.getHeight() + 30;
+				+ priceListPane.getHeight() + quantityPane.getHeight()
+				+ submitPane.getHeight() + 30;
 		this.setSize(new Dimension(windowWidth, windowHeight));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setVisible(true);
-		
+
 	}
 
 	protected JPanel getItemPane() {
@@ -97,18 +115,18 @@ public class ItemPizza extends ItemFrame {
 		pizzasList.addListSelectionListener(pizzaSelect);
 		JScrollPane scroll = new JScrollPane(pizzasList);
 		thisPane.add(scroll, BorderLayout.WEST);
-		
+
 		descriptionText = new JTextArea("");
 		descriptionText.setFont(f);
 		descriptionText.setWrapStyleWord(true);
 		descriptionText.setLineWrap(true);
 		descriptionText.setPreferredSize(new Dimension(300, 100));
 		descriptionText.setEditable(false);
-		
+
 		thisPane.add(descriptionText, BorderLayout.EAST);
 		thisPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 		thisPane.setSize(new Dimension(650, 200));
-		
+
 		return thisPane;
 	}
 
@@ -118,9 +136,9 @@ public class ItemPizza extends ItemFrame {
 		JLabel label = new JLabel("Select Size of Pizza");
 		label.setPreferredSize(new Dimension(340, 25));
 		thisPane.add(label, BorderLayout.NORTH);
-		
-		JPanel sizeLabel = new JPanel(new GridLayout(3,1));
-		
+
+		JPanel sizeLabel = new JPanel(new GridLayout(3, 1));
+
 		JLabel smallLabel = new JLabel("Small:", SwingConstants.RIGHT);
 		sizeLabel.add(smallLabel, BorderLayout.NORTH);
 
@@ -129,7 +147,8 @@ public class ItemPizza extends ItemFrame {
 
 		JLabel largeLabel = new JLabel("Large:", SwingConstants.RIGHT);
 		sizeLabel.add(largeLabel);
-		sizeLabel.setPreferredSize(new Dimension(50, smallLabel.getFontMetrics(smallLabel.getFont()).getHeight()*3 + 8));
+		sizeLabel.setPreferredSize(new Dimension(50, smallLabel.getFontMetrics(
+				smallLabel.getFont()).getHeight() * 3 + 8));
 		sizeLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 		thisPane.add(sizeLabel, BorderLayout.WEST);
 
@@ -137,12 +156,13 @@ public class ItemPizza extends ItemFrame {
 		priceList.setEnabled(false);
 		priceList.addListSelectionListener(priceSelect);
 		setItemPrices(0);
-		priceList.setPreferredSize(new Dimension(150, priceList.getSize().height));
+		priceList.setPreferredSize(new Dimension(150,
+				priceList.getSize().height));
 		priceList.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		thisPane.add(priceList, BorderLayout.CENTER);
 		thisPane.setSize(650, priceList.getSize().height + 50);
 		thisPane.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-		
+
 		return thisPane;
 	}
 
@@ -165,7 +185,7 @@ public class ItemPizza extends ItemFrame {
 		thisPane.add(quantLabel, BorderLayout.WEST);
 		thisPane.add(quantText, BorderLayout.EAST);
 		thisPane.setSize(650, 30);
-		
+
 		return thisPane;
 	}
 
@@ -184,7 +204,7 @@ public class ItemPizza extends ItemFrame {
 
 	public void getFromFile() throws FileNotFoundException {
 		Scanner sc = new Scanner(new BufferedReader(
-				new FileReader("src/pizzas.txt")));
+				new FileReader("pizzas.txt")));
 
 		while (sc.hasNextLine()) {
 			pName.add(sc.nextLine());
@@ -226,19 +246,20 @@ public class ItemPizza extends ItemFrame {
 	public void setItemDesc(String itemDesc) {
 		this.itemDesc = itemDesc;
 	}
-	
-	public ItemType getItemType(){
+
+	public ItemType getItemType() {
 		return ItemType.PIZZA;
 	}
-	
+
 	public void setQuantity() {
 		try {
 			quantity = Integer.parseInt(quantText.getText());
-			if (quantity == 0){
+			if (quantity == 0) {
 				throw new NumberFormatException();
 			}
 		} catch (NumberFormatException nfe) {
-			quantText.setText(JOptionPane.showInputDialog(null, "Invalid Quantity Entry: Enter valid Quantity"));
+			quantText.setText(JOptionPane.showInputDialog(null,
+					"Invalid Quantity Entry: Enter valid Quantity"));
 			setQuantity();
 		}
 	}
@@ -299,6 +320,5 @@ public class ItemPizza extends ItemFrame {
 			itemPrice = prices[selectedIndex];
 		}
 	}
-
 
 }

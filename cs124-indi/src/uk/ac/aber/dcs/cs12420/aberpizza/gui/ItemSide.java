@@ -10,6 +10,14 @@ import javax.swing.event.*;
 
 import uk.ac.aber.dcs.cs12420.aberpizza.data.*;
 
+/**
+ * JFrame displaying all the sides available for purchase. Show Name, Price,
+ * and Description of item and allows the user to enter the amount of the item
+ * that the customer requests
+ * 
+ * @author Lee Smith
+ * 
+ */
 public class ItemSide extends ItemFrame {
 
 	/**
@@ -37,6 +45,18 @@ public class ItemSide extends ItemFrame {
 
 	private Font f = new Font("Arial", Font.PLAIN, 12);
 
+	/**
+	 * Constructs a new JFrame and lays out the components using private methods
+	 * within this class that return JPanels. Passes the Manager class for use
+	 * of actionListener to act on button presses
+	 * 
+	 * @see Manager
+	 * @see JFrame
+	 * 
+	 * @param manager
+	 * @throws FileNotFoundException
+	 */
+	
 	public ItemSide(Manager manager) throws FileNotFoundException {
 
 		try {
